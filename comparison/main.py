@@ -171,13 +171,16 @@ def buildPossibleInputParameters(ldfg, args):
         (Done this way in order to use itertools module)'''
 
     # We need a string as '12...n' where n is the number of input values
+    # (to use itertools module)
 
     myValues = ''
     for k in range(0, len(ldfg.inputValues.keys())):
         myValues += str(k)
 
     inputParameterValues = list(itertools.permutations(myValues, 1))
-    for i in range(2, len(ldfg.inputValues.keys())):
+
+    # For each possible length
+    for i in range(2, len(ldfg.inputValues.keys())+1):
 
         if args.debug_mode:
             print 'Round ' + str(i)
@@ -204,6 +207,7 @@ def buildPossibleOutputParameters(ldfg, args):
         (Done this way in order to use itertools module)'''
 
     # We need a string as '12...n' where n is the number of output values
+    # (to use itertools module)
 
     myValues = ''
     for k in range(0, len(ldfg.outputValues.keys())):
@@ -211,7 +215,8 @@ def buildPossibleOutputParameters(ldfg, args):
 
     outputParameterValues = list(itertools.permutations(myValues, 1))
 
-    for i in range(2, len(ldfg.outputValues.keys())):
+    # For each possible length
+    for i in range(2, len(ldfg.outputValues.keys())+1):
         if args.debug_mode:
             print 'Round ' + str(i)
         outputParameterValues.extend(list(itertools.permutations(myValues,
