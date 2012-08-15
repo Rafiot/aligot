@@ -1,0 +1,122 @@
+!SOT
+401000!mov esi, dword ptr [0x402000]!RM_402000_4_474e4950!WR_esi_474e4950
+401006!mov edi, 0x402004!WR_edi_402004
+40100b!mov ecx, 0x0!WR_ecx_0
+401010!mov edx, 0x0!WR_edx_0
+401015!xor dword ptr [edi+ecx*4], esi!RM_402004_4_47204d49!RR_ecx_0_esi_474e4950_edi_402004!WM_402004_4_6e0419
+401018!cmp edx, 0x5!RR_edx_0
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_0!WR_edx_1
+401029!inc ecx!RR_ecx_0!WR_ecx_1
+40102a!cmp ecx, 0xf!RR_ecx_1
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402008_4_414e4e4f!RR_ecx_1_esi_474e4950_edi_402004!WM_402008_4_600071f
+401018!cmp edx, 0x5!RR_edx_1
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_1!WR_edx_2
+401029!inc ecx!RR_ecx_1!WR_ecx_2
+40102a!cmp ecx, 0xf!RR_ecx_2
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_40200c_4_20454220!RR_ecx_2_esi_474e4950_edi_402004!WM_40200c_4_670b0b70
+401018!cmp edx, 0x5!RR_edx_2
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_2!WR_edx_3
+401029!inc ecx!RR_ecx_2!WR_ecx_3
+40102a!cmp ecx, 0xf!RR_ecx_3
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402010_4_52434544!RR_ecx_3_esi_474e4950_edi_402004!WM_402010_4_150d0c14
+401018!cmp edx, 0x5!RR_edx_3
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_3!WR_edx_4
+401029!inc ecx!RR_ecx_3!WR_ecx_4
+40102a!cmp ecx, 0xf!RR_ecx_4
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402014_4_45545059!RR_ecx_4_esi_474e4950_edi_402004!WM_402014_4_21a1909
+401018!cmp edx, 0x5!RR_edx_4
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_4!WR_edx_5
+401029!inc ecx!RR_ecx_4!WR_ecx_5
+40102a!cmp ecx, 0xf!RR_ecx_5
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402018_4_204d4944!RR_ecx_5_esi_474e4950_edi_402004!WM_402018_4_67030014
+401018!cmp edx, 0x5!RR_edx_5
+40101b!jnz 0x401028
+401021!mov edx, 0x0!WR_edx_0
+401026!jmp 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402018_4_67030014!RR_ecx_5_esi_474e4950_edi_402004!WM_402018_4_204d4944
+401018!cmp edx, 0x5!RR_edx_0
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_0!WR_edx_1
+401029!inc ecx!RR_ecx_5!WR_ecx_6
+40102a!cmp ecx, 0xf!RR_ecx_6
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_40201c_4_4e4e4f47!RR_ecx_6_esi_474e4950_edi_402004!WM_40201c_4_9000617
+401018!cmp edx, 0x5!RR_edx_1
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_1!WR_edx_2
+401029!inc ecx!RR_ecx_6!WR_ecx_7
+40102a!cmp ecx, 0xf!RR_ecx_7
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402020_4_45422041!RR_ecx_7_esi_474e4950_edi_402004!WM_402020_4_20c6911
+401018!cmp edx, 0x5!RR_edx_2
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_2!WR_edx_3
+401029!inc ecx!RR_ecx_7!WR_ecx_8
+40102a!cmp ecx, 0xf!RR_ecx_8
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402024_4_43454420!RR_ecx_8_esi_474e4950_edi_402004!WM_402024_4_40b0d70
+401018!cmp edx, 0x5!RR_edx_3
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_3!WR_edx_4
+401029!inc ecx!RR_ecx_8!WR_ecx_9
+40102a!cmp ecx, 0xf!RR_ecx_9
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402028_4_54505952!RR_ecx_9_esi_474e4950_edi_402004!WM_402028_4_131e1002
+401018!cmp edx, 0x5!RR_edx_4
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_4!WR_edx_5
+401029!inc ecx!RR_ecx_9!WR_ecx_a
+40102a!cmp ecx, 0xf!RR_ecx_a
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_40202c_4_4d494445!RR_ecx_a_esi_474e4950_edi_402004!WM_40202c_4_a070d15
+401018!cmp edx, 0x5!RR_edx_5
+40101b!jnz 0x401028
+401021!mov edx, 0x0!WR_edx_0
+401026!jmp 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_40202c_4_a070d15!RR_ecx_a_esi_474e4950_edi_402004!WM_40202c_4_4d494445
+401018!cmp edx, 0x5!RR_edx_0
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_0!WR_edx_1
+401029!inc ecx!RR_ecx_a!WR_ecx_b
+40102a!cmp ecx, 0xf!RR_ecx_b
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402030_4_4e4f4720!RR_ecx_b_esi_474e4950_edi_402004!WM_402030_4_9010e70
+401018!cmp edx, 0x5!RR_edx_1
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_1!WR_edx_2
+401029!inc ecx!RR_ecx_b!WR_ecx_c
+40102a!cmp ecx, 0xf!RR_ecx_c
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402034_4_4220414e!RR_ecx_c_esi_474e4950_edi_402004!WM_402034_4_56e081e
+401018!cmp edx, 0x5!RR_edx_2
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_2!WR_edx_3
+401029!inc ecx!RR_ecx_c!WR_ecx_d
+40102a!cmp ecx, 0xf!RR_ecx_d
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402038_4_45442045!RR_ecx_d_esi_474e4950_edi_402004!WM_402038_4_20a6915
+401018!cmp edx, 0x5!RR_edx_3
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_3!WR_edx_4
+401029!inc ecx!RR_ecx_d!WR_ecx_e
+40102a!cmp ecx, 0xf!RR_ecx_e
+40102d!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_40203c_4_50595243!RR_ecx_e_esi_474e4950_edi_402004!WM_40203c_4_17171b13
+401018!cmp edx, 0x5!RR_edx_4
+40101b!jnz 0x401028
+401028!inc edx!RR_edx_4!WR_edx_5
+401029!inc ecx!RR_ecx_e!WR_ecx_f
+40102a!cmp ecx, 0xf!RR_ecx_f
+40102d!jnz 0x401015
+40102f!ret 
+!EOT

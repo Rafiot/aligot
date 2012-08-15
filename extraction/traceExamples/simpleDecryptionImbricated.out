@@ -1,0 +1,50 @@
+!SOT
+401000!mov edx, 0x0!WR_edx_0
+401005!mov esi, dword ptr [0x402000]!RM_402000_4_5a59334b!WR_esi_5a59334b
+40100b!mov edi, 0x402004!WR_edi_402004
+401010!mov ecx, 0x0!WR_ecx_0
+401015!xor dword ptr [edi+ecx*4], esi!RM_402004_4_52434e45!RR_ecx_0_esi_5a59334b_edi_402004!WM_402004_4_81a7d0e
+401018!inc ecx!RR_ecx_0!WR_ecx_1
+401019!cmp ecx, 0x4!RR_ecx_1
+40101c!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402008_4_45545059!RR_ecx_1_esi_5a59334b_edi_402004!WM_402008_4_1f0d6312
+401018!inc ecx!RR_ecx_1!WR_ecx_2
+401019!cmp ecx, 0x4!RR_ecx_2
+40101c!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_40200c_4_52434e45!RR_ecx_2_esi_5a59334b_edi_402004!WM_40200c_4_81a7d0e
+401018!inc ecx!RR_ecx_2!WR_ecx_3
+401019!cmp ecx, 0x4!RR_ecx_3
+40101c!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402010_4_45545059!RR_ecx_3_esi_5a59334b_edi_402004!WM_402010_4_1f0d6312
+401018!inc ecx!RR_ecx_3!WR_ecx_4
+401019!cmp ecx, 0x4!RR_ecx_4
+40101c!jnz 0x401015
+40101e!inc edx!RR_edx_0!WR_edx_1
+40101f!mov edi, 0x402004!WR_edi_402004
+401024!add edi, 0x10!RR_edi_402004!WR_edi_402014
+401027!cmp edx, 0x2!RR_edx_1
+40102a!jnz 0x401010
+401010!mov ecx, 0x0!WR_ecx_0
+401015!xor dword ptr [edi+ecx*4], esi!RM_402014_4_52434e45!RR_ecx_0_esi_5a59334b_edi_402014!WM_402014_4_81a7d0e
+401018!inc ecx!RR_ecx_0!WR_ecx_1
+401019!cmp ecx, 0x4!RR_ecx_1
+40101c!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402018_4_45545059!RR_ecx_1_esi_5a59334b_edi_402014!WM_402018_4_1f0d6312
+401018!inc ecx!RR_ecx_1!WR_ecx_2
+401019!cmp ecx, 0x4!RR_ecx_2
+40101c!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_40201c_4_52434e45!RR_ecx_2_esi_5a59334b_edi_402014!WM_40201c_4_81a7d0e
+401018!inc ecx!RR_ecx_2!WR_ecx_3
+401019!cmp ecx, 0x4!RR_ecx_3
+40101c!jnz 0x401015
+401015!xor dword ptr [edi+ecx*4], esi!RM_402020_4_45545059!RR_ecx_3_esi_5a59334b_edi_402014!WM_402020_4_1f0d6312
+401018!inc ecx!RR_ecx_3!WR_ecx_4
+401019!cmp ecx, 0x4!RR_ecx_4
+40101c!jnz 0x401015
+40101e!inc edx!RR_edx_1!WR_edx_2
+40101f!mov edi, 0x402004!WR_edi_402004
+401024!add edi, 0x10!RR_edi_402004!WR_edi_402014
+401027!cmp edx, 0x2!RR_edx_2
+40102a!jnz 0x401010
+40102c!ret !RM_12ffc4_4_7c817077!RR_esp_12ffc4!WR_esp_12ffc8
+!EOT

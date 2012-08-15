@@ -1,0 +1,4 @@
+Aligot - Parameters extracted for each LDFG from WikiTEA_Od_DeltaRounds_Diff.out
+Format: "input parameter 1,input parameter 2:output paramter1,output parameter2"
+
+00000010,01234567,deadbee3,deadbee4,89abcdef,deadbee1,deadbee2,12345678:0edd4885,51801131,00000000

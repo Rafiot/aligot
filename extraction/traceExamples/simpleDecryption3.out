@@ -1,0 +1,276 @@
+!SOT
+401000!mov eax, 0x0!WR_eax_0
+401005!inc eax!RR_eax_0!WR_eax_1
+401006!mov edx, 0x0!WR_edx_0
+40100b!inc edx!RR_edx_0!WR_edx_1
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_1
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_1!WR_edx_2
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_2
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_2!WR_edx_3
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_3
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_3!WR_edx_4
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_4
+40101a!jnz 0x40100b
+40101c!cmp eax, 0x4!RR_eax_1
+40101f!jnz 0x401005
+401005!inc eax!RR_eax_1!WR_eax_2
+401006!mov edx, 0x0!WR_edx_0
+40100b!inc edx!RR_edx_0!WR_edx_1
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_1
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_1!WR_edx_2
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_2
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_2!WR_edx_3
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_3
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_3!WR_edx_4
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_4
+40101a!jnz 0x40100b
+40101c!cmp eax, 0x4!RR_eax_2
+40101f!jnz 0x401005
+401005!inc eax!RR_eax_2!WR_eax_3
+401006!mov edx, 0x0!WR_edx_0
+40100b!inc edx!RR_edx_0!WR_edx_1
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_1
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_1!WR_edx_2
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_2
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_2!WR_edx_3
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_3
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_3!WR_edx_4
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_4
+40101a!jnz 0x40100b
+40101c!cmp eax, 0x4!RR_eax_3
+40101f!jnz 0x401005
+401005!inc eax!RR_eax_3!WR_eax_4
+401006!mov edx, 0x0!WR_edx_0
+40100b!inc edx!RR_edx_0!WR_edx_1
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_1
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_1!WR_edx_2
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_2
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_2!WR_edx_3
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_3
+40101a!jnz 0x40100b
+40100b!inc edx!RR_edx_3!WR_edx_4
+40100c!mov ecx, 0x0!WR_ecx_0
+401011!inc ecx!RR_ecx_0!WR_ecx_1
+401012!cmp ecx, 0x4!RR_ecx_1
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_1!WR_ecx_2
+401012!cmp ecx, 0x4!RR_ecx_2
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_2!WR_ecx_3
+401012!cmp ecx, 0x4!RR_ecx_3
+401015!jnz 0x401011
+401011!inc ecx!RR_ecx_3!WR_ecx_4
+401012!cmp ecx, 0x4!RR_ecx_4
+401015!jnz 0x401011
+401017!cmp edx, 0x4!RR_edx_4
+40101a!jnz 0x40100b
+40101c!cmp eax, 0x4!RR_eax_4
+40101f!jnz 0x401005
+401021!ret !RM_12ffc4_4_7c817077!RR_esp_12ffc4!WR_esp_12ffc8
+!EOT

@@ -1,0 +1,4 @@
+Aligot - Parameters extracted for each LDFG from simpleDecryption.out
+Format: "input parameter 1,input parameter 2:output paramter1,output parameter2"
+
+cafebabe,deadbeef,c6ef3720,deadbeef,cafebabe,deadbeef,deadbeef,9e3779b9:2450bbf9,a2dcf470,a2dcf470

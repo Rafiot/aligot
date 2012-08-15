@@ -1,0 +1,4 @@
+Aligot - Parameters extracted for each LDFG from SilentBanker_2XTEA.out
+Format: "input parameter 1,input parameter 2:output paramter1,output parameter2"
+
+3a91f895,c6ef3720,ffea0b7e,4d73cc57,3eca1838,175d44ae,68575ff2,61c88647:9e3779a1,2a759130,00000300,905a4dff,2a756130

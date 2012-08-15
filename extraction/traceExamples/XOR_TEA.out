@@ -1,0 +1,1409 @@
+!SOT
+4010e0!push ebp!RR_ebp_12ffc0_esp_12ff80!WM_12ff7c_4_12ffc0!WR_esp_12ff7c
+4010e1!mov ebp, esp!RR_esp_12ff7c!WR_ebp_12ff7c
+4010e3!sub esp, 0x18!RR_esp_12ff7c!WR_esp_12ff64
+4010e6!mov dword ptr [ebp-0x14], 0xdeadbeef!RR_ebp_12ff7c!WM_12ff68_4_deadbeef
+4010ed!mov dword ptr [ebp-0x10], 0xdeadbeef!RR_ebp_12ff7c!WM_12ff6c_4_deadbeef
+4010f4!mov dword ptr [ebp-0xc], 0xdeadbeef!RR_ebp_12ff7c!WM_12ff70_4_deadbeef
+4010fb!mov dword ptr [ebp-0x8], 0xdeadbeef!RR_ebp_12ff7c!WM_12ff74_4_deadbeef
+401102!mov dword ptr [ebp-0x18], 0xbabababa!RR_ebp_12ff7c!WM_12ff64_4_babababa
+401109!mov dword ptr [ebp-0x4], 0x0!RR_ebp_12ff7c!WM_12ff78_4_0
+401110!jmp 0x40111b
+40111b!cmp dword ptr [ebp-0x4], 0x2!RM_12ff78_4_0!RR_ebp_12ff7c
+40111f!jnl 0x40113a
+401121!mov ecx, dword ptr [ebp-0x4]!RM_12ff78_4_0!RR_ebp_12ff7c!WR_ecx_0
+401124!mov edx, dword ptr [ecx*4+0x40301c]!RM_40301c_4_cafebabe!RR_ecx_0!WR_edx_cafebabe
+40112b!xor edx, dword ptr [ebp-0x18]!RM_12ff64_4_babababa!RR_edx_cafebabe_ebp_12ff7c!WR_edx_70440004
+40112e!mov eax, dword ptr [ebp-0x4]!RM_12ff78_4_0!RR_ebp_12ff7c!WR_eax_0
+401131!mov dword ptr [eax*4+0x40301c], edx!RR_eax_0_edx_70440004!WM_40301c_4_70440004
+401138!jmp 0x401112
+401112!mov eax, dword ptr [ebp-0x4]!RM_12ff78_4_0!RR_ebp_12ff7c!WR_eax_0
+401115!add eax, 0x1!RR_eax_0!WR_eax_1
+401118!mov dword ptr [ebp-0x4], eax!RR_eax_1_ebp_12ff7c!WM_12ff78_4_1
+40111b!cmp dword ptr [ebp-0x4], 0x2!RM_12ff78_4_1!RR_ebp_12ff7c
+40111f!jnl 0x40113a
+401121!mov ecx, dword ptr [ebp-0x4]!RM_12ff78_4_1!RR_ebp_12ff7c!WR_ecx_1
+401124!mov edx, dword ptr [ecx*4+0x40301c]!RM_403020_4_cafebabe!RR_ecx_1!WR_edx_cafebabe
+40112b!xor edx, dword ptr [ebp-0x18]!RM_12ff64_4_babababa!RR_edx_cafebabe_ebp_12ff7c!WR_edx_70440004
+40112e!mov eax, dword ptr [ebp-0x4]!RM_12ff78_4_1!RR_ebp_12ff7c!WR_eax_1
+401131!mov dword ptr [eax*4+0x40301c], edx!RR_eax_1_edx_70440004!WM_403020_4_70440004
+401138!jmp 0x401112
+401112!mov eax, dword ptr [ebp-0x4]!RM_12ff78_4_1!RR_ebp_12ff7c!WR_eax_1
+401115!add eax, 0x1!RR_eax_1!WR_eax_2
+401118!mov dword ptr [ebp-0x4], eax!RR_eax_2_ebp_12ff7c!WM_12ff78_4_2
+40111b!cmp dword ptr [ebp-0x4], 0x2!RM_12ff78_4_2!RR_ebp_12ff7c
+40111f!jnl 0x40113a
+40113a!lea ecx, ptr [ebp-0x14]!RR_ebp_12ff7c!WR_ecx_12ff68
+40113d!push ecx!RR_ecx_12ff68_esp_12ff64!WM_12ff60_4_12ff68!WR_esp_12ff60
+40113e!push 0x20!RR_esp_12ff60!WM_12ff5c_4_20!WR_esp_12ff5c
+401140!call 0x401020!RR_esp_12ff5c!WM_12ff58_4_401145!WR_esp_12ff58
+401020!push ebp!RR_ebp_12ff7c_esp_12ff58!WM_12ff54_4_12ff7c!WR_esp_12ff54
+401021!mov ebp, esp!RR_esp_12ff54!WR_ebp_12ff54
+401023!sub esp, 0xc!RR_esp_12ff54!WR_esp_12ff48
+401026!push esi!RR_esp_12ff48_esi_1!WM_12ff44_4_1!WR_esp_12ff44
+401027!mov dword ptr [ebp-0xc], 0x9e3779b9!RR_ebp_12ff54!WM_12ff48_4_9e3779b9
+40102e!mov eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_ebp_12ff54!WR_eax_9e3779b9
+401031!imul eax, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_eax_9e3779b9_ebp_12ff54!WR_eax_c6ef3720
+401035!mov dword ptr [ebp-0x8], eax!RR_eax_c6ef3720_ebp_12ff54!WM_12ff4c_4_c6ef3720
+401038!mov dword ptr [ebp-0x4], 0x0!RR_ebp_12ff54!WM_12ff50_4_0
+40103f!jmp 0x40104a
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_0!RR_ebp_12ff54!WR_edx_0
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_0_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_70440004!WR_eax_70440004
+40105b!shl eax, 0x4!RR_eax_70440004!WR_eax_4400040
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_70440004!WR_ecx_70440004
+401064!shr ecx, 0x5!RR_ecx_70440004!WR_ecx_3822000
+401067!xor eax, ecx!RR_eax_4400040_ecx_3822000!WR_eax_7c22040
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_70440004!RR_eax_7c22040!WR_eax_78062044
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_c6ef3720!RR_ebp_12ff54!WR_edx_c6ef3720
+401072!shr edx, 0xb!RR_edx_c6ef3720!WR_edx_18dde6
+401075!and edx, 0x3!RR_edx_18dde6!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_c6ef3720!RR_ebp_12ff54!WR_esi_c6ef3720
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_c6ef3720!WR_esi_a59cf60f
+401081!xor eax, esi!RR_eax_78062044_esi_a59cf60f!WR_eax_dd9ad64b
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_70440004!WR_edx_70440004
+401089!sub edx, eax!RR_eax_dd9ad64b_edx_70440004!WR_edx_92a929b9
+40108b!mov dword ptr [0x403020], edx!RR_edx_92a929b9!WM_403020_4_92a929b9
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_c6ef3720!RR_ebp_12ff54!WR_eax_c6ef3720
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_c6ef3720_ebp_12ff54!WR_eax_28b7bd67
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_28b7bd67_ebp_12ff54!WM_12ff4c_4_28b7bd67
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_92a929b9!WR_ecx_92a929b9
+4010a0!shl ecx, 0x4!RR_ecx_92a929b9!WR_ecx_2a929b90
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_92a929b9!WR_edx_92a929b9
+4010a9!shr edx, 0x5!RR_edx_92a929b9!WR_edx_495494d
+4010ac!xor ecx, edx!RR_ecx_2a929b90_edx_495494d!WR_ecx_2e07d2dd
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_92a929b9!RR_ecx_2e07d2dd!WR_ecx_c0b0fc96
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_28b7bd67!RR_ebp_12ff54!WR_eax_28b7bd67
+4010b7!and eax, 0x3!RR_eax_28b7bd67!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_28b7bd67!RR_ebp_12ff54!WR_esi_28b7bd67
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_28b7bd67!WR_esi_7657c56
+4010c3!xor ecx, esi!RR_ecx_c0b0fc96_esi_7657c56!WR_ecx_c7d580c0
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_70440004!WR_eax_70440004
+4010ca!sub eax, ecx!RR_eax_70440004_ecx_c7d580c0!WR_eax_a86e7f44
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_a86e7f44!WM_40301c_4_a86e7f44
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_0!RR_ebp_12ff54!WR_ecx_0
+401044!add ecx, 0x1!RR_ecx_0!WR_ecx_1
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_1_ebp_12ff54!WM_12ff50_4_1
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_1!RR_ebp_12ff54!WR_edx_1
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_1_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_a86e7f44!WR_eax_a86e7f44
+40105b!shl eax, 0x4!RR_eax_a86e7f44!WR_eax_86e7f440
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_a86e7f44!WR_ecx_a86e7f44
+401064!shr ecx, 0x5!RR_ecx_a86e7f44!WR_ecx_54373fa
+401067!xor eax, ecx!RR_eax_86e7f440_ecx_54373fa!WR_eax_83a487ba
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_a86e7f44!RR_eax_83a487ba!WR_eax_2c1306fe
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_28b7bd67!RR_ebp_12ff54!WR_edx_28b7bd67
+401072!shr edx, 0xb!RR_edx_28b7bd67!WR_edx_516f7
+401075!and edx, 0x3!RR_edx_516f7!WR_edx_3
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_28b7bd67!RR_ebp_12ff54!WR_esi_28b7bd67
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff74_4_deadbeef!RR_ecx_12ff68_edx_3_esi_28b7bd67!WR_esi_7657c56
+401081!xor eax, esi!RR_eax_2c1306fe_esi_7657c56!WR_eax_2b767aa8
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_92a929b9!WR_edx_92a929b9
+401089!sub edx, eax!RR_eax_2b767aa8_edx_92a929b9!WR_edx_6732af11
+40108b!mov dword ptr [0x403020], edx!RR_edx_6732af11!WM_403020_4_6732af11
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_28b7bd67!RR_ebp_12ff54!WR_eax_28b7bd67
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_28b7bd67_ebp_12ff54!WR_eax_8a8043ae
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_8a8043ae_ebp_12ff54!WM_12ff4c_4_8a8043ae
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_6732af11!WR_ecx_6732af11
+4010a0!shl ecx, 0x4!RR_ecx_6732af11!WR_ecx_732af110
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_6732af11!WR_edx_6732af11
+4010a9!shr edx, 0x5!RR_edx_6732af11!WR_edx_3399578
+4010ac!xor ecx, edx!RR_ecx_732af110_edx_3399578!WR_ecx_70136468
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_6732af11!RR_ecx_70136468!WR_ecx_d7461379
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_8a8043ae!RR_ebp_12ff54!WR_eax_8a8043ae
+4010b7!and eax, 0x3!RR_eax_8a8043ae!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_8a8043ae!RR_ebp_12ff54!WR_esi_8a8043ae
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_8a8043ae!WR_esi_692e029d
+4010c3!xor ecx, esi!RR_ecx_d7461379_esi_692e029d!WR_ecx_be6811e4
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_a86e7f44!WR_eax_a86e7f44
+4010ca!sub eax, ecx!RR_eax_a86e7f44_ecx_be6811e4!WR_eax_ea066d60
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_ea066d60!WM_40301c_4_ea066d60
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_1!RR_ebp_12ff54!WR_ecx_1
+401044!add ecx, 0x1!RR_ecx_1!WR_ecx_2
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_2_ebp_12ff54!WM_12ff50_4_2
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_2!RR_ebp_12ff54!WR_edx_2
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_2_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_ea066d60!WR_eax_ea066d60
+40105b!shl eax, 0x4!RR_eax_ea066d60!WR_eax_a066d600
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_ea066d60!WR_ecx_ea066d60
+401064!shr ecx, 0x5!RR_ecx_ea066d60!WR_ecx_750336b
+401067!xor eax, ecx!RR_eax_a066d600_ecx_750336b!WR_eax_a736e56b
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_ea066d60!RR_eax_a736e56b!WR_eax_913d52cb
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_8a8043ae!RR_ebp_12ff54!WR_edx_8a8043ae
+401072!shr edx, 0xb!RR_edx_8a8043ae!WR_edx_115008
+401075!and edx, 0x3!RR_edx_115008!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_8a8043ae!RR_ebp_12ff54!WR_esi_8a8043ae
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_8a8043ae!WR_esi_692e029d
+401081!xor eax, esi!RR_eax_913d52cb_esi_692e029d!WR_eax_f8135056
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_6732af11!WR_edx_6732af11
+401089!sub edx, eax!RR_eax_f8135056_edx_6732af11!WR_edx_6f1f5ebb
+40108b!mov dword ptr [0x403020], edx!RR_edx_6f1f5ebb!WM_403020_4_6f1f5ebb
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_8a8043ae!RR_ebp_12ff54!WR_eax_8a8043ae
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_8a8043ae_ebp_12ff54!WR_eax_ec48c9f5
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_ec48c9f5_ebp_12ff54!WM_12ff4c_4_ec48c9f5
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_6f1f5ebb!WR_ecx_6f1f5ebb
+4010a0!shl ecx, 0x4!RR_ecx_6f1f5ebb!WR_ecx_f1f5ebb0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_6f1f5ebb!WR_edx_6f1f5ebb
+4010a9!shr edx, 0x5!RR_edx_6f1f5ebb!WR_edx_378faf5
+4010ac!xor ecx, edx!RR_ecx_f1f5ebb0_edx_378faf5!WR_ecx_f28d1145
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_6f1f5ebb!RR_ecx_f28d1145!WR_ecx_61ac7000
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_ec48c9f5!RR_ebp_12ff54!WR_eax_ec48c9f5
+4010b7!and eax, 0x3!RR_eax_ec48c9f5!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_ec48c9f5!RR_ebp_12ff54!WR_esi_ec48c9f5
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_ec48c9f5!WR_esi_caf688e4
+4010c3!xor ecx, esi!RR_ecx_61ac7000_esi_caf688e4!WR_ecx_ab5af8e4
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_ea066d60!WR_eax_ea066d60
+4010ca!sub eax, ecx!RR_eax_ea066d60_ecx_ab5af8e4!WR_eax_3eab747c
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_3eab747c!WM_40301c_4_3eab747c
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_2!RR_ebp_12ff54!WR_ecx_2
+401044!add ecx, 0x1!RR_ecx_2!WR_ecx_3
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_3_ebp_12ff54!WM_12ff50_4_3
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_3!RR_ebp_12ff54!WR_edx_3
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_3_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_3eab747c!WR_eax_3eab747c
+40105b!shl eax, 0x4!RR_eax_3eab747c!WR_eax_eab747c0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_3eab747c!WR_ecx_3eab747c
+401064!shr ecx, 0x5!RR_ecx_3eab747c!WR_ecx_1f55ba3
+401067!xor eax, ecx!RR_eax_eab747c0_ecx_1f55ba3!WR_eax_eb421c63
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_3eab747c!RR_eax_eb421c63!WR_eax_29ed90df
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_ec48c9f5!RR_ebp_12ff54!WR_edx_ec48c9f5
+401072!shr edx, 0xb!RR_edx_ec48c9f5!WR_edx_1d8919
+401075!and edx, 0x3!RR_edx_1d8919!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_ec48c9f5!RR_ebp_12ff54!WR_esi_ec48c9f5
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_ec48c9f5!WR_esi_caf688e4
+401081!xor eax, esi!RR_eax_29ed90df_esi_caf688e4!WR_eax_e31b183b
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_6f1f5ebb!WR_edx_6f1f5ebb
+401089!sub edx, eax!RR_eax_e31b183b_edx_6f1f5ebb!WR_edx_8c044680
+40108b!mov dword ptr [0x403020], edx!RR_edx_8c044680!WM_403020_4_8c044680
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_ec48c9f5!RR_ebp_12ff54!WR_eax_ec48c9f5
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_ec48c9f5_ebp_12ff54!WR_eax_4e11503c
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_4e11503c_ebp_12ff54!WM_12ff4c_4_4e11503c
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_8c044680!WR_ecx_8c044680
+4010a0!shl ecx, 0x4!RR_ecx_8c044680!WR_ecx_c0446800
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_8c044680!WR_edx_8c044680
+4010a9!shr edx, 0x5!RR_edx_8c044680!WR_edx_4602234
+4010ac!xor ecx, edx!RR_ecx_c0446800_edx_4602234!WR_ecx_c4244a34
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_8c044680!RR_ecx_c4244a34!WR_ecx_502890b4
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_4e11503c!RR_ebp_12ff54!WR_eax_4e11503c
+4010b7!and eax, 0x3!RR_eax_4e11503c!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_4e11503c!RR_ebp_12ff54!WR_esi_4e11503c
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_4e11503c!WR_esi_2cbf0f2b
+4010c3!xor ecx, esi!RR_ecx_502890b4_esi_2cbf0f2b!WR_ecx_7c979f9f
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_3eab747c!WR_eax_3eab747c
+4010ca!sub eax, ecx!RR_eax_3eab747c_ecx_7c979f9f!WR_eax_c213d4dd
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_c213d4dd!WM_40301c_4_c213d4dd
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_3!RR_ebp_12ff54!WR_ecx_3
+401044!add ecx, 0x1!RR_ecx_3!WR_ecx_4
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_4_ebp_12ff54!WM_12ff50_4_4
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_4!RR_ebp_12ff54!WR_edx_4
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_4_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_c213d4dd!WR_eax_c213d4dd
+40105b!shl eax, 0x4!RR_eax_c213d4dd!WR_eax_213d4dd0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_c213d4dd!WR_ecx_c213d4dd
+401064!shr ecx, 0x5!RR_ecx_c213d4dd!WR_ecx_6109ea6
+401067!xor eax, ecx!RR_eax_213d4dd0_ecx_6109ea6!WR_eax_272dd376
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_c213d4dd!RR_eax_272dd376!WR_eax_e941a853
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_4e11503c!RR_ebp_12ff54!WR_edx_4e11503c
+401072!shr edx, 0xb!RR_edx_4e11503c!WR_edx_9c22a
+401075!and edx, 0x3!RR_edx_9c22a!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_4e11503c!RR_ebp_12ff54!WR_esi_4e11503c
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_4e11503c!WR_esi_2cbf0f2b
+401081!xor eax, esi!RR_eax_e941a853_esi_2cbf0f2b!WR_eax_c5fea778
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_8c044680!WR_edx_8c044680
+401089!sub edx, eax!RR_eax_c5fea778_edx_8c044680!WR_edx_c6059f08
+40108b!mov dword ptr [0x403020], edx!RR_edx_c6059f08!WM_403020_4_c6059f08
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_4e11503c!RR_ebp_12ff54!WR_eax_4e11503c
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_4e11503c_ebp_12ff54!WR_eax_afd9d683
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_afd9d683_ebp_12ff54!WM_12ff4c_4_afd9d683
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_c6059f08!WR_ecx_c6059f08
+4010a0!shl ecx, 0x4!RR_ecx_c6059f08!WR_ecx_6059f080
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_c6059f08!WR_edx_c6059f08
+4010a9!shr edx, 0x5!RR_edx_c6059f08!WR_edx_6302cf8
+4010ac!xor ecx, edx!RR_ecx_6059f080_edx_6302cf8!WR_ecx_6669dc78
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_c6059f08!RR_ecx_6669dc78!WR_ecx_2c6f7b80
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_afd9d683!RR_ebp_12ff54!WR_eax_afd9d683
+4010b7!and eax, 0x3!RR_eax_afd9d683!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_afd9d683!RR_ebp_12ff54!WR_esi_afd9d683
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_afd9d683!WR_esi_8e879572
+4010c3!xor ecx, esi!RR_ecx_2c6f7b80_esi_8e879572!WR_ecx_a2e8eef2
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_c213d4dd!WR_eax_c213d4dd
+4010ca!sub eax, ecx!RR_eax_c213d4dd_ecx_a2e8eef2!WR_eax_1f2ae5eb
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_1f2ae5eb!WM_40301c_4_1f2ae5eb
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_4!RR_ebp_12ff54!WR_ecx_4
+401044!add ecx, 0x1!RR_ecx_4!WR_ecx_5
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_5_ebp_12ff54!WM_12ff50_4_5
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_5!RR_ebp_12ff54!WR_edx_5
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_5_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_1f2ae5eb!WR_eax_1f2ae5eb
+40105b!shl eax, 0x4!RR_eax_1f2ae5eb!WR_eax_f2ae5eb0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_1f2ae5eb!WR_ecx_1f2ae5eb
+401064!shr ecx, 0x5!RR_ecx_1f2ae5eb!WR_ecx_f9572f
+401067!xor eax, ecx!RR_eax_f2ae5eb0_ecx_f9572f!WR_eax_f257099f
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_1f2ae5eb!RR_eax_f257099f!WR_eax_1181ef8a
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_afd9d683!RR_ebp_12ff54!WR_edx_afd9d683
+401072!shr edx, 0xb!RR_edx_afd9d683!WR_edx_15fb3a
+401075!and edx, 0x3!RR_edx_15fb3a!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_afd9d683!RR_ebp_12ff54!WR_esi_afd9d683
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_afd9d683!WR_esi_8e879572
+401081!xor eax, esi!RR_eax_1181ef8a_esi_8e879572!WR_eax_9f067af8
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_c6059f08!WR_edx_c6059f08
+401089!sub edx, eax!RR_eax_9f067af8_edx_c6059f08!WR_edx_26ff2410
+40108b!mov dword ptr [0x403020], edx!RR_edx_26ff2410!WM_403020_4_26ff2410
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_afd9d683!RR_ebp_12ff54!WR_eax_afd9d683
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_afd9d683_ebp_12ff54!WR_eax_11a25cca
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_11a25cca_ebp_12ff54!WM_12ff4c_4_11a25cca
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_26ff2410!WR_ecx_26ff2410
+4010a0!shl ecx, 0x4!RR_ecx_26ff2410!WR_ecx_6ff24100
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_26ff2410!WR_edx_26ff2410
+4010a9!shr edx, 0x5!RR_edx_26ff2410!WR_edx_137f920
+4010ac!xor ecx, edx!RR_ecx_6ff24100_edx_137f920!WR_ecx_6ec5b820
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_26ff2410!RR_ecx_6ec5b820!WR_ecx_95c4dc30
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_11a25cca!RR_ebp_12ff54!WR_eax_11a25cca
+4010b7!and eax, 0x3!RR_eax_11a25cca!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_11a25cca!RR_ebp_12ff54!WR_esi_11a25cca
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_11a25cca!WR_esi_f0501bb9
+4010c3!xor ecx, esi!RR_ecx_95c4dc30_esi_f0501bb9!WR_ecx_6594c789
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_1f2ae5eb!WR_eax_1f2ae5eb
+4010ca!sub eax, ecx!RR_eax_1f2ae5eb_ecx_6594c789!WR_eax_b9961e62
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_b9961e62!WM_40301c_4_b9961e62
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_5!RR_ebp_12ff54!WR_ecx_5
+401044!add ecx, 0x1!RR_ecx_5!WR_ecx_6
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_6_ebp_12ff54!WM_12ff50_4_6
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_6!RR_ebp_12ff54!WR_edx_6
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_6_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_b9961e62!WR_eax_b9961e62
+40105b!shl eax, 0x4!RR_eax_b9961e62!WR_eax_9961e620
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_b9961e62!WR_ecx_b9961e62
+401064!shr ecx, 0x5!RR_ecx_b9961e62!WR_ecx_5ccb0f3
+401067!xor eax, ecx!RR_eax_9961e620_ecx_5ccb0f3!WR_eax_9cad56d3
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_b9961e62!RR_eax_9cad56d3!WR_eax_56437535
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_11a25cca!RR_ebp_12ff54!WR_edx_11a25cca
+401072!shr edx, 0xb!RR_edx_11a25cca!WR_edx_2344b
+401075!and edx, 0x3!RR_edx_2344b!WR_edx_3
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_11a25cca!RR_ebp_12ff54!WR_esi_11a25cca
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff74_4_deadbeef!RR_ecx_12ff68_edx_3_esi_11a25cca!WR_esi_f0501bb9
+401081!xor eax, esi!RR_eax_56437535_esi_f0501bb9!WR_eax_a6136e8c
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_26ff2410!WR_edx_26ff2410
+401089!sub edx, eax!RR_eax_a6136e8c_edx_26ff2410!WR_edx_80ebb584
+40108b!mov dword ptr [0x403020], edx!RR_edx_80ebb584!WM_403020_4_80ebb584
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_11a25cca!RR_ebp_12ff54!WR_eax_11a25cca
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_11a25cca_ebp_12ff54!WR_eax_736ae311
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_736ae311_ebp_12ff54!WM_12ff4c_4_736ae311
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_80ebb584!WR_ecx_80ebb584
+4010a0!shl ecx, 0x4!RR_ecx_80ebb584!WR_ecx_ebb5840
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_80ebb584!WR_edx_80ebb584
+4010a9!shr edx, 0x5!RR_edx_80ebb584!WR_edx_4075dac
+4010ac!xor ecx, edx!RR_ecx_ebb5840_edx_4075dac!WR_ecx_abc05ec
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_80ebb584!RR_ecx_abc05ec!WR_ecx_8ba7bb70
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_736ae311!RR_ebp_12ff54!WR_eax_736ae311
+4010b7!and eax, 0x3!RR_eax_736ae311!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_736ae311!RR_ebp_12ff54!WR_esi_736ae311
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_736ae311!WR_esi_5218a200
+4010c3!xor ecx, esi!RR_ecx_8ba7bb70_esi_5218a200!WR_ecx_d9bf1970
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_b9961e62!WR_eax_b9961e62
+4010ca!sub eax, ecx!RR_eax_b9961e62_ecx_d9bf1970!WR_eax_dfd704f2
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_dfd704f2!WM_40301c_4_dfd704f2
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_6!RR_ebp_12ff54!WR_ecx_6
+401044!add ecx, 0x1!RR_ecx_6!WR_ecx_7
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_7_ebp_12ff54!WM_12ff50_4_7
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_7!RR_ebp_12ff54!WR_edx_7
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_7_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_dfd704f2!WR_eax_dfd704f2
+40105b!shl eax, 0x4!RR_eax_dfd704f2!WR_eax_fd704f20
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_dfd704f2!WR_ecx_dfd704f2
+401064!shr ecx, 0x5!RR_ecx_dfd704f2!WR_ecx_6feb827
+401067!xor eax, ecx!RR_eax_fd704f20_ecx_6feb827!WR_eax_fb8ef707
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_dfd704f2!RR_eax_fb8ef707!WR_eax_db65fbf9
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_736ae311!RR_ebp_12ff54!WR_edx_736ae311
+401072!shr edx, 0xb!RR_edx_736ae311!WR_edx_e6d5c
+401075!and edx, 0x3!RR_edx_e6d5c!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_736ae311!RR_ebp_12ff54!WR_esi_736ae311
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_736ae311!WR_esi_5218a200
+401081!xor eax, esi!RR_eax_db65fbf9_esi_5218a200!WR_eax_897d59f9
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_80ebb584!WR_edx_80ebb584
+401089!sub edx, eax!RR_eax_897d59f9_edx_80ebb584!WR_edx_f76e5b8b
+40108b!mov dword ptr [0x403020], edx!RR_edx_f76e5b8b!WM_403020_4_f76e5b8b
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_736ae311!RR_ebp_12ff54!WR_eax_736ae311
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_736ae311_ebp_12ff54!WR_eax_d5336958
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_d5336958_ebp_12ff54!WM_12ff4c_4_d5336958
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_f76e5b8b!WR_ecx_f76e5b8b
+4010a0!shl ecx, 0x4!RR_ecx_f76e5b8b!WR_ecx_76e5b8b0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_f76e5b8b!WR_edx_f76e5b8b
+4010a9!shr edx, 0x5!RR_edx_f76e5b8b!WR_edx_7bb72dc
+4010ac!xor ecx, edx!RR_ecx_76e5b8b0_edx_7bb72dc!WR_ecx_715eca6c
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_f76e5b8b!RR_ecx_715eca6c!WR_ecx_68cd25f7
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_d5336958!RR_ebp_12ff54!WR_eax_d5336958
+4010b7!and eax, 0x3!RR_eax_d5336958!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_d5336958!RR_ebp_12ff54!WR_esi_d5336958
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_d5336958!WR_esi_b3e12847
+4010c3!xor ecx, esi!RR_ecx_68cd25f7_esi_b3e12847!WR_ecx_db2c0db0
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_dfd704f2!WR_eax_dfd704f2
+4010ca!sub eax, ecx!RR_eax_dfd704f2_ecx_db2c0db0!WR_eax_4aaf742
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_4aaf742!WM_40301c_4_4aaf742
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_7!RR_ebp_12ff54!WR_ecx_7
+401044!add ecx, 0x1!RR_ecx_7!WR_ecx_8
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_8_ebp_12ff54!WM_12ff50_4_8
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_8!RR_ebp_12ff54!WR_edx_8
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_8_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_4aaf742!WR_eax_4aaf742
+40105b!shl eax, 0x4!RR_eax_4aaf742!WR_eax_4aaf7420
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_4aaf742!WR_ecx_4aaf742
+401064!shr ecx, 0x5!RR_ecx_4aaf742!WR_ecx_2557ba
+401067!xor eax, ecx!RR_eax_4aaf7420_ecx_2557ba!WR_eax_4a8a239a
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_4aaf742!RR_eax_4a8a239a!WR_eax_4f351adc
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_d5336958!RR_ebp_12ff54!WR_edx_d5336958
+401072!shr edx, 0xb!RR_edx_d5336958!WR_edx_1aa66d
+401075!and edx, 0x3!RR_edx_1aa66d!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_d5336958!RR_ebp_12ff54!WR_esi_d5336958
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_d5336958!WR_esi_b3e12847
+401081!xor eax, esi!RR_eax_4f351adc_esi_b3e12847!WR_eax_fcd4329b
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_f76e5b8b!WR_edx_f76e5b8b
+401089!sub edx, eax!RR_eax_fcd4329b_edx_f76e5b8b!WR_edx_fa9a28f0
+40108b!mov dword ptr [0x403020], edx!RR_edx_fa9a28f0!WM_403020_4_fa9a28f0
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_d5336958!RR_ebp_12ff54!WR_eax_d5336958
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_d5336958_ebp_12ff54!WR_eax_36fbef9f
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_36fbef9f_ebp_12ff54!WM_12ff4c_4_36fbef9f
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_fa9a28f0!WR_ecx_fa9a28f0
+4010a0!shl ecx, 0x4!RR_ecx_fa9a28f0!WR_ecx_a9a28f00
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_fa9a28f0!WR_edx_fa9a28f0
+4010a9!shr edx, 0x5!RR_edx_fa9a28f0!WR_edx_7d4d147
+4010ac!xor ecx, edx!RR_ecx_a9a28f00_edx_7d4d147!WR_ecx_ae765e47
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_fa9a28f0!RR_ecx_ae765e47!WR_ecx_a9108737
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_36fbef9f!RR_ebp_12ff54!WR_eax_36fbef9f
+4010b7!and eax, 0x3!RR_eax_36fbef9f!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_36fbef9f!RR_ebp_12ff54!WR_esi_36fbef9f
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_36fbef9f!WR_esi_15a9ae8e
+4010c3!xor ecx, esi!RR_ecx_a9108737_esi_15a9ae8e!WR_ecx_bcb929b9
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_4aaf742!WR_eax_4aaf742
+4010ca!sub eax, ecx!RR_eax_4aaf742_ecx_bcb929b9!WR_eax_47f1cd89
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_47f1cd89!WM_40301c_4_47f1cd89
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_8!RR_ebp_12ff54!WR_ecx_8
+401044!add ecx, 0x1!RR_ecx_8!WR_ecx_9
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_9_ebp_12ff54!WM_12ff50_4_9
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_9!RR_ebp_12ff54!WR_edx_9
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_9_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_47f1cd89!WR_eax_47f1cd89
+40105b!shl eax, 0x4!RR_eax_47f1cd89!WR_eax_7f1cd890
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_47f1cd89!WR_ecx_47f1cd89
+401064!shr ecx, 0x5!RR_ecx_47f1cd89!WR_ecx_23f8e6c
+401067!xor eax, ecx!RR_eax_7f1cd890_ecx_23f8e6c!WR_eax_7d2356fc
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_47f1cd89!RR_eax_7d2356fc!WR_eax_c5152485
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_36fbef9f!RR_ebp_12ff54!WR_edx_36fbef9f
+401072!shr edx, 0xb!RR_edx_36fbef9f!WR_edx_6df7d
+401075!and edx, 0x3!RR_edx_6df7d!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_36fbef9f!RR_ebp_12ff54!WR_esi_36fbef9f
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_36fbef9f!WR_esi_15a9ae8e
+401081!xor eax, esi!RR_eax_c5152485_esi_15a9ae8e!WR_eax_d0bc8a0b
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_fa9a28f0!WR_edx_fa9a28f0
+401089!sub edx, eax!RR_eax_d0bc8a0b_edx_fa9a28f0!WR_edx_29dd9ee5
+40108b!mov dword ptr [0x403020], edx!RR_edx_29dd9ee5!WM_403020_4_29dd9ee5
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_36fbef9f!RR_ebp_12ff54!WR_eax_36fbef9f
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_36fbef9f_ebp_12ff54!WR_eax_98c475e6
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_98c475e6_ebp_12ff54!WM_12ff4c_4_98c475e6
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_29dd9ee5!WR_ecx_29dd9ee5
+4010a0!shl ecx, 0x4!RR_ecx_29dd9ee5!WR_ecx_9dd9ee50
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_29dd9ee5!WR_edx_29dd9ee5
+4010a9!shr edx, 0x5!RR_edx_29dd9ee5!WR_edx_14eecf7
+4010ac!xor ecx, edx!RR_ecx_9dd9ee50_edx_14eecf7!WR_ecx_9c9702a7
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_29dd9ee5!RR_ecx_9c9702a7!WR_ecx_c674a18c
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_98c475e6!RR_ebp_12ff54!WR_eax_98c475e6
+4010b7!and eax, 0x3!RR_eax_98c475e6!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_98c475e6!RR_ebp_12ff54!WR_esi_98c475e6
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_98c475e6!WR_esi_777234d5
+4010c3!xor ecx, esi!RR_ecx_c674a18c_esi_777234d5!WR_ecx_b1069559
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_47f1cd89!WR_eax_47f1cd89
+4010ca!sub eax, ecx!RR_eax_47f1cd89_ecx_b1069559!WR_eax_96eb3830
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_96eb3830!WM_40301c_4_96eb3830
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_9!RR_ebp_12ff54!WR_ecx_9
+401044!add ecx, 0x1!RR_ecx_9!WR_ecx_a
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_a_ebp_12ff54!WM_12ff50_4_a
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_a!RR_ebp_12ff54!WR_edx_a
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_a_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_96eb3830!WR_eax_96eb3830
+40105b!shl eax, 0x4!RR_eax_96eb3830!WR_eax_6eb38300
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_96eb3830!WR_ecx_96eb3830
+401064!shr ecx, 0x5!RR_ecx_96eb3830!WR_ecx_4b759c1
+401067!xor eax, ecx!RR_eax_6eb38300_ecx_4b759c1!WR_eax_6a04dac1
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_96eb3830!RR_eax_6a04dac1!WR_eax_f012f1
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_98c475e6!RR_ebp_12ff54!WR_edx_98c475e6
+401072!shr edx, 0xb!RR_edx_98c475e6!WR_edx_13188e
+401075!and edx, 0x3!RR_edx_13188e!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_98c475e6!RR_ebp_12ff54!WR_esi_98c475e6
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_98c475e6!WR_esi_777234d5
+401081!xor eax, esi!RR_eax_f012f1_esi_777234d5!WR_eax_77822624
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_29dd9ee5!WR_edx_29dd9ee5
+401089!sub edx, eax!RR_eax_77822624_edx_29dd9ee5!WR_edx_b25b78c1
+40108b!mov dword ptr [0x403020], edx!RR_edx_b25b78c1!WM_403020_4_b25b78c1
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_98c475e6!RR_ebp_12ff54!WR_eax_98c475e6
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_98c475e6_ebp_12ff54!WR_eax_fa8cfc2d
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_fa8cfc2d_ebp_12ff54!WM_12ff4c_4_fa8cfc2d
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_b25b78c1!WR_ecx_b25b78c1
+4010a0!shl ecx, 0x4!RR_ecx_b25b78c1!WR_ecx_25b78c10
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_b25b78c1!WR_edx_b25b78c1
+4010a9!shr edx, 0x5!RR_edx_b25b78c1!WR_edx_592dbc6
+4010ac!xor ecx, edx!RR_ecx_25b78c10_edx_592dbc6!WR_ecx_202557d6
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_b25b78c1!RR_ecx_202557d6!WR_ecx_d280d097
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_fa8cfc2d!RR_ebp_12ff54!WR_eax_fa8cfc2d
+4010b7!and eax, 0x3!RR_eax_fa8cfc2d!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_fa8cfc2d!RR_ebp_12ff54!WR_esi_fa8cfc2d
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_fa8cfc2d!WR_esi_d93abb1c
+4010c3!xor ecx, esi!RR_ecx_d280d097_esi_d93abb1c!WR_ecx_bba6b8b
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_96eb3830!WR_eax_96eb3830
+4010ca!sub eax, ecx!RR_eax_96eb3830_ecx_bba6b8b!WR_eax_8b30cca5
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_8b30cca5!WM_40301c_4_8b30cca5
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_a!RR_ebp_12ff54!WR_ecx_a
+401044!add ecx, 0x1!RR_ecx_a!WR_ecx_b
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_b_ebp_12ff54!WM_12ff50_4_b
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_b!RR_ebp_12ff54!WR_edx_b
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_b_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_8b30cca5!WR_eax_8b30cca5
+40105b!shl eax, 0x4!RR_eax_8b30cca5!WR_eax_b30cca50
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_8b30cca5!WR_ecx_8b30cca5
+401064!shr ecx, 0x5!RR_ecx_8b30cca5!WR_ecx_4598665
+401067!xor eax, ecx!RR_eax_b30cca50_ecx_4598665!WR_eax_b7554c35
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_8b30cca5!RR_eax_b7554c35!WR_eax_428618da
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_fa8cfc2d!RR_ebp_12ff54!WR_edx_fa8cfc2d
+401072!shr edx, 0xb!RR_edx_fa8cfc2d!WR_edx_1f519f
+401075!and edx, 0x3!RR_edx_1f519f!WR_edx_3
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_fa8cfc2d!RR_ebp_12ff54!WR_esi_fa8cfc2d
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff74_4_deadbeef!RR_ecx_12ff68_edx_3_esi_fa8cfc2d!WR_esi_d93abb1c
+401081!xor eax, esi!RR_eax_428618da_esi_d93abb1c!WR_eax_9bbca3c6
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_b25b78c1!WR_edx_b25b78c1
+401089!sub edx, eax!RR_eax_9bbca3c6_edx_b25b78c1!WR_edx_169ed4fb
+40108b!mov dword ptr [0x403020], edx!RR_edx_169ed4fb!WM_403020_4_169ed4fb
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_fa8cfc2d!RR_ebp_12ff54!WR_eax_fa8cfc2d
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_fa8cfc2d_ebp_12ff54!WR_eax_5c558274
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_5c558274_ebp_12ff54!WM_12ff4c_4_5c558274
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_169ed4fb!WR_ecx_169ed4fb
+4010a0!shl ecx, 0x4!RR_ecx_169ed4fb!WR_ecx_69ed4fb0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_169ed4fb!WR_edx_169ed4fb
+4010a9!shr edx, 0x5!RR_edx_169ed4fb!WR_edx_b4f6a7
+4010ac!xor ecx, edx!RR_ecx_69ed4fb0_edx_b4f6a7!WR_ecx_6959b917
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_169ed4fb!RR_ecx_6959b917!WR_ecx_7ff88e12
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_5c558274!RR_ebp_12ff54!WR_eax_5c558274
+4010b7!and eax, 0x3!RR_eax_5c558274!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_5c558274!RR_ebp_12ff54!WR_esi_5c558274
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_5c558274!WR_esi_3b034163
+4010c3!xor ecx, esi!RR_ecx_7ff88e12_esi_3b034163!WR_ecx_44fbcf71
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_8b30cca5!WR_eax_8b30cca5
+4010ca!sub eax, ecx!RR_eax_8b30cca5_ecx_44fbcf71!WR_eax_4634fd34
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_4634fd34!WM_40301c_4_4634fd34
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_b!RR_ebp_12ff54!WR_ecx_b
+401044!add ecx, 0x1!RR_ecx_b!WR_ecx_c
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_c_ebp_12ff54!WM_12ff50_4_c
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_c!RR_ebp_12ff54!WR_edx_c
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_c_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_4634fd34!WR_eax_4634fd34
+40105b!shl eax, 0x4!RR_eax_4634fd34!WR_eax_634fd340
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_4634fd34!WR_ecx_4634fd34
+401064!shr ecx, 0x5!RR_ecx_4634fd34!WR_ecx_231a7e9
+401067!xor eax, ecx!RR_eax_634fd340_ecx_231a7e9!WR_eax_617e74a9
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_4634fd34!RR_eax_617e74a9!WR_eax_a7b371dd
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_5c558274!RR_ebp_12ff54!WR_edx_5c558274
+401072!shr edx, 0xb!RR_edx_5c558274!WR_edx_b8ab0
+401075!and edx, 0x3!RR_edx_b8ab0!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_5c558274!RR_ebp_12ff54!WR_esi_5c558274
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_5c558274!WR_esi_3b034163
+401081!xor eax, esi!RR_eax_a7b371dd_esi_3b034163!WR_eax_9cb030be
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_169ed4fb!WR_edx_169ed4fb
+401089!sub edx, eax!RR_eax_9cb030be_edx_169ed4fb!WR_edx_79eea43d
+40108b!mov dword ptr [0x403020], edx!RR_edx_79eea43d!WM_403020_4_79eea43d
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_5c558274!RR_ebp_12ff54!WR_eax_5c558274
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_5c558274_ebp_12ff54!WR_eax_be1e08bb
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_be1e08bb_ebp_12ff54!WM_12ff4c_4_be1e08bb
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_79eea43d!WR_ecx_79eea43d
+4010a0!shl ecx, 0x4!RR_ecx_79eea43d!WR_ecx_9eea43d0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_79eea43d!WR_edx_79eea43d
+4010a9!shr edx, 0x5!RR_edx_79eea43d!WR_edx_3cf7521
+4010ac!xor ecx, edx!RR_ecx_9eea43d0_edx_3cf7521!WR_ecx_9d2536f1
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_79eea43d!RR_ecx_9d2536f1!WR_ecx_1713db2e
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_be1e08bb!RR_ebp_12ff54!WR_eax_be1e08bb
+4010b7!and eax, 0x3!RR_eax_be1e08bb!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_be1e08bb!RR_ebp_12ff54!WR_esi_be1e08bb
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_be1e08bb!WR_esi_9ccbc7aa
+4010c3!xor ecx, esi!RR_ecx_1713db2e_esi_9ccbc7aa!WR_ecx_8bd81c84
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_4634fd34!WR_eax_4634fd34
+4010ca!sub eax, ecx!RR_eax_4634fd34_ecx_8bd81c84!WR_eax_ba5ce0b0
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_ba5ce0b0!WM_40301c_4_ba5ce0b0
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_c!RR_ebp_12ff54!WR_ecx_c
+401044!add ecx, 0x1!RR_ecx_c!WR_ecx_d
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_d_ebp_12ff54!WM_12ff50_4_d
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_d!RR_ebp_12ff54!WR_edx_d
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_d_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_ba5ce0b0!WR_eax_ba5ce0b0
+40105b!shl eax, 0x4!RR_eax_ba5ce0b0!WR_eax_a5ce0b00
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_ba5ce0b0!WR_ecx_ba5ce0b0
+401064!shr ecx, 0x5!RR_ecx_ba5ce0b0!WR_ecx_5d2e705
+401067!xor eax, ecx!RR_eax_a5ce0b00_ecx_5d2e705!WR_eax_a01cec05
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_ba5ce0b0!RR_eax_a01cec05!WR_eax_5a79ccb5
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_be1e08bb!RR_ebp_12ff54!WR_edx_be1e08bb
+401072!shr edx, 0xb!RR_edx_be1e08bb!WR_edx_17c3c1
+401075!and edx, 0x3!RR_edx_17c3c1!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_be1e08bb!RR_ebp_12ff54!WR_esi_be1e08bb
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_be1e08bb!WR_esi_9ccbc7aa
+401081!xor eax, esi!RR_eax_5a79ccb5_esi_9ccbc7aa!WR_eax_c6b20b1f
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_79eea43d!WR_edx_79eea43d
+401089!sub edx, eax!RR_eax_c6b20b1f_edx_79eea43d!WR_edx_b33c991e
+40108b!mov dword ptr [0x403020], edx!RR_edx_b33c991e!WM_403020_4_b33c991e
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_be1e08bb!RR_ebp_12ff54!WR_eax_be1e08bb
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_be1e08bb_ebp_12ff54!WR_eax_1fe68f02
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_1fe68f02_ebp_12ff54!WM_12ff4c_4_1fe68f02
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_b33c991e!WR_ecx_b33c991e
+4010a0!shl ecx, 0x4!RR_ecx_b33c991e!WR_ecx_33c991e0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_b33c991e!WR_edx_b33c991e
+4010a9!shr edx, 0x5!RR_edx_b33c991e!WR_edx_599e4c8
+4010ac!xor ecx, edx!RR_ecx_33c991e0_edx_599e4c8!WR_ecx_36507528
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_b33c991e!RR_ecx_36507528!WR_ecx_e98d0e46
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_1fe68f02!RR_ebp_12ff54!WR_eax_1fe68f02
+4010b7!and eax, 0x3!RR_eax_1fe68f02!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_1fe68f02!RR_ebp_12ff54!WR_esi_1fe68f02
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_1fe68f02!WR_esi_fe944df1
+4010c3!xor ecx, esi!RR_ecx_e98d0e46_esi_fe944df1!WR_ecx_171943b7
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_ba5ce0b0!WR_eax_ba5ce0b0
+4010ca!sub eax, ecx!RR_eax_ba5ce0b0_ecx_171943b7!WR_eax_a3439cf9
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_a3439cf9!WM_40301c_4_a3439cf9
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_d!RR_ebp_12ff54!WR_ecx_d
+401044!add ecx, 0x1!RR_ecx_d!WR_ecx_e
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_e_ebp_12ff54!WM_12ff50_4_e
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_e!RR_ebp_12ff54!WR_edx_e
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_e_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_a3439cf9!WR_eax_a3439cf9
+40105b!shl eax, 0x4!RR_eax_a3439cf9!WR_eax_3439cf90
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_a3439cf9!WR_ecx_a3439cf9
+401064!shr ecx, 0x5!RR_ecx_a3439cf9!WR_ecx_51a1ce7
+401067!xor eax, ecx!RR_eax_3439cf90_ecx_51a1ce7!WR_eax_3123d377
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_a3439cf9!RR_eax_3123d377!WR_eax_d4677070
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_1fe68f02!RR_ebp_12ff54!WR_edx_1fe68f02
+401072!shr edx, 0xb!RR_edx_1fe68f02!WR_edx_3fcd1
+401075!and edx, 0x3!RR_edx_3fcd1!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_1fe68f02!RR_ebp_12ff54!WR_esi_1fe68f02
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_1fe68f02!WR_esi_fe944df1
+401081!xor eax, esi!RR_eax_d4677070_esi_fe944df1!WR_eax_2af33d81
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_b33c991e!WR_edx_b33c991e
+401089!sub edx, eax!RR_eax_2af33d81_edx_b33c991e!WR_edx_88495b9d
+40108b!mov dword ptr [0x403020], edx!RR_edx_88495b9d!WM_403020_4_88495b9d
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_1fe68f02!RR_ebp_12ff54!WR_eax_1fe68f02
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_1fe68f02_ebp_12ff54!WR_eax_81af1549
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_81af1549_ebp_12ff54!WM_12ff4c_4_81af1549
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_88495b9d!WR_ecx_88495b9d
+4010a0!shl ecx, 0x4!RR_ecx_88495b9d!WR_ecx_8495b9d0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_88495b9d!WR_edx_88495b9d
+4010a9!shr edx, 0x5!RR_edx_88495b9d!WR_edx_4424adc
+4010ac!xor ecx, edx!RR_ecx_8495b9d0_edx_4424adc!WR_ecx_80d7f30c
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_88495b9d!RR_ecx_80d7f30c!WR_ecx_9214ea9
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_81af1549!RR_ebp_12ff54!WR_eax_81af1549
+4010b7!and eax, 0x3!RR_eax_81af1549!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_81af1549!RR_ebp_12ff54!WR_esi_81af1549
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_81af1549!WR_esi_605cd438
+4010c3!xor ecx, esi!RR_ecx_9214ea9_esi_605cd438!WR_ecx_697d9a91
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_a3439cf9!WR_eax_a3439cf9
+4010ca!sub eax, ecx!RR_eax_a3439cf9_ecx_697d9a91!WR_eax_39c60268
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_39c60268!WM_40301c_4_39c60268
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_e!RR_ebp_12ff54!WR_ecx_e
+401044!add ecx, 0x1!RR_ecx_e!WR_ecx_f
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_f_ebp_12ff54!WM_12ff50_4_f
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_f!RR_ebp_12ff54!WR_edx_f
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_f_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_39c60268!WR_eax_39c60268
+40105b!shl eax, 0x4!RR_eax_39c60268!WR_eax_9c602680
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_39c60268!WR_ecx_39c60268
+401064!shr ecx, 0x5!RR_ecx_39c60268!WR_ecx_1ce3013
+401067!xor eax, ecx!RR_eax_9c602680_ecx_1ce3013!WR_eax_9dae1693
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_39c60268!RR_eax_9dae1693!WR_eax_d77418fb
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_81af1549!RR_ebp_12ff54!WR_edx_81af1549
+401072!shr edx, 0xb!RR_edx_81af1549!WR_edx_1035e2
+401075!and edx, 0x3!RR_edx_1035e2!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_81af1549!RR_ebp_12ff54!WR_esi_81af1549
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_81af1549!WR_esi_605cd438
+401081!xor eax, esi!RR_eax_d77418fb_esi_605cd438!WR_eax_b728ccc3
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_88495b9d!WR_edx_88495b9d
+401089!sub edx, eax!RR_eax_b728ccc3_edx_88495b9d!WR_edx_d1208eda
+40108b!mov dword ptr [0x403020], edx!RR_edx_d1208eda!WM_403020_4_d1208eda
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_81af1549!RR_ebp_12ff54!WR_eax_81af1549
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_81af1549_ebp_12ff54!WR_eax_e3779b90
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_e3779b90_ebp_12ff54!WM_12ff4c_4_e3779b90
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_d1208eda!WR_ecx_d1208eda
+4010a0!shl ecx, 0x4!RR_ecx_d1208eda!WR_ecx_1208eda0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_d1208eda!WR_edx_d1208eda
+4010a9!shr edx, 0x5!RR_edx_d1208eda!WR_edx_6890476
+4010ac!xor ecx, edx!RR_ecx_1208eda0_edx_6890476!WR_ecx_1481e9d6
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_d1208eda!RR_ecx_1481e9d6!WR_ecx_e5a278b0
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_e3779b90!RR_ebp_12ff54!WR_eax_e3779b90
+4010b7!and eax, 0x3!RR_eax_e3779b90!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_e3779b90!RR_ebp_12ff54!WR_esi_e3779b90
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_e3779b90!WR_esi_c2255a7f
+4010c3!xor ecx, esi!RR_ecx_e5a278b0_esi_c2255a7f!WR_ecx_278722cf
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_39c60268!WR_eax_39c60268
+4010ca!sub eax, ecx!RR_eax_39c60268_ecx_278722cf!WR_eax_123edf99
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_123edf99!WM_40301c_4_123edf99
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_f!RR_ebp_12ff54!WR_ecx_f
+401044!add ecx, 0x1!RR_ecx_f!WR_ecx_10
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_10_ebp_12ff54!WM_12ff50_4_10
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_10!RR_ebp_12ff54!WR_edx_10
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_10_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_123edf99!WR_eax_123edf99
+40105b!shl eax, 0x4!RR_eax_123edf99!WR_eax_23edf990
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_123edf99!WR_ecx_123edf99
+401064!shr ecx, 0x5!RR_ecx_123edf99!WR_ecx_91f6fc
+401067!xor eax, ecx!RR_eax_23edf990_ecx_91f6fc!WR_eax_237c0f6c
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_123edf99!RR_eax_237c0f6c!WR_eax_35baef05
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_e3779b90!RR_ebp_12ff54!WR_edx_e3779b90
+401072!shr edx, 0xb!RR_edx_e3779b90!WR_edx_1c6ef3
+401075!and edx, 0x3!RR_edx_1c6ef3!WR_edx_3
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_e3779b90!RR_ebp_12ff54!WR_esi_e3779b90
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff74_4_deadbeef!RR_ecx_12ff68_edx_3_esi_e3779b90!WR_esi_c2255a7f
+401081!xor eax, esi!RR_eax_35baef05_esi_c2255a7f!WR_eax_f79fb57a
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_d1208eda!WR_edx_d1208eda
+401089!sub edx, eax!RR_eax_f79fb57a_edx_d1208eda!WR_edx_d980d960
+40108b!mov dword ptr [0x403020], edx!RR_edx_d980d960!WM_403020_4_d980d960
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_e3779b90!RR_ebp_12ff54!WR_eax_e3779b90
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_e3779b90_ebp_12ff54!WR_eax_454021d7
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_454021d7_ebp_12ff54!WM_12ff4c_4_454021d7
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_d980d960!WR_ecx_d980d960
+4010a0!shl ecx, 0x4!RR_ecx_d980d960!WR_ecx_980d9600
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_d980d960!WR_edx_d980d960
+4010a9!shr edx, 0x5!RR_edx_d980d960!WR_edx_6cc06cb
+4010ac!xor ecx, edx!RR_ecx_980d9600_edx_6cc06cb!WR_ecx_9ec190cb
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_d980d960!RR_ecx_9ec190cb!WR_ecx_78426a2b
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_454021d7!RR_ebp_12ff54!WR_eax_454021d7
+4010b7!and eax, 0x3!RR_eax_454021d7!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_454021d7!RR_ebp_12ff54!WR_esi_454021d7
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_454021d7!WR_esi_23ede0c6
+4010c3!xor ecx, esi!RR_ecx_78426a2b_esi_23ede0c6!WR_ecx_5baf8aed
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_123edf99!WR_eax_123edf99
+4010ca!sub eax, ecx!RR_eax_123edf99_ecx_5baf8aed!WR_eax_b68f54ac
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_b68f54ac!WM_40301c_4_b68f54ac
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_10!RR_ebp_12ff54!WR_ecx_10
+401044!add ecx, 0x1!RR_ecx_10!WR_ecx_11
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_11_ebp_12ff54!WM_12ff50_4_11
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_11!RR_ebp_12ff54!WR_edx_11
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_11_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_b68f54ac!WR_eax_b68f54ac
+40105b!shl eax, 0x4!RR_eax_b68f54ac!WR_eax_68f54ac0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_b68f54ac!WR_ecx_b68f54ac
+401064!shr ecx, 0x5!RR_ecx_b68f54ac!WR_ecx_5b47aa5
+401067!xor eax, ecx!RR_eax_68f54ac0_ecx_5b47aa5!WR_eax_6d413065
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_b68f54ac!RR_eax_6d413065!WR_eax_23d08511
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_454021d7!RR_ebp_12ff54!WR_edx_454021d7
+401072!shr edx, 0xb!RR_edx_454021d7!WR_edx_8a804
+401075!and edx, 0x3!RR_edx_8a804!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_454021d7!RR_ebp_12ff54!WR_esi_454021d7
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_454021d7!WR_esi_23ede0c6
+401081!xor eax, esi!RR_eax_23d08511_esi_23ede0c6!WR_eax_3d65d7
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_d980d960!WR_edx_d980d960
+401089!sub edx, eax!RR_eax_3d65d7_edx_d980d960!WR_edx_d9437389
+40108b!mov dword ptr [0x403020], edx!RR_edx_d9437389!WM_403020_4_d9437389
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_454021d7!RR_ebp_12ff54!WR_eax_454021d7
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_454021d7_ebp_12ff54!WR_eax_a708a81e
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_a708a81e_ebp_12ff54!WM_12ff4c_4_a708a81e
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_d9437389!WR_ecx_d9437389
+4010a0!shl ecx, 0x4!RR_ecx_d9437389!WR_ecx_94373890
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_d9437389!WR_edx_d9437389
+4010a9!shr edx, 0x5!RR_edx_d9437389!WR_edx_6ca1b9c
+4010ac!xor ecx, edx!RR_ecx_94373890_edx_6ca1b9c!WR_ecx_92fd230c
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_d9437389!RR_ecx_92fd230c!WR_ecx_6c409695
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_a708a81e!RR_ebp_12ff54!WR_eax_a708a81e
+4010b7!and eax, 0x3!RR_eax_a708a81e!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_a708a81e!RR_ebp_12ff54!WR_esi_a708a81e
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_a708a81e!WR_esi_85b6670d
+4010c3!xor ecx, esi!RR_ecx_6c409695_esi_85b6670d!WR_ecx_e9f6f198
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_b68f54ac!WR_eax_b68f54ac
+4010ca!sub eax, ecx!RR_eax_b68f54ac_ecx_e9f6f198!WR_eax_cc986314
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_cc986314!WM_40301c_4_cc986314
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_11!RR_ebp_12ff54!WR_ecx_11
+401044!add ecx, 0x1!RR_ecx_11!WR_ecx_12
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_12_ebp_12ff54!WM_12ff50_4_12
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_12!RR_ebp_12ff54!WR_edx_12
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_12_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_cc986314!WR_eax_cc986314
+40105b!shl eax, 0x4!RR_eax_cc986314!WR_eax_c9863140
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_cc986314!WR_ecx_cc986314
+401064!shr ecx, 0x5!RR_ecx_cc986314!WR_ecx_664c318
+401067!xor eax, ecx!RR_eax_c9863140_ecx_664c318!WR_eax_cfe2f258
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_cc986314!RR_eax_cfe2f258!WR_eax_9c7b556c
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_a708a81e!RR_ebp_12ff54!WR_edx_a708a81e
+401072!shr edx, 0xb!RR_edx_a708a81e!WR_edx_14e115
+401075!and edx, 0x3!RR_edx_14e115!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_a708a81e!RR_ebp_12ff54!WR_esi_a708a81e
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_a708a81e!WR_esi_85b6670d
+401081!xor eax, esi!RR_eax_9c7b556c_esi_85b6670d!WR_eax_19cd3261
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_d9437389!WR_edx_d9437389
+401089!sub edx, eax!RR_eax_19cd3261_edx_d9437389!WR_edx_bf764128
+40108b!mov dword ptr [0x403020], edx!RR_edx_bf764128!WM_403020_4_bf764128
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_a708a81e!RR_ebp_12ff54!WR_eax_a708a81e
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_a708a81e_ebp_12ff54!WR_eax_8d12e65
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_8d12e65_ebp_12ff54!WM_12ff4c_4_8d12e65
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_bf764128!WR_ecx_bf764128
+4010a0!shl ecx, 0x4!RR_ecx_bf764128!WR_ecx_f7641280
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_bf764128!WR_edx_bf764128
+4010a9!shr edx, 0x5!RR_edx_bf764128!WR_edx_5fbb209
+4010ac!xor ecx, edx!RR_ecx_f7641280_edx_5fbb209!WR_ecx_f29fa089
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_bf764128!RR_ecx_f29fa089!WR_ecx_b215e1b1
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_8d12e65!RR_ebp_12ff54!WR_eax_8d12e65
+4010b7!and eax, 0x3!RR_eax_8d12e65!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_8d12e65!RR_ebp_12ff54!WR_esi_8d12e65
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_8d12e65!WR_esi_e77eed54
+4010c3!xor ecx, esi!RR_ecx_b215e1b1_esi_e77eed54!WR_ecx_556b0ce5
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_cc986314!WR_eax_cc986314
+4010ca!sub eax, ecx!RR_eax_cc986314_ecx_556b0ce5!WR_eax_772d562f
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_772d562f!WM_40301c_4_772d562f
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_12!RR_ebp_12ff54!WR_ecx_12
+401044!add ecx, 0x1!RR_ecx_12!WR_ecx_13
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_13_ebp_12ff54!WM_12ff50_4_13
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_13!RR_ebp_12ff54!WR_edx_13
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_13_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_772d562f!WR_eax_772d562f
+40105b!shl eax, 0x4!RR_eax_772d562f!WR_eax_72d562f0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_772d562f!WR_ecx_772d562f
+401064!shr ecx, 0x5!RR_ecx_772d562f!WR_ecx_3b96ab1
+401067!xor eax, ecx!RR_eax_72d562f0_ecx_3b96ab1!WR_eax_716c0841
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_772d562f!RR_eax_716c0841!WR_eax_e8995e70
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_8d12e65!RR_ebp_12ff54!WR_edx_8d12e65
+401072!shr edx, 0xb!RR_edx_8d12e65!WR_edx_11a25
+401075!and edx, 0x3!RR_edx_11a25!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_8d12e65!RR_ebp_12ff54!WR_esi_8d12e65
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_8d12e65!WR_esi_e77eed54
+401081!xor eax, esi!RR_eax_e8995e70_esi_e77eed54!WR_eax_fe7b324
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_bf764128!WR_edx_bf764128
+401089!sub edx, eax!RR_eax_fe7b324_edx_bf764128!WR_edx_af8e8e04
+40108b!mov dword ptr [0x403020], edx!RR_edx_af8e8e04!WM_403020_4_af8e8e04
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_8d12e65!RR_ebp_12ff54!WR_eax_8d12e65
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_8d12e65_ebp_12ff54!WR_eax_6a99b4ac
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_6a99b4ac_ebp_12ff54!WM_12ff4c_4_6a99b4ac
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_af8e8e04!WR_ecx_af8e8e04
+4010a0!shl ecx, 0x4!RR_ecx_af8e8e04!WR_ecx_f8e8e040
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_af8e8e04!WR_edx_af8e8e04
+4010a9!shr edx, 0x5!RR_edx_af8e8e04!WR_edx_57c7470
+4010ac!xor ecx, edx!RR_ecx_f8e8e040_edx_57c7470!WR_ecx_fd949430
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_af8e8e04!RR_ecx_fd949430!WR_ecx_ad232234
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_6a99b4ac!RR_ebp_12ff54!WR_eax_6a99b4ac
+4010b7!and eax, 0x3!RR_eax_6a99b4ac!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_6a99b4ac!RR_ebp_12ff54!WR_esi_6a99b4ac
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_6a99b4ac!WR_esi_4947739b
+4010c3!xor ecx, esi!RR_ecx_ad232234_esi_4947739b!WR_ecx_e46451af
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_772d562f!WR_eax_772d562f
+4010ca!sub eax, ecx!RR_eax_772d562f_ecx_e46451af!WR_eax_92c90480
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_92c90480!WM_40301c_4_92c90480
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_13!RR_ebp_12ff54!WR_ecx_13
+401044!add ecx, 0x1!RR_ecx_13!WR_ecx_14
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_14_ebp_12ff54!WM_12ff50_4_14
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_14!RR_ebp_12ff54!WR_edx_14
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_14_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_92c90480!WR_eax_92c90480
+40105b!shl eax, 0x4!RR_eax_92c90480!WR_eax_2c904800
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_92c90480!WR_ecx_92c90480
+401064!shr ecx, 0x5!RR_ecx_92c90480!WR_ecx_4964824
+401067!xor eax, ecx!RR_eax_2c904800_ecx_4964824!WR_eax_28060024
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_92c90480!RR_eax_28060024!WR_eax_bacf04a4
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_6a99b4ac!RR_ebp_12ff54!WR_edx_6a99b4ac
+401072!shr edx, 0xb!RR_edx_6a99b4ac!WR_edx_d5336
+401075!and edx, 0x3!RR_edx_d5336!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_6a99b4ac!RR_ebp_12ff54!WR_esi_6a99b4ac
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_6a99b4ac!WR_esi_4947739b
+401081!xor eax, esi!RR_eax_bacf04a4_esi_4947739b!WR_eax_f388773f
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_af8e8e04!WR_edx_af8e8e04
+401089!sub edx, eax!RR_eax_f388773f_edx_af8e8e04!WR_edx_bc0616c5
+40108b!mov dword ptr [0x403020], edx!RR_edx_bc0616c5!WM_403020_4_bc0616c5
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_6a99b4ac!RR_ebp_12ff54!WR_eax_6a99b4ac
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_6a99b4ac_ebp_12ff54!WR_eax_cc623af3
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_cc623af3_ebp_12ff54!WM_12ff4c_4_cc623af3
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_bc0616c5!WR_ecx_bc0616c5
+4010a0!shl ecx, 0x4!RR_ecx_bc0616c5!WR_ecx_c0616c50
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_bc0616c5!WR_edx_bc0616c5
+4010a9!shr edx, 0x5!RR_edx_bc0616c5!WR_edx_5e030b6
+4010ac!xor ecx, edx!RR_ecx_c0616c50_edx_5e030b6!WR_ecx_c5815ce6
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_bc0616c5!RR_ecx_c5815ce6!WR_ecx_818773ab
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_cc623af3!RR_ebp_12ff54!WR_eax_cc623af3
+4010b7!and eax, 0x3!RR_eax_cc623af3!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_cc623af3!RR_ebp_12ff54!WR_esi_cc623af3
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_cc623af3!WR_esi_ab0ff9e2
+4010c3!xor ecx, esi!RR_ecx_818773ab_esi_ab0ff9e2!WR_ecx_2a888a49
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_92c90480!WR_eax_92c90480
+4010ca!sub eax, ecx!RR_eax_92c90480_ecx_2a888a49!WR_eax_68407a37
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_68407a37!WM_40301c_4_68407a37
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_14!RR_ebp_12ff54!WR_ecx_14
+401044!add ecx, 0x1!RR_ecx_14!WR_ecx_15
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_15_ebp_12ff54!WM_12ff50_4_15
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_15!RR_ebp_12ff54!WR_edx_15
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_15_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_68407a37!WR_eax_68407a37
+40105b!shl eax, 0x4!RR_eax_68407a37!WR_eax_8407a370
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_68407a37!WR_ecx_68407a37
+401064!shr ecx, 0x5!RR_ecx_68407a37!WR_ecx_34203d1
+401067!xor eax, ecx!RR_eax_8407a370_ecx_34203d1!WR_eax_8745a0a1
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_68407a37!RR_eax_8745a0a1!WR_eax_ef861ad8
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_cc623af3!RR_ebp_12ff54!WR_edx_cc623af3
+401072!shr edx, 0xb!RR_edx_cc623af3!WR_edx_198c47
+401075!and edx, 0x3!RR_edx_198c47!WR_edx_3
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_cc623af3!RR_ebp_12ff54!WR_esi_cc623af3
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff74_4_deadbeef!RR_ecx_12ff68_edx_3_esi_cc623af3!WR_esi_ab0ff9e2
+401081!xor eax, esi!RR_eax_ef861ad8_esi_ab0ff9e2!WR_eax_4489e33a
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_bc0616c5!WR_edx_bc0616c5
+401089!sub edx, eax!RR_eax_4489e33a_edx_bc0616c5!WR_edx_777c338b
+40108b!mov dword ptr [0x403020], edx!RR_edx_777c338b!WM_403020_4_777c338b
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_cc623af3!RR_ebp_12ff54!WR_eax_cc623af3
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_cc623af3_ebp_12ff54!WR_eax_2e2ac13a
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_2e2ac13a_ebp_12ff54!WM_12ff4c_4_2e2ac13a
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_777c338b!WR_ecx_777c338b
+4010a0!shl ecx, 0x4!RR_ecx_777c338b!WR_ecx_77c338b0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_777c338b!WR_edx_777c338b
+4010a9!shr edx, 0x5!RR_edx_777c338b!WR_edx_3bbe19c
+4010ac!xor ecx, edx!RR_ecx_77c338b0_edx_3bbe19c!WR_ecx_7478d92c
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_777c338b!RR_ecx_7478d92c!WR_ecx_ebf50cb7
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_2e2ac13a!RR_ebp_12ff54!WR_eax_2e2ac13a
+4010b7!and eax, 0x3!RR_eax_2e2ac13a!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_2e2ac13a!RR_ebp_12ff54!WR_esi_2e2ac13a
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_2e2ac13a!WR_esi_cd88029
+4010c3!xor ecx, esi!RR_ecx_ebf50cb7_esi_cd88029!WR_ecx_e72d8c9e
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_68407a37!WR_eax_68407a37
+4010ca!sub eax, ecx!RR_eax_68407a37_ecx_e72d8c9e!WR_eax_8112ed99
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_8112ed99!WM_40301c_4_8112ed99
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_15!RR_ebp_12ff54!WR_ecx_15
+401044!add ecx, 0x1!RR_ecx_15!WR_ecx_16
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_16_ebp_12ff54!WM_12ff50_4_16
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_16!RR_ebp_12ff54!WR_edx_16
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_16_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_8112ed99!WR_eax_8112ed99
+40105b!shl eax, 0x4!RR_eax_8112ed99!WR_eax_112ed990
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_8112ed99!WR_ecx_8112ed99
+401064!shr ecx, 0x5!RR_ecx_8112ed99!WR_ecx_408976c
+401067!xor eax, ecx!RR_eax_112ed990_ecx_408976c!WR_eax_15264efc
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_8112ed99!RR_eax_15264efc!WR_eax_96393c95
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_2e2ac13a!RR_ebp_12ff54!WR_edx_2e2ac13a
+401072!shr edx, 0xb!RR_edx_2e2ac13a!WR_edx_5c558
+401075!and edx, 0x3!RR_edx_5c558!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_2e2ac13a!RR_ebp_12ff54!WR_esi_2e2ac13a
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_2e2ac13a!WR_esi_cd88029
+401081!xor eax, esi!RR_eax_96393c95_esi_cd88029!WR_eax_9ae1bcbc
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_777c338b!WR_edx_777c338b
+401089!sub edx, eax!RR_eax_9ae1bcbc_edx_777c338b!WR_edx_dc9a76cf
+40108b!mov dword ptr [0x403020], edx!RR_edx_dc9a76cf!WM_403020_4_dc9a76cf
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_2e2ac13a!RR_ebp_12ff54!WR_eax_2e2ac13a
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_2e2ac13a_ebp_12ff54!WR_eax_8ff34781
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_8ff34781_ebp_12ff54!WM_12ff4c_4_8ff34781
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_dc9a76cf!WR_ecx_dc9a76cf
+4010a0!shl ecx, 0x4!RR_ecx_dc9a76cf!WR_ecx_c9a76cf0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_dc9a76cf!WR_edx_dc9a76cf
+4010a9!shr edx, 0x5!RR_edx_dc9a76cf!WR_edx_6e4d3b6
+4010ac!xor ecx, edx!RR_ecx_c9a76cf0_edx_6e4d3b6!WR_ecx_cf43bf46
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_dc9a76cf!RR_ecx_cf43bf46!WR_ecx_abde3615
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_8ff34781!RR_ebp_12ff54!WR_eax_8ff34781
+4010b7!and eax, 0x3!RR_eax_8ff34781!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_8ff34781!RR_ebp_12ff54!WR_esi_8ff34781
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_8ff34781!WR_esi_6ea10670
+4010c3!xor ecx, esi!RR_ecx_abde3615_esi_6ea10670!WR_ecx_c57f3065
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_8112ed99!WR_eax_8112ed99
+4010ca!sub eax, ecx!RR_eax_8112ed99_ecx_c57f3065!WR_eax_bb93bd34
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_bb93bd34!WM_40301c_4_bb93bd34
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_16!RR_ebp_12ff54!WR_ecx_16
+401044!add ecx, 0x1!RR_ecx_16!WR_ecx_17
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_17_ebp_12ff54!WM_12ff50_4_17
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_17!RR_ebp_12ff54!WR_edx_17
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_17_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_bb93bd34!WR_eax_bb93bd34
+40105b!shl eax, 0x4!RR_eax_bb93bd34!WR_eax_b93bd340
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_bb93bd34!WR_ecx_bb93bd34
+401064!shr ecx, 0x5!RR_ecx_bb93bd34!WR_ecx_5dc9de9
+401067!xor eax, ecx!RR_eax_b93bd340_ecx_5dc9de9!WR_eax_bce74ea9
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_bb93bd34!RR_eax_bce74ea9!WR_eax_787b0bdd
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_8ff34781!RR_ebp_12ff54!WR_edx_8ff34781
+401072!shr edx, 0xb!RR_edx_8ff34781!WR_edx_11fe68
+401075!and edx, 0x3!RR_edx_11fe68!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_8ff34781!RR_ebp_12ff54!WR_esi_8ff34781
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_8ff34781!WR_esi_6ea10670
+401081!xor eax, esi!RR_eax_787b0bdd_esi_6ea10670!WR_eax_16da0dad
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_dc9a76cf!WR_edx_dc9a76cf
+401089!sub edx, eax!RR_eax_16da0dad_edx_dc9a76cf!WR_edx_c5c06922
+40108b!mov dword ptr [0x403020], edx!RR_edx_c5c06922!WM_403020_4_c5c06922
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_8ff34781!RR_ebp_12ff54!WR_eax_8ff34781
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_8ff34781_ebp_12ff54!WR_eax_f1bbcdc8
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_f1bbcdc8_ebp_12ff54!WM_12ff4c_4_f1bbcdc8
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_c5c06922!WR_ecx_c5c06922
+4010a0!shl ecx, 0x4!RR_ecx_c5c06922!WR_ecx_5c069220
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_c5c06922!WR_edx_c5c06922
+4010a9!shr edx, 0x5!RR_edx_c5c06922!WR_edx_62e0349
+4010ac!xor ecx, edx!RR_ecx_5c069220_edx_62e0349!WR_ecx_5a289169
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_c5c06922!RR_ecx_5a289169!WR_ecx_1fe8fa8b
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_f1bbcdc8!RR_ebp_12ff54!WR_eax_f1bbcdc8
+4010b7!and eax, 0x3!RR_eax_f1bbcdc8!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_f1bbcdc8!RR_ebp_12ff54!WR_esi_f1bbcdc8
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_f1bbcdc8!WR_esi_d0698cb7
+4010c3!xor ecx, esi!RR_ecx_1fe8fa8b_esi_d0698cb7!WR_ecx_cf81763c
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_bb93bd34!WR_eax_bb93bd34
+4010ca!sub eax, ecx!RR_eax_bb93bd34_ecx_cf81763c!WR_eax_ec1246f8
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_ec1246f8!WM_40301c_4_ec1246f8
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_17!RR_ebp_12ff54!WR_ecx_17
+401044!add ecx, 0x1!RR_ecx_17!WR_ecx_18
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_18_ebp_12ff54!WM_12ff50_4_18
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_18!RR_ebp_12ff54!WR_edx_18
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_18_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_ec1246f8!WR_eax_ec1246f8
+40105b!shl eax, 0x4!RR_eax_ec1246f8!WR_eax_c1246f80
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_ec1246f8!WR_ecx_ec1246f8
+401064!shr ecx, 0x5!RR_ecx_ec1246f8!WR_ecx_7609237
+401067!xor eax, ecx!RR_eax_c1246f80_ecx_7609237!WR_eax_c644fdb7
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_ec1246f8!RR_eax_c644fdb7!WR_eax_b25744af
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_f1bbcdc8!RR_ebp_12ff54!WR_edx_f1bbcdc8
+401072!shr edx, 0xb!RR_edx_f1bbcdc8!WR_edx_1e3779
+401075!and edx, 0x3!RR_edx_1e3779!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_f1bbcdc8!RR_ebp_12ff54!WR_esi_f1bbcdc8
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_f1bbcdc8!WR_esi_d0698cb7
+401081!xor eax, esi!RR_eax_b25744af_esi_d0698cb7!WR_eax_623ec818
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_c5c06922!WR_edx_c5c06922
+401089!sub edx, eax!RR_eax_623ec818_edx_c5c06922!WR_edx_6381a10a
+40108b!mov dword ptr [0x403020], edx!RR_edx_6381a10a!WM_403020_4_6381a10a
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_f1bbcdc8!RR_ebp_12ff54!WR_eax_f1bbcdc8
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_f1bbcdc8_ebp_12ff54!WR_eax_5384540f
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_5384540f_ebp_12ff54!WM_12ff4c_4_5384540f
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_6381a10a!WR_ecx_6381a10a
+4010a0!shl ecx, 0x4!RR_ecx_6381a10a!WR_ecx_381a10a0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_6381a10a!WR_edx_6381a10a
+4010a9!shr edx, 0x5!RR_edx_6381a10a!WR_edx_31c0d08
+4010ac!xor ecx, edx!RR_ecx_381a10a0_edx_31c0d08!WR_ecx_3b061da8
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_6381a10a!RR_ecx_3b061da8!WR_ecx_9e87beb2
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_5384540f!RR_ebp_12ff54!WR_eax_5384540f
+4010b7!and eax, 0x3!RR_eax_5384540f!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_5384540f!RR_ebp_12ff54!WR_esi_5384540f
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_5384540f!WR_esi_323212fe
+4010c3!xor ecx, esi!RR_ecx_9e87beb2_esi_323212fe!WR_ecx_acb5ac4c
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_ec1246f8!WR_eax_ec1246f8
+4010ca!sub eax, ecx!RR_eax_ec1246f8_ecx_acb5ac4c!WR_eax_3f5c9aac
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_3f5c9aac!WM_40301c_4_3f5c9aac
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_18!RR_ebp_12ff54!WR_ecx_18
+401044!add ecx, 0x1!RR_ecx_18!WR_ecx_19
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_19_ebp_12ff54!WM_12ff50_4_19
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_19!RR_ebp_12ff54!WR_edx_19
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_19_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_3f5c9aac!WR_eax_3f5c9aac
+40105b!shl eax, 0x4!RR_eax_3f5c9aac!WR_eax_f5c9aac0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_3f5c9aac!WR_ecx_3f5c9aac
+401064!shr ecx, 0x5!RR_ecx_3f5c9aac!WR_ecx_1fae4d5
+401067!xor eax, ecx!RR_eax_f5c9aac0_ecx_1fae4d5!WR_eax_f4334e15
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_3f5c9aac!RR_eax_f4334e15!WR_eax_338fe8c1
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_5384540f!RR_ebp_12ff54!WR_edx_5384540f
+401072!shr edx, 0xb!RR_edx_5384540f!WR_edx_a708a
+401075!and edx, 0x3!RR_edx_a708a!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_5384540f!RR_ebp_12ff54!WR_esi_5384540f
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_5384540f!WR_esi_323212fe
+401081!xor eax, esi!RR_eax_338fe8c1_esi_323212fe!WR_eax_1bdfa3f
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_6381a10a!WR_edx_6381a10a
+401089!sub edx, eax!RR_eax_1bdfa3f_edx_6381a10a!WR_edx_61c3a6cb
+40108b!mov dword ptr [0x403020], edx!RR_edx_61c3a6cb!WM_403020_4_61c3a6cb
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_5384540f!RR_ebp_12ff54!WR_eax_5384540f
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_5384540f_ebp_12ff54!WR_eax_b54cda56
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_b54cda56_ebp_12ff54!WM_12ff4c_4_b54cda56
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_61c3a6cb!WR_ecx_61c3a6cb
+4010a0!shl ecx, 0x4!RR_ecx_61c3a6cb!WR_ecx_1c3a6cb0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_61c3a6cb!WR_edx_61c3a6cb
+4010a9!shr edx, 0x5!RR_edx_61c3a6cb!WR_edx_30e1d36
+4010ac!xor ecx, edx!RR_ecx_1c3a6cb0_edx_30e1d36!WR_ecx_1f347186
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_61c3a6cb!RR_ecx_1f347186!WR_ecx_80f81851
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_b54cda56!RR_ebp_12ff54!WR_eax_b54cda56
+4010b7!and eax, 0x3!RR_eax_b54cda56!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_b54cda56!RR_ebp_12ff54!WR_esi_b54cda56
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_b54cda56!WR_esi_93fa9945
+4010c3!xor ecx, esi!RR_ecx_80f81851_esi_93fa9945!WR_ecx_13028114
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_3f5c9aac!WR_eax_3f5c9aac
+4010ca!sub eax, ecx!RR_eax_3f5c9aac_ecx_13028114!WR_eax_2c5a1998
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_2c5a1998!WM_40301c_4_2c5a1998
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_19!RR_ebp_12ff54!WR_ecx_19
+401044!add ecx, 0x1!RR_ecx_19!WR_ecx_1a
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_1a_ebp_12ff54!WM_12ff50_4_1a
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_1a!RR_ebp_12ff54!WR_edx_1a
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_1a_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_2c5a1998!WR_eax_2c5a1998
+40105b!shl eax, 0x4!RR_eax_2c5a1998!WR_eax_c5a19980
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_2c5a1998!WR_ecx_2c5a1998
+401064!shr ecx, 0x5!RR_ecx_2c5a1998!WR_ecx_162d0cc
+401067!xor eax, ecx!RR_eax_c5a19980_ecx_162d0cc!WR_eax_c4c3494c
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_2c5a1998!RR_eax_c4c3494c!WR_eax_f11d62e4
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_b54cda56!RR_ebp_12ff54!WR_edx_b54cda56
+401072!shr edx, 0xb!RR_edx_b54cda56!WR_edx_16a99b
+401075!and edx, 0x3!RR_edx_16a99b!WR_edx_3
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_b54cda56!RR_ebp_12ff54!WR_esi_b54cda56
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff74_4_deadbeef!RR_ecx_12ff68_edx_3_esi_b54cda56!WR_esi_93fa9945
+401081!xor eax, esi!RR_eax_f11d62e4_esi_93fa9945!WR_eax_62e7fba1
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_61c3a6cb!WR_edx_61c3a6cb
+401089!sub edx, eax!RR_eax_62e7fba1_edx_61c3a6cb!WR_edx_fedbab2a
+40108b!mov dword ptr [0x403020], edx!RR_edx_fedbab2a!WM_403020_4_fedbab2a
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_b54cda56!RR_ebp_12ff54!WR_eax_b54cda56
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_b54cda56_ebp_12ff54!WR_eax_1715609d
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_1715609d_ebp_12ff54!WM_12ff4c_4_1715609d
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_fedbab2a!WR_ecx_fedbab2a
+4010a0!shl ecx, 0x4!RR_ecx_fedbab2a!WR_ecx_edbab2a0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_fedbab2a!WR_edx_fedbab2a
+4010a9!shr edx, 0x5!RR_edx_fedbab2a!WR_edx_7f6dd59
+4010ac!xor ecx, edx!RR_ecx_edbab2a0_edx_7f6dd59!WR_ecx_ea4c6ff9
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_fedbab2a!RR_ecx_ea4c6ff9!WR_ecx_e9281b23
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_1715609d!RR_ebp_12ff54!WR_eax_1715609d
+4010b7!and eax, 0x3!RR_eax_1715609d!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_1715609d!RR_ebp_12ff54!WR_esi_1715609d
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_1715609d!WR_esi_f5c31f8c
+4010c3!xor ecx, esi!RR_ecx_e9281b23_esi_f5c31f8c!WR_ecx_1ceb04af
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_2c5a1998!WR_eax_2c5a1998
+4010ca!sub eax, ecx!RR_eax_2c5a1998_ecx_1ceb04af!WR_eax_f6f14e9
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_f6f14e9!WM_40301c_4_f6f14e9
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_1a!RR_ebp_12ff54!WR_ecx_1a
+401044!add ecx, 0x1!RR_ecx_1a!WR_ecx_1b
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_1b_ebp_12ff54!WM_12ff50_4_1b
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_1b!RR_ebp_12ff54!WR_edx_1b
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_1b_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_f6f14e9!WR_eax_f6f14e9
+40105b!shl eax, 0x4!RR_eax_f6f14e9!WR_eax_f6f14e90
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_f6f14e9!WR_ecx_f6f14e9
+401064!shr ecx, 0x5!RR_ecx_f6f14e9!WR_ecx_7b78a7
+401067!xor eax, ecx!RR_eax_f6f14e90_ecx_7b78a7!WR_eax_f68a3637
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_f6f14e9!RR_eax_f68a3637!WR_eax_5f94b20
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_1715609d!RR_ebp_12ff54!WR_edx_1715609d
+401072!shr edx, 0xb!RR_edx_1715609d!WR_edx_2e2ac
+401075!and edx, 0x3!RR_edx_2e2ac!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_1715609d!RR_ebp_12ff54!WR_esi_1715609d
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_1715609d!WR_esi_f5c31f8c
+401081!xor eax, esi!RR_eax_5f94b20_esi_f5c31f8c!WR_eax_f03a54ac
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_fedbab2a!WR_edx_fedbab2a
+401089!sub edx, eax!RR_eax_f03a54ac_edx_fedbab2a!WR_edx_ea1567e
+40108b!mov dword ptr [0x403020], edx!RR_edx_ea1567e!WM_403020_4_ea1567e
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_1715609d!RR_ebp_12ff54!WR_eax_1715609d
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_1715609d_ebp_12ff54!WR_eax_78dde6e4
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_78dde6e4_ebp_12ff54!WM_12ff4c_4_78dde6e4
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_ea1567e!WR_ecx_ea1567e
+4010a0!shl ecx, 0x4!RR_ecx_ea1567e!WR_ecx_ea1567e0
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_ea1567e!WR_edx_ea1567e
+4010a9!shr edx, 0x5!RR_edx_ea1567e!WR_edx_750ab3
+4010ac!xor ecx, edx!RR_ecx_ea1567e0_edx_750ab3!WR_ecx_ea606d53
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_ea1567e!RR_ecx_ea606d53!WR_ecx_f901c3d1
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_78dde6e4!RR_ebp_12ff54!WR_eax_78dde6e4
+4010b7!and eax, 0x3!RR_eax_78dde6e4!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_78dde6e4!RR_ebp_12ff54!WR_esi_78dde6e4
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_78dde6e4!WR_esi_578ba5d3
+4010c3!xor ecx, esi!RR_ecx_f901c3d1_esi_578ba5d3!WR_ecx_ae8a6602
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_f6f14e9!WR_eax_f6f14e9
+4010ca!sub eax, ecx!RR_eax_f6f14e9_ecx_ae8a6602!WR_eax_60e4aee7
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_60e4aee7!WM_40301c_4_60e4aee7
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_1b!RR_ebp_12ff54!WR_ecx_1b
+401044!add ecx, 0x1!RR_ecx_1b!WR_ecx_1c
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_1c_ebp_12ff54!WM_12ff50_4_1c
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_1c!RR_ebp_12ff54!WR_edx_1c
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_1c_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_60e4aee7!WR_eax_60e4aee7
+40105b!shl eax, 0x4!RR_eax_60e4aee7!WR_eax_e4aee70
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_60e4aee7!WR_ecx_60e4aee7
+401064!shr ecx, 0x5!RR_ecx_60e4aee7!WR_ecx_3072577
+401067!xor eax, ecx!RR_eax_e4aee70_ecx_3072577!WR_eax_d4dcb07
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_60e4aee7!RR_eax_d4dcb07!WR_eax_6e3279ee
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_78dde6e4!RR_ebp_12ff54!WR_edx_78dde6e4
+401072!shr edx, 0xb!RR_edx_78dde6e4!WR_edx_f1bbc
+401075!and edx, 0x3!RR_edx_f1bbc!WR_edx_0
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_78dde6e4!RR_ebp_12ff54!WR_esi_78dde6e4
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff68_4_deadbeef!RR_ecx_12ff68_edx_0_esi_78dde6e4!WR_esi_578ba5d3
+401081!xor eax, esi!RR_eax_6e3279ee_esi_578ba5d3!WR_eax_39b9dc3d
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_ea1567e!WR_edx_ea1567e
+401089!sub edx, eax!RR_eax_39b9dc3d_edx_ea1567e!WR_edx_d4e77a41
+40108b!mov dword ptr [0x403020], edx!RR_edx_d4e77a41!WM_403020_4_d4e77a41
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_78dde6e4!RR_ebp_12ff54!WR_eax_78dde6e4
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_78dde6e4_ebp_12ff54!WR_eax_daa66d2b
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_daa66d2b_ebp_12ff54!WM_12ff4c_4_daa66d2b
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_d4e77a41!WR_ecx_d4e77a41
+4010a0!shl ecx, 0x4!RR_ecx_d4e77a41!WR_ecx_4e77a410
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_d4e77a41!WR_edx_d4e77a41
+4010a9!shr edx, 0x5!RR_edx_d4e77a41!WR_edx_6a73bd2
+4010ac!xor ecx, edx!RR_ecx_4e77a410_edx_6a73bd2!WR_ecx_48d09fc2
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_d4e77a41!RR_ecx_48d09fc2!WR_ecx_1db81a03
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_daa66d2b!RR_ebp_12ff54!WR_eax_daa66d2b
+4010b7!and eax, 0x3!RR_eax_daa66d2b!WR_eax_3
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_daa66d2b!RR_ebp_12ff54!WR_esi_daa66d2b
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff74_4_deadbeef!RR_eax_3_edx_12ff68_esi_daa66d2b!WR_esi_b9542c1a
+4010c3!xor ecx, esi!RR_ecx_1db81a03_esi_b9542c1a!WR_ecx_a4ec3619
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_60e4aee7!WR_eax_60e4aee7
+4010ca!sub eax, ecx!RR_eax_60e4aee7_ecx_a4ec3619!WR_eax_bbf878ce
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_bbf878ce!WM_40301c_4_bbf878ce
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_1c!RR_ebp_12ff54!WR_ecx_1c
+401044!add ecx, 0x1!RR_ecx_1c!WR_ecx_1d
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_1d_ebp_12ff54!WM_12ff50_4_1d
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_1d!RR_ebp_12ff54!WR_edx_1d
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_1d_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_bbf878ce!WR_eax_bbf878ce
+40105b!shl eax, 0x4!RR_eax_bbf878ce!WR_eax_bf878ce0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_bbf878ce!WR_ecx_bbf878ce
+401064!shr ecx, 0x5!RR_ecx_bbf878ce!WR_ecx_5dfc3c6
+401067!xor eax, ecx!RR_eax_bf878ce0_ecx_5dfc3c6!WR_eax_ba584f26
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_bbf878ce!RR_eax_ba584f26!WR_eax_7650c7f4
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_daa66d2b!RR_ebp_12ff54!WR_edx_daa66d2b
+401072!shr edx, 0xb!RR_edx_daa66d2b!WR_edx_1b54cd
+401075!and edx, 0x3!RR_edx_1b54cd!WR_edx_1
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_daa66d2b!RR_ebp_12ff54!WR_esi_daa66d2b
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff6c_4_deadbeef!RR_ecx_12ff68_edx_1_esi_daa66d2b!WR_esi_b9542c1a
+401081!xor eax, esi!RR_eax_7650c7f4_esi_b9542c1a!WR_eax_cf04ebee
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_d4e77a41!WR_edx_d4e77a41
+401089!sub edx, eax!RR_eax_cf04ebee_edx_d4e77a41!WR_edx_5e28e53
+40108b!mov dword ptr [0x403020], edx!RR_edx_5e28e53!WM_403020_4_5e28e53
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_daa66d2b!RR_ebp_12ff54!WR_eax_daa66d2b
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_daa66d2b_ebp_12ff54!WR_eax_3c6ef372
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_3c6ef372_ebp_12ff54!WM_12ff4c_4_3c6ef372
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_5e28e53!WR_ecx_5e28e53
+4010a0!shl ecx, 0x4!RR_ecx_5e28e53!WR_ecx_5e28e530
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_5e28e53!WR_edx_5e28e53
+4010a9!shr edx, 0x5!RR_edx_5e28e53!WR_edx_2f1472
+4010ac!xor ecx, edx!RR_ecx_5e28e530_edx_2f1472!WR_ecx_5e07f142
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_5e28e53!RR_ecx_5e07f142!WR_ecx_63ea7f95
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_3c6ef372!RR_ebp_12ff54!WR_eax_3c6ef372
+4010b7!and eax, 0x3!RR_eax_3c6ef372!WR_eax_2
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_3c6ef372!RR_ebp_12ff54!WR_esi_3c6ef372
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff70_4_deadbeef!RR_eax_2_edx_12ff68_esi_3c6ef372!WR_esi_1b1cb261
+4010c3!xor ecx, esi!RR_ecx_63ea7f95_esi_1b1cb261!WR_ecx_78f6cdf4
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_bbf878ce!WR_eax_bbf878ce
+4010ca!sub eax, ecx!RR_eax_bbf878ce_ecx_78f6cdf4!WR_eax_4301aada
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_4301aada!WM_40301c_4_4301aada
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_1d!RR_ebp_12ff54!WR_ecx_1d
+401044!add ecx, 0x1!RR_ecx_1d!WR_ecx_1e
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_1e_ebp_12ff54!WM_12ff50_4_1e
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_1e!RR_ebp_12ff54!WR_edx_1e
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_1e_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_4301aada!WR_eax_4301aada
+40105b!shl eax, 0x4!RR_eax_4301aada!WR_eax_301aada0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_4301aada!WR_ecx_4301aada
+401064!shr ecx, 0x5!RR_ecx_4301aada!WR_ecx_2180d56
+401067!xor eax, ecx!RR_eax_301aada0_ecx_2180d56!WR_eax_3202a0f6
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_4301aada!RR_eax_3202a0f6!WR_eax_75044bd0
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_3c6ef372!RR_ebp_12ff54!WR_edx_3c6ef372
+401072!shr edx, 0xb!RR_edx_3c6ef372!WR_edx_78dde
+401075!and edx, 0x3!RR_edx_78dde!WR_edx_2
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_3c6ef372!RR_ebp_12ff54!WR_esi_3c6ef372
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff70_4_deadbeef!RR_ecx_12ff68_edx_2_esi_3c6ef372!WR_esi_1b1cb261
+401081!xor eax, esi!RR_eax_75044bd0_esi_1b1cb261!WR_eax_6e18f9b1
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_5e28e53!WR_edx_5e28e53
+401089!sub edx, eax!RR_eax_6e18f9b1_edx_5e28e53!WR_edx_97c994a2
+40108b!mov dword ptr [0x403020], edx!RR_edx_97c994a2!WM_403020_4_97c994a2
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_3c6ef372!RR_ebp_12ff54!WR_eax_3c6ef372
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_3c6ef372_ebp_12ff54!WR_eax_9e3779b9
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_9e3779b9_ebp_12ff54!WM_12ff4c_4_9e3779b9
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_97c994a2!WR_ecx_97c994a2
+4010a0!shl ecx, 0x4!RR_ecx_97c994a2!WR_ecx_7c994a20
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_97c994a2!WR_edx_97c994a2
+4010a9!shr edx, 0x5!RR_edx_97c994a2!WR_edx_4be4ca5
+4010ac!xor ecx, edx!RR_ecx_7c994a20_edx_4be4ca5!WR_ecx_78270685
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_97c994a2!RR_ecx_78270685!WR_ecx_ff09b27
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_9e3779b9!RR_ebp_12ff54!WR_eax_9e3779b9
+4010b7!and eax, 0x3!RR_eax_9e3779b9!WR_eax_1
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_9e3779b9!RR_ebp_12ff54!WR_esi_9e3779b9
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff6c_4_deadbeef!RR_eax_1_edx_12ff68_esi_9e3779b9!WR_esi_7ce538a8
+4010c3!xor ecx, esi!RR_ecx_ff09b27_esi_7ce538a8!WR_ecx_7315a38f
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_4301aada!WR_eax_4301aada
+4010ca!sub eax, ecx!RR_eax_4301aada_ecx_7315a38f!WR_eax_cfec074b
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_cfec074b!WM_40301c_4_cfec074b
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_1e!RR_ebp_12ff54!WR_ecx_1e
+401044!add ecx, 0x1!RR_ecx_1e!WR_ecx_1f
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_1f_ebp_12ff54!WM_12ff50_4_1f
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_1f!RR_ebp_12ff54!WR_edx_1f
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_1f_ebp_12ff54
+401050!jnb 0x4010d6
+401056!mov eax, dword ptr [0x40301c]!RM_40301c_4_cfec074b!WR_eax_cfec074b
+40105b!shl eax, 0x4!RR_eax_cfec074b!WR_eax_fec074b0
+40105e!mov ecx, dword ptr [0x40301c]!RM_40301c_4_cfec074b!WR_ecx_cfec074b
+401064!shr ecx, 0x5!RR_ecx_cfec074b!WR_ecx_67f603a
+401067!xor eax, ecx!RR_eax_fec074b0_ecx_67f603a!WR_eax_f8bf148a
+401069!add eax, dword ptr [0x40301c]!RM_40301c_4_cfec074b!RR_eax_f8bf148a!WR_eax_c8ab1bd5
+40106f!mov edx, dword ptr [ebp-0x8]!RM_12ff4c_4_9e3779b9!RR_ebp_12ff54!WR_edx_9e3779b9
+401072!shr edx, 0xb!RR_edx_9e3779b9!WR_edx_13c6ef
+401075!and edx, 0x3!RR_edx_13c6ef!WR_edx_3
+401078!mov ecx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_ecx_12ff68
+40107b!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_9e3779b9!RR_ebp_12ff54!WR_esi_9e3779b9
+40107e!add esi, dword ptr [ecx+edx*4]!RM_12ff74_4_deadbeef!RR_ecx_12ff68_edx_3_esi_9e3779b9!WR_esi_7ce538a8
+401081!xor eax, esi!RR_eax_c8ab1bd5_esi_7ce538a8!WR_eax_b44e237d
+401083!mov edx, dword ptr [0x403020]!RM_403020_4_97c994a2!WR_edx_97c994a2
+401089!sub edx, eax!RR_eax_b44e237d_edx_97c994a2!WR_edx_e37b7125
+40108b!mov dword ptr [0x403020], edx!RR_edx_e37b7125!WM_403020_4_e37b7125
+401091!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_9e3779b9!RR_ebp_12ff54!WR_eax_9e3779b9
+401094!sub eax, dword ptr [ebp-0xc]!RM_12ff48_4_9e3779b9!RR_eax_9e3779b9_ebp_12ff54!WR_eax_0
+401097!mov dword ptr [ebp-0x8], eax!RR_eax_0_ebp_12ff54!WM_12ff4c_4_0
+40109a!mov ecx, dword ptr [0x403020]!RM_403020_4_e37b7125!WR_ecx_e37b7125
+4010a0!shl ecx, 0x4!RR_ecx_e37b7125!WR_ecx_37b71250
+4010a3!mov edx, dword ptr [0x403020]!RM_403020_4_e37b7125!WR_edx_e37b7125
+4010a9!shr edx, 0x5!RR_edx_e37b7125!WR_edx_71bdb89
+4010ac!xor ecx, edx!RR_ecx_37b71250_edx_71bdb89!WR_ecx_30acc9d9
+4010ae!add ecx, dword ptr [0x403020]!RM_403020_4_e37b7125!RR_ecx_30acc9d9!WR_ecx_14283afe
+4010b4!mov eax, dword ptr [ebp-0x8]!RM_12ff4c_4_0!RR_ebp_12ff54!WR_eax_0
+4010b7!and eax, 0x3!RR_eax_0!WR_eax_0
+4010ba!mov edx, dword ptr [ebp+0xc]!RM_12ff60_4_12ff68!RR_ebp_12ff54!WR_edx_12ff68
+4010bd!mov esi, dword ptr [ebp-0x8]!RM_12ff4c_4_0!RR_ebp_12ff54!WR_esi_0
+4010c0!add esi, dword ptr [edx+eax*4]!RM_12ff68_4_deadbeef!RR_eax_0_edx_12ff68_esi_0!WR_esi_deadbeef
+4010c3!xor ecx, esi!RR_ecx_14283afe_esi_deadbeef!WR_ecx_ca858411
+4010c5!mov eax, dword ptr [0x40301c]!RM_40301c_4_cfec074b!WR_eax_cfec074b
+4010ca!sub eax, ecx!RR_eax_cfec074b_ecx_ca858411!WR_eax_566833a
+4010cc!mov dword ptr [0x40301c], eax!RR_eax_566833a!WM_40301c_4_566833a
+4010d1!jmp 0x401041
+401041!mov ecx, dword ptr [ebp-0x4]!RM_12ff50_4_1f!RR_ebp_12ff54!WR_ecx_1f
+401044!add ecx, 0x1!RR_ecx_1f!WR_ecx_20
+401047!mov dword ptr [ebp-0x4], ecx!RR_ecx_20_ebp_12ff54!WM_12ff50_4_20
+40104a!mov edx, dword ptr [ebp-0x4]!RM_12ff50_4_20!RR_ebp_12ff54!WR_edx_20
+40104d!cmp edx, dword ptr [ebp+0x8]!RM_12ff5c_4_20!RR_edx_20_ebp_12ff54
+401050!jnb 0x4010d6
+4010d6!pop esi!RM_12ff44_4_1!RR_esp_12ff44!WR_esp_12ff48_esi_1
+4010d7!mov esp, ebp!RR_ebp_12ff54!WR_esp_12ff54
+4010d9!pop ebp!RM_12ff54_4_12ff7c!RR_esp_12ff54!WR_ebp_12ff7c_esp_12ff58
+4010da!ret !RM_12ff58_4_401145!RR_esp_12ff58!WR_esp_12ff5c
+401145!add esp, 0x8!RR_esp_12ff5c!WR_esp_12ff64
+401148!mov edx, dword ptr [0x402038]!RM_402038_4_7848baa0!WR_edx_7848baa0
+40114e!push edx!RR_edx_7848baa0_esp_12ff64!WM_12ff60_4_7848baa0!WR_esp_12ff60
+40114f!mov eax, dword ptr [0x40301c]!RM_40301c_4_566833a!WR_eax_566833a
+401154!push eax!RR_eax_566833a_esp_12ff60!WM_12ff5c_4_566833a!WR_esp_12ff5c
+401155!push 0x401000!RR_esp_12ff5c!WM_12ff58_4_401000!WR_esp_12ff58
+40115a!mov ecx, dword ptr [0x40204c]!RM_40204c_4_78506bc8!WR_ecx_78506bc8
+401160!call dword ptr [0x402040]!RM_402040_4_7848e3fd!RR_esp_12ff58!WM_12ff54_4_401166!WR_esp_12ff54
+API CALL ??6?$basic_ostream@_WU?$char_traits@_W@std@@@std@@QAEAAV01@P6AAAVios_base@1@AAV21@@Z@Z
+401166!mov ecx, eax!RR_eax_78506bc8!WR_ecx_78506bc8
+401168!call dword ptr [0x402044]!RM_402044_4_784abbd2!RR_esp_12ff5c!WM_12ff58_4_40116e!WR_esp_12ff58
+API CALL ??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@I@Z
+40116e!mov ecx, eax!RR_eax_78506bc8!WR_ecx_78506bc8
+401170!call dword ptr [0x40203c]!RM_40203c_4_7848e503!RR_esp_12ff60!WM_12ff5c_4_401176!WR_esp_12ff5c
+API CALL ??5?$basic_istream@_WU?$char_traits@_W@std@@@std@@QAEAAV01@P6AAAV01@AAV01@@Z@Z
+401176!mov ecx, dword ptr [0x402038]!RM_402038_4_7848baa0!WR_ecx_7848baa0
+40117c!push ecx!RR_ecx_7848baa0_esp_12ff64!WM_12ff60_4_7848baa0!WR_esp_12ff60
+40117d!mov edx, dword ptr [0x403020]!RM_403020_4_e37b7125!WR_edx_e37b7125
+401183!push edx!RR_edx_e37b7125_esp_12ff60!WM_12ff5c_4_e37b7125!WR_esp_12ff5c
+401184!push 0x401000!RR_esp_12ff5c!WM_12ff58_4_401000!WR_esp_12ff58
+401189!mov ecx, dword ptr [0x40204c]!RM_40204c_4_78506bc8!WR_ecx_78506bc8
+40118f!call dword ptr [0x402040]!RM_402040_4_7848e3fd!RR_esp_12ff58!WM_12ff54_4_401195!WR_esp_12ff54
+API CALL ??6?$basic_ostream@_WU?$char_traits@_W@std@@@std@@QAEAAV01@P6AAAVios_base@1@AAV21@@Z@Z
+401195!mov ecx, eax!RR_eax_78506bc8!WR_ecx_78506bc8
+401197!call dword ptr [0x402044]!RM_402044_4_784abbd2!RR_esp_12ff5c!WM_12ff58_4_40119d!WR_esp_12ff58
+API CALL ??6?$basic_ostream@DU?$char_traits@D@std@@@std@@QAEAAV01@I@Z
+40119d!mov ecx, eax!RR_eax_78506bc8!WR_ecx_78506bc8
+40119f!call dword ptr [0x40203c]!RM_40203c_4_7848e503!RR_esp_12ff60!WM_12ff5c_4_4011a5!WR_esp_12ff5c
+API CALL ??5?$basic_istream@_WU?$char_traits@_W@std@@@std@@QAEAAV01@P6AAAV01@AAV01@@Z@Z
+4011a5!xor eax, eax!RR_eax_78506bc8!WR_eax_0
+4011a7!mov esp, ebp!RR_ebp_12ff7c!WR_esp_12ff7c
+4011a9!pop ebp!RM_12ff7c_4_12ffc0!RR_esp_12ff7c!WR_ebp_12ffc0_esp_12ff80
+4011aa!ret !RM_12ff80_4_401314!RR_esp_12ff80!WR_esp_12ff84
+401314!add esp, 0xc!RR_esp_12ff84!WR_esp_12ff90
+401317!mov dword ptr [0x403040], eax!RR_eax_0!WM_403040_4_0
+40131c!cmp dword ptr [0x403034], ebx!RM_403034_4_0!RR_ebx_0
+401322!jnz 0x40135b
+401324!push eax!RR_eax_0_esp_12ff90!WM_12ff8c_4_0!WR_esp_12ff8c
+401325!call dword ptr [0x4020a0]!RM_4020a0_4_78542455!RR_esp_12ff8c!WM_12ff88_4_40132b!WR_esp_12ff88
+API CALL exit
+!EOT
