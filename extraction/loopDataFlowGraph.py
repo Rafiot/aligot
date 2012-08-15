@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 
 # These are my shit!
 
-import loopTrace
+import loops
 import executionTrace
 import utilities
 
