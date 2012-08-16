@@ -36,8 +36,8 @@ class LDFG:
         self.endTime = loopInstance.endTime
 
         self.loopInstanceList = [loopInstance]  # List of instance, ordered by starttime
-        self.inputBasicVar = list()
-        self.outputBasicVar = list()
+        self.inputParameters = list()
+        self.outputParameters = list()
         self.valid = 1
 
         # To build the i/o values
@@ -48,35 +48,27 @@ class LDFG:
     def display(self):
 
         print '-----------------------------------'
-        print 'Loop data flow graph'
+        print 'Loop data flow graph ' + str(self.ID)
 
         print str(len(self.loopInstanceList)) + ' loop instances'
 
-        print 'Start time : ' + str(self.startTime)
+        print 'Start time : ' + str(self.startTime),
+        print ' (start address: ' + self.loopInstanceList[0].startAddress + ')'
         print 'End time : ' + str(self.endTime)
 
-        print 'Input Basic Var:'
-        for iv in self.inputBasicVar:
-            iv.display(1)
+        print 'Input Parameters:'
+        for iv in self.inputParameters:
+            iv.display(1) 
+            print " | ",
 
-        # Display input register of the first loop instance
-        #         output registers of the last loop instance
 
-        print '\nInput registers:'
-        firstIns = self.loopInstanceList[0]
-        for ir in firstIns.inputRegisterVar:
-            ir.display(1)
-
-        print '\nOutput Basic Var:'
-        for ov in self.outputBasicVar:
+        print '\nOutput Parameters:'
+        for ov in self.outputParameters:
             ov.display(1)
+            print " | ",
 
-        print '\nOutput registers:'
-        LastIns = self.loopInstanceList[-1]
-        for outr in firstIns.outputRegisterVar:
-            outr.display(1)
 
-        print ''
+        print '\n-----------------------------------'
 
     def merge(self, otherLDFG):
 
@@ -123,7 +115,7 @@ def dumpResults(fileName='results.txt', inTrace=''):
     for k in LdfgDataBase.keys():
         myLDFG = LdfgDataBase[k]
         line = ''
-        for iv in myLDFG.inputBasicVar:
+        for iv in myLDFG.inputParameters:
             val = ''
             for byte in range(0, iv.size):
                 val += iv.value[byte]
@@ -131,7 +123,7 @@ def dumpResults(fileName='results.txt', inTrace=''):
 
         line = line[:-1] + ':'
 
-        for ov in myLDFG.outputBasicVar:
+        for ov in myLDFG.outputParameters:
             val = ''
             for byte in range(0, ov.size):
                 val += ov.value[byte]
@@ -186,7 +178,7 @@ def graphLdfgDataBase(name):
 
         # The input vars
 
-        for iv in currentLDFG.inputBasicVar:
+        for iv in currentLDFG.inputParameters:
 
             label = '{'
 
@@ -224,7 +216,7 @@ def graphLdfgDataBase(name):
 
         # The output vars
 
-        for ov in currentLDFG.outputBasicVar:
+        for ov in currentLDFG.outputParameters:
 
             label = '{'
 
@@ -279,9 +271,9 @@ def garbageCollectorLDFG():
 
         if currentLDFG.valid == 0:
             LdfgDataBase.pop(k)
-        elif (len(currentLDFG.inputBasicVar) == 0) \
+        elif (len(currentLDFG.inputParameters) == 0) \
             & (len(currentLDFG.loopInstanceList[0].inputRegisterVar)
-               == 0) or (len(currentLDFG.outputBasicVar) == 0) \
+               == 0) or (len(currentLDFG.outputParameters) == 0) \
             & (len(currentLDFG.loopInstanceList[-1].outputRegisterVar)
                == 0):
 
@@ -355,8 +347,8 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
         for j in range(0, i):
             previousLoopInstance = \
                 ls[sortedLoops[j][0]].instances[sortedLoops[j][1]]
-            for outputVar in previousLoopInstance.outputBasicVar:
-                for inputVar in curLoopInstance.inputBasicVar:
+            for outputVar in previousLoopInstance.outputParameters:
+                for inputVar in curLoopInstance.inputParameters:
 
                     if outputVar.contains(inputVar) \
                         | inputVar.contains(outputVar) \
@@ -444,13 +436,13 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
 
                 # Deal with *memory* input vars
 
-                for inputVar in loopIns.inputBasicVar:
+                for inputVar in loopIns.inputParameters:
 
                     linkFound = 0
                     for j in range(0, i):
                         prevLoopIns = currentLDFG.loopInstanceList[j]
 
-                        for outputVar in prevLoopIns.outputBasicVar:
+                        for outputVar in prevLoopIns.outputParameters:
                             if outputVar.contains(inputVar) \
                                 | inputVar.contains(outputVar) \
                                 | inputVar.intersects(outputVar):
@@ -461,26 +453,26 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                             break
 
                     if linkFound == 0:
-                        currentLDFG.inputBasicVar.append(inputVar)
+                        currentLDFG.inputParameters.append(inputVar)
 
                 for inputRegVar in loopIns.inputRegisterVar:
                     if inputRegVar.registerName not in inputRegisters:
                         inputRegisters.add(inputRegVar.registerName)
-                        currentLDFG.inputBasicVar.append(inputRegVar)
+                        currentLDFG.inputParameters.append(inputRegVar)
 
                 for cte in loopIns.constantsVar:
-                    currentLDFG.inputBasicVar.append(cte)
+                    currentLDFG.inputParameters.append(cte)
 
                 # Deal with output vars
 
-                for outputVar in loopIns.outputBasicVar:
+                for outputVar in loopIns.outputParameters:
 
                     linkFound = 0
                     for j in range(i + 1,
                                    len(currentLDFG.loopInstanceList)):
                         futureLoopIns = currentLDFG.loopInstanceList[j]
 
-                        for inputVar in futureLoopIns.inputBasicVar:
+                        for inputVar in futureLoopIns.inputParameters:
                             if outputVar.contains(inputVar) \
                                 | inputVar.contains(outputVar) \
                                 | inputVar.intersects(outputVar):
@@ -494,23 +486,23 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
 
                         # No doublons
 
-                        currentLDFG.outputBasicVar.append(outputVar)
+                        currentLDFG.outputParameters.append(outputVar)
 
                 # Input vars doublons (loops belonging to the same LDFG
                 # can have same or intersecting input variables)
 
                 i = 0
-                while i < len(currentLDFG.inputBasicVar):
+                while i < len(currentLDFG.inputParameters):
                     for j in range(i + 1,
-                                   len(currentLDFG.inputBasicVar)):
-                        if currentLDFG.inputBasicVar[i].contains(currentLDFG.inputBasicVar[j]):
-                            del currentLDFG.inputBasicVar[j]
+                                   len(currentLDFG.inputParameters)):
+                        if currentLDFG.inputParameters[i].contains(currentLDFG.inputParameters[j]):
+                            del currentLDFG.inputParameters[j]
                             i = -1
                             break
-                        if currentLDFG.inputBasicVar[i].intersects(currentLDFG.inputBasicVar[j]):
-                            currentLDFG.inputBasicVar[i] = \
-                                currentLDFG.inputBasicVar[i].merge(currentLDFG.inputBasicVar[j])
-                            del currentLDFG.inputBasicVar[j]
+                        if currentLDFG.inputParameters[i].intersects(currentLDFG.inputParameters[j]):
+                            currentLDFG.inputParameters[i] = \
+                                currentLDFG.inputParameters[i].merge(currentLDFG.inputParameters[j])
+                            del currentLDFG.inputParameters[j]
                             i = -1
                             break
                     i += 1
@@ -518,24 +510,24 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                 # Output vars doublons
 
                 i = 0
-                while i < len(currentLDFG.outputBasicVar):
+                while i < len(currentLDFG.outputParameters):
                     for j in range(i + 1,
-                                   len(currentLDFG.outputBasicVar)):
-                        if currentLDFG.outputBasicVar[i].contains(currentLDFG.outputBasicVar[j]):
-                            del currentLDFG.outputBasicVar[j]
+                                   len(currentLDFG.outputParameters)):
+                        if currentLDFG.outputParameters[i].contains(currentLDFG.outputParameters[j]):
+                            del currentLDFG.outputParameters[j]
                             i = -1
                             break
-                        if currentLDFG.outputBasicVar[i].intersects(currentLDFG.outputBasicVar[j]):
-                            currentLDFG.outputBasicVar[i] = \
-                                currentLDFG.outputBasicVar[i].merge(currentLDFG.outputBasicVar[j])
-                            del currentLDFG.outputBasicVar[j]
+                        if currentLDFG.outputParameters[i].intersects(currentLDFG.outputParameters[j]):
+                            currentLDFG.outputParameters[i] = \
+                                currentLDFG.outputParameters[i].merge(currentLDFG.outputParameters[j])
+                            del currentLDFG.outputParameters[j]
                             i = -1
                             break
                     i += 1
 
             for outputRegVar in \
                 currentLDFG.loopInstanceList[-1].outputRegisterVar:
-                currentLDFG.outputBasicVar.append(outputRegVar)
+                currentLDFG.outputParameters.append(outputRegVar)
 
     # Remove invalid algos
 
@@ -587,7 +579,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
 
                 # Build the set of input bytes
 
-                for iv in myCalc.inputBasicVar:
+                for iv in myCalc.inputParameters:
 
                     # Registers AND constants have already their values
 
@@ -598,7 +590,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
 
                 # Build the set of output bytes
 
-                for ov in myCalc.outputBasicVar:
+                for ov in myCalc.outputParameters:
 
                     # Registers have already their values
 
@@ -659,7 +651,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
 
                 # Copy the collected values back in the input variables
 
-                for iv in myCalc.inputBasicVar:
+                for iv in myCalc.inputParameters:
                     if iv.registerName == '' and iv.constant == 0:
                         for c in range(0, iv.size):
 
@@ -672,7 +664,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
 
                 # Copy the collected values back in the output variables
 
-                for ov in myCalc.outputBasicVar:
+                for ov in myCalc.outputParameters:
                     if ov.registerName == '':
                         for c in range(0, ov.size):
 

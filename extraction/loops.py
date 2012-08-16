@@ -238,8 +238,8 @@ class loopInstance:
 
                                             # (filled by buildLoopIOByInstructionMemory())
 
-        self.inputBasicVar = list()
-        self.outputBasicVar = list()
+        self.inputParameters = list()
+        self.outputParameters = list()
 
         self.constantsVar = list()
 
@@ -262,16 +262,16 @@ class loopInstance:
             self.endTime,
             )
 
-        print '\ninput basic var ' + str(len(self.inputBasicVar))
-        for v in self.inputBasicVar:
+        print '\ninput basic var ' + str(len(self.inputParameters))
+        for v in self.inputParameters:
             v.display(mode)
 
         print '\ninput register var ' + str(len(self.inputRegisterVar))
         for v in self.inputRegisterVar:
             v.display(mode)
 
-        print '\noutput basic var ' + str(len(self.outputBasicVar))
-        for v in self.outputBasicVar:
+        print '\noutput basic var ' + str(len(self.outputParameters))
+        for v in self.outputParameters:
             v.display(mode)
 
         print '\noutput register var ' \
@@ -306,9 +306,9 @@ def garbageCollectorEmptyLoops(loopStorage):
         hasValidIOInstance = 0x0
 
         for k_inst in loopStorage[k_loop].instances.keys():
-            if len(loopStorage[k_loop].instances[k_inst].inputBasicVar) \
+            if len(loopStorage[k_loop].instances[k_inst].inputParameters) \
                 != 0x0 \
-                or len(loopStorage[k_loop].instances[k_inst].outputBasicVar) \
+                or len(loopStorage[k_loop].instances[k_inst].outputParameters) \
                 != 0x0:
                 hasValidIOInstance = 1
             else:
@@ -419,7 +419,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # 2. Create Input Var Node
 
-                for inputVar in myLoopInstance.inputBasicVar:
+                for inputVar in myLoopInstance.inputParameters:
                     graph.add_node(pydot.Node(id,
                                    label=hex(inputVar.startAddress)
                                    + ':' + str(inputVar.size),
@@ -455,7 +455,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # 2. Create Ouput Var Node
 
-                for outputVar in myLoopInstance.outputBasicVar:
+                for outputVar in myLoopInstance.outputParameters:
 
                     # graph.add_node(pydot.Node(id, label=hex(outputVar.startAddress)+":"+str(outputVar.size),style="filled", fillcolor="#976856",fontname = "Consolas"))
 
@@ -1080,8 +1080,8 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
                         break
                 i += 1
 
-            myLoop.instances[instanceCounter].inputBasicVar = inputVar
-            myLoop.instances[instanceCounter].outputBasicVar = outputVar
+            myLoop.instances[instanceCounter].inputParameters = inputVar
+            myLoop.instances[instanceCounter].outputParameters = outputVar
 
 
 def buildLoopIORegisters(myLoopStorage, myTraceFileName):
