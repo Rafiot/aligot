@@ -11,50 +11,40 @@
 
 # General Purpose Registers - kind of "C define"
 
-GPR = [
-    'eax',
-    'ebx',
-    'ecx',
-    'edx',
-    'esi',
-    'edi',
-    'esp',
-    'ebp',
-    ]
+GPR32 = set(['eax','ebx','ecx','edx','esi','edi','esp','ebp'])
 
+GPR16 = set(['ax','bx','cx','dx','si','di','sp','bp'])
 
 def registersAddress(reg):
 
-    if len(reg) == 3:
+    if reg in GPR32:
         return [reg + '0', reg + '1', reg + '2', reg + '3']
-    if len(reg) == 2:
-        if reg[1] == 'h':
-            return ['e' + reg[0] + 'x2']
-        elif reg[1] == 'l':
-            return ['e' + reg[0] + 'x3']
-        else:
-            return ['e' + reg + '2', 'e' + reg + '3']
-    else:
-        print 'Error during registers parsing, register length: ' \
-            + len(reg)
-        quit()
+
+    if reg in GPR16:
+        return ['e' + reg + '2', 'e' + reg + '3']
+
+    # AH,AL,BH...
+    if reg[1] == 'h':
+        return ['e' + reg[0] + 'x2']
+
+    elif reg[1] == 'l':
+        return ['e' + reg[0] + 'x3']
+    
+    print 'Error during registers parsing, register length: ' + len(reg)
+    quit()
 
 
 def normalizeValueToSize(val, size):
     ''' Returns val as an hexa string of length 2 * size '''
-
-    while len(val) != 2 * size:
-        val = '0' + val
-
-    return val
+    
+    return val.zfill(2*size)
 
 
 def getRegisterLength(reg):
 
-    if len(reg) == 3 and reg[0] == 'e':
+    if reg in GPR32:
         return 4
-    elif reg == 'ax' or reg == 'bx' or reg == 'cx' or reg == 'dx' \
-        or reg == 'di' or reg == 'si' or reg == 'bp' or reg == 'sp':
+    elif reg in GPR16:
         return 2
     else:
         return 1
@@ -63,12 +53,9 @@ def getRegisterLength(reg):
 def normalizeValueToRegister(val, reg):
     ''' Returns val as an hexa string of length 2 * register length '''
 
-    while len(val) != 2 * getRegisterLength(reg):
-        val = '0' + val
+    return val.zfill(2*getRegisterLength(reg))
 
-    return val
-
-
+    
 def bigToLittleEndian(leVal):
     '''Take a 8 hex char input value in little endian order and transform it
         in big endian order...'''

@@ -101,7 +101,7 @@ def main():
 
     print 'Garbage collector for empty loops...',
     before = len(ls.keys())
-    loops.garbageCollectorEmptyLoops(ls)
+    loops.garbageCollectorUselessLoops(ls)
     after = len(ls.keys())
     print 'Done (' + str(before - after) + ' loops suppressed)'
 

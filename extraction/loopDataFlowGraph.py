@@ -272,9 +272,9 @@ def garbageCollectorLDFG():
         if currentLDFG.valid == 0:
             LdfgDataBase.pop(k)
         elif (len(currentLDFG.inputParameters) == 0) \
-            & (len(currentLDFG.loopInstanceList[0].inputRegisterVar)
+            & (len(currentLDFG.loopInstanceList[0].inputRegisterParameter)
                == 0) or (len(currentLDFG.outputParameters) == 0) \
-            & (len(currentLDFG.loopInstanceList[-1].outputRegisterVar)
+            & (len(currentLDFG.loopInstanceList[-1].outputRegisterParameter)
                == 0):
 
             LdfgDataBase.pop(k)
@@ -347,8 +347,8 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
         for j in range(0, i):
             previousLoopInstance = \
                 ls[sortedLoops[j][0]].instances[sortedLoops[j][1]]
-            for outputVar in previousLoopInstance.outputParameters:
-                for inputVar in curLoopInstance.inputParameters:
+            for outputVar in previousLoopInstance.outputMemoryParameters:
+                for inputVar in curLoopInstance.inputMemoryParameters:
 
                     if outputVar.contains(inputVar) \
                         | inputVar.contains(outputVar) \
@@ -436,13 +436,13 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
 
                 # Deal with *memory* input vars
 
-                for inputVar in loopIns.inputParameters:
+                for inputVar in loopIns.inputMemoryParameters:
 
                     linkFound = 0
                     for j in range(0, i):
                         prevLoopIns = currentLDFG.loopInstanceList[j]
 
-                        for outputVar in prevLoopIns.outputParameters:
+                        for outputVar in prevLoopIns.outputMemoryParameters:
                             if outputVar.contains(inputVar) \
                                 | inputVar.contains(outputVar) \
                                 | inputVar.intersects(outputVar):
@@ -455,24 +455,24 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                     if linkFound == 0:
                         currentLDFG.inputParameters.append(inputVar)
 
-                for inputRegVar in loopIns.inputRegisterVar:
+                for inputRegVar in loopIns.inputRegisterParameter:
                     if inputRegVar.registerName not in inputRegisters:
                         inputRegisters.add(inputRegVar.registerName)
                         currentLDFG.inputParameters.append(inputRegVar)
 
-                for cte in loopIns.constantsVar:
+                for cte in loopIns.constantParameter:
                     currentLDFG.inputParameters.append(cte)
 
                 # Deal with output vars
 
-                for outputVar in loopIns.outputParameters:
+                for outputVar in loopIns.outputMemoryParameters:
 
                     linkFound = 0
                     for j in range(i + 1,
                                    len(currentLDFG.loopInstanceList)):
                         futureLoopIns = currentLDFG.loopInstanceList[j]
 
-                        for inputVar in futureLoopIns.inputParameters:
+                        for inputVar in futureLoopIns.inputMemoryParameters:
                             if outputVar.contains(inputVar) \
                                 | inputVar.contains(outputVar) \
                                 | inputVar.intersects(outputVar):
@@ -526,7 +526,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                     i += 1
 
             for outputRegVar in \
-                currentLDFG.loopInstanceList[-1].outputRegisterVar:
+                currentLDFG.loopInstanceList[-1].outputRegisterParameter:
                 currentLDFG.outputParameters.append(outputRegVar)
 
     # Remove invalid algos

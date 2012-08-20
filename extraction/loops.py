@@ -20,27 +20,22 @@ import variable
 
 debugMode = 0x0
 
-# TOCHECK
-
 onGoingLoopsStacks = list()  # The order is important, it represents the loop age
-constantAddr = 0x0
-constantSet = set()
 
 
 class executionHistory:
 
-    ''' Stores the instructions in order to detect loops. '''
+    ''' A list of [timestamp, instruction or loop ID] used for loop detection. '''
 
-    # Real instructions !
+    def __init__(self):
 
-    def push(self, ins, time):
+        self.elements = list()
+
+    def append(self, ins, time):
         self.elements.append([time, ins])
 
     def pop(self):
         return self.elements.pop()
-
-    def head(self):
-        return self.elements[-1]
 
     def reverse(self):
         rHistory = executionHistory()
@@ -51,18 +46,22 @@ class executionHistory:
     # Return a list of lists of [time,instruction] that can be a loop body
 
     def possibleLoops(self, instToLookFor):
-        myCopyHistory = []
-        listOfBodies = []
+        
+        myCopyHistory = list()
+        listOfBodies = list()
 
-        for i in range(len(self.elements) - 1, -1, -1):
+        # Backward pass
+        for i in range(len(self.elements)-1, -1, -1):
+
             element = self.elements[i]
-            myCopyHistory.append(element)
+            #myCopyHistory.append(element)
+            myCopyHistory.insert(0,element)
 
             # When we find the instruction, we get the body of the associated possible loop
 
             if element[1].equal(instToLookFor):
                 newCopy = copy.copy(myCopyHistory)
-                newCopy.reverse()
+                #newCopy.reverse()
                 listOfBodies.append(newCopy)
 
         return listOfBodies
@@ -92,15 +91,16 @@ class executionHistory:
     def display(self):
         for e in self.elements:
             print '[ t:' + str(e[0x0]) + ' ins: ' + e[1].string() + ']'
-
-    def __init__(self):
-
-        # Each element is a time plus an instruction
-
-        self.elements = []
-
+   
 
 class stackOfLoop:
+
+    ''' A stack containing loop instances, representing the loop nesting. The
+        stack head is the most nested loop. Each element is stored as a string
+        "LoopID-InstanceID"'''
+
+    def __init__(self):
+        self.elements = list()
 
     def push(self, e):
         self.elements.append(e)
@@ -124,34 +124,28 @@ class stackOfLoop:
     def empty(self):
         return len(self.elements) == 0x0
 
-    def __init__(self):
-        self.elements = []
-
 
 class loop:
 
     ''' A loop is identified by its body, that is a list of machine
-        instruction. Each execution of a loop corresponds to a different
-        instance (loopInstance class)'''
+        instructions or loop IDs (representing nested loops). Each 
+        execution of a loop corresponds to a different instance 
+        (cf. loopInstance())'''
 
-    def __init__(
-        self,
-        id,
-        startTime,
-        l,
-        ):
+    def __init__(self,id,startTime,l,):
 
         self.ID = id
-        self.body = l  # List of instructions
+        self.body = l  # List of machine instructions or loop IDs (stored as "+L" ID)
 
-        self.instances = dict()
-        self.instances[0x0] = loopInstance(0x0, startTime, 1
-                % len(self.body), 1)
+        self.instances = dict() # Instance IDs -> loopInstance()
+        self.instances[0x0] = loopInstance(0x0, startTime, 1 % len(self.body), 1)
         self.numberOfInstances = 1
 
-    # mode = 0 for only valid instances, 1 for all instances
+    
 
     def display(self, mode=0x0):
+
+        ''' Display mode = 0 for valid instances only, 1 for all instances. '''
 
         if mode == 0x0:
             validInstance = 0x0
@@ -192,13 +186,7 @@ class loop:
                 cursor += 1
             return 1
 
-    def addInstance(
-        self,
-        startTime,
-        cursor,
-        turn,
-        startAddress='',
-        ):
+    def addInstance(self,startTime,cursor,turn,startAddress='',):
 
         self.instances[self.numberOfInstances] = \
             loopInstance(self.numberOfInstances, startTime, cursor,
@@ -206,45 +194,37 @@ class loop:
 
         self.numberOfInstances += 1
 
-        # Return the instance ID
+        # Returns the instance ID
 
         return self.numberOfInstances - 1
 
 
 class loopInstance:
 
-    '''A same loop can have instances with different startAddress
-        (what identify a loop is the serie of repeated machine instructions)'''
+    '''A same loop can have loop instances with different startAddress
+        (what identify a loop is its body)'''
 
-    def __init__(
-        self,
-        id,
-        startTime,
-        cursor,
-        turn,
-        startAddr='',
-        ):
+    def __init__(self,id,startTime,cursor,turn,startAddr='',):
 
         self.ID = id
-        self.waitFor = cursor  # Index in [0,len(body)-1] that indicates the next instruction of the loop
-        self.close = 0x0
-        self.valid = 0x0
-        self.turns = turn
+        self.waitFor = cursor  # Index on the loop body for the next awaited instruction
+        self.close = 0x0 # to 1 if the loop instance is finished
+        self.valid = 0x0 # to 1 if the loop instance iterated at least two times
+        self.turns = turn # number of iterations
         self.startTime = startTime
         self.endTime = 0x0
         self.startAddress = startAddr
 
-        self.imbricatedInstanceID = list()  # List of nested loops in order : [[loopID,InstanceID]...],
+        self.imbricatedInstanceID = list()  # List of nested loop instances contained in this one 
+                                            # [[loopID,InstanceID]...],
 
-                                            # (filled by buildLoopIOByInstructionMemory())
+        self.inputMemoryParameters = list() # filled by buildLoopIOMemory()
+        self.outputMemoryParameters = list()
 
-        self.inputParameters = list()
-        self.outputParameters = list()
+        self.inputRegisterParameter = list() # filled by buildLoopIORegisters()
+        self.outputRegisterParameter = list()
 
-        self.constantsVar = list()
-
-        self.inputRegisterVar = list()
-        self.outputRegisterVar = list()
+        self.constantParameter = list() # filled by buildLoopIOConstants()
 
         self.pydotNodeID = 0x0  # Mandatory for graph display with pydot
 
@@ -262,25 +242,22 @@ class loopInstance:
             self.endTime,
             )
 
-        print '\ninput basic var ' + str(len(self.inputParameters))
-        for v in self.inputParameters:
+        print '\ninput memory parameters ' + str(len(self.inputMemoryParameters))
+        for v in self.inputMemoryParameters:
             v.display(mode)
 
-        print '\ninput register var ' + str(len(self.inputRegisterVar))
-        for v in self.inputRegisterVar:
+        print '\ninput register parameters ' + str(len(self.inputRegisterParameter))
+        for v in self.inputRegisterParameter:
             v.display(mode)
 
-        print '\noutput basic var ' + str(len(self.outputParameters))
-        for v in self.outputParameters:
+        print '\noutput memory parameters ' + str(len(self.outputMemoryParameters))
+        for v in self.outputMemoryParameters:
             v.display(mode)
 
-        print '\noutput register var ' \
-            + str(len(self.outputRegisterVar))
-        for v in self.outputRegisterVar:
+        print '\noutput register parameters ' + str(len(self.outputRegisterParameter))
+        for v in self.outputRegisterParameter:
             v.display(mode)
-        print '''
-
-'''
+        print ""
 
 
 def garbageCollector(loopStorage):
@@ -299,16 +276,16 @@ def garbageCollector(loopStorage):
             loopStorage.pop(k_loop)
 
 
-def garbageCollectorEmptyLoops(loopStorage):
+def garbageCollectorUselessLoops(loopStorage):
     ''' Remove loops whose all instances don't have any I/O parameters. '''
 
     for k_loop in loopStorage.keys():
         hasValidIOInstance = 0x0
 
         for k_inst in loopStorage[k_loop].instances.keys():
-            if len(loopStorage[k_loop].instances[k_inst].inputParameters) \
+            if len(loopStorage[k_loop].instances[k_inst].inputMemoryParameters) \
                 != 0x0 \
-                or len(loopStorage[k_loop].instances[k_inst].outputParameters) \
+                or len(loopStorage[k_loop].instances[k_inst].outputMemoryParameters) \
                 != 0x0:
                 hasValidIOInstance = 1
             else:
@@ -419,7 +396,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # 2. Create Input Var Node
 
-                for inputVar in myLoopInstance.inputParameters:
+                for inputVar in myLoopInstance.inputMemoryParameters:
                     graph.add_node(pydot.Node(id,
                                    label=hex(inputVar.startAddress)
                                    + ':' + str(inputVar.size),
@@ -436,7 +413,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # regs
 
-                for inputRegVar in myLoopInstance.inputRegisterVar:
+                for inputRegVar in myLoopInstance.inputRegisterParameter:
                     graph.add_node(pydot.Node(id, label=' '
                                    + inputRegVar.registerName + ':'
                                    + str(inputRegVar.size) + ' ',
@@ -455,7 +432,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # 2. Create Ouput Var Node
 
-                for outputVar in myLoopInstance.outputParameters:
+                for outputVar in myLoopInstance.outputMemoryParameters:
 
                     # graph.add_node(pydot.Node(id, label=hex(outputVar.startAddress)+":"+str(outputVar.size),style="filled", fillcolor="#976856",fontname = "Consolas"))
 
@@ -475,7 +452,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # regs
 
-                for outputRegVar in myLoopInstance.outputRegisterVar:
+                for outputRegVar in myLoopInstance.outputRegisterParameter:
                     graph.add_node(pydot.Node(id, label=' '
                                    + outputRegVar.registerName + ':'
                                    + str(outputRegVar.size) + ' ',
@@ -592,7 +569,7 @@ def detectLoop(myTraceFileName):
         ins = executionTrace.lineConnector(line)
 
         if ins == -1:
-            time += 1  # time is actually the number of lines (API CALL line included..)
+            time += 1  # time is actually the number of lines (including "API CALL .." lines)
             continue
 
         if debugMode:
@@ -621,7 +598,7 @@ def detectLoop(myTraceFileName):
         if not confirmedMatch:
             if createLoops(loopStorage, history.possibleLoops(ins),
                            time, history):
-                history.push(ins, time)  # we dont push for 1-inst loop
+                history.append(ins, time)  # we dont push for 1-inst loop
 
         time += 1
 
@@ -670,13 +647,9 @@ def createLoopInstance(loopStorage, body, time):
     return (loopStorage[loopCounter].ID, 0x0)
 
 
-def createLoops(
-    loopStorage,
-    bodiesList,
-    time,
-    history,
-    ):
-    ''' Create possible loops thanks to a list of body. '''
+def createLoops(loopStorage,bodiesList,time,history):
+
+    ''' Create possible loops with a list of bodies. '''
 
     global onGoingLoopsStacks
 
@@ -685,9 +658,12 @@ def createLoops(
             print '++ Loop creation with body :'
             for e in body:
                 print '\t t:' + str(e[0x0]) + ' ins:' + e[1].string()
+        
         p = stackOfLoop()
+        
         (idLoop, idInstance) = createLoopInstance(loopStorage, body,
                 body[0x0][0x0])
+
         p.push(str(idLoop) + '-' + str(idInstance))
 
         onGoingLoopsStacks.append(p)
@@ -721,133 +697,125 @@ def increment(loopStorage, p, history):
     currentLoopID = int(p.head()[:p.head().find('-')])
     currentLoopInstanceID = int(p.head()[p.head().find('-') + 1:])
 
-    loopStorage[currentLoopID].instances[currentLoopInstanceID].waitFor = \
-        (loopStorage[currentLoopID].instances[currentLoopInstanceID].waitFor
-         + 1) % len(loopStorage[currentLoopID].body)
+    curLoop = loopStorage[currentLoopID]
+    curLoopInstance = curLoop.instances[currentLoopInstanceID]
 
-    # Pop the instructions from the execution history if we just passed one more turn
+    curLoopInstance.waitFor = (curLoopInstance.waitFor + 1) % len(curLoop.body)
 
-    if loopStorage[currentLoopID].instances[currentLoopInstanceID].waitFor \
-        == 0x0:
-        loopStorage[currentLoopID].instances[currentLoopInstanceID].turns += \
-            1
+    # Test for a new iteration
+
+    if curLoopInstance.waitFor == 0x0:
+
+        curLoopInstance.turns += 1
+        
         if debugMode:
             print '++ We made a turn!'
 
         # The first time we need to suppress two times the loop body
 
-        if loopStorage[currentLoopID].instances[currentLoopInstanceID].turns \
-            == 2:
+        if curLoopInstance.turns == 2:
             if debugMode:
                 print '++ Loop validate (2 turns)'
 
             history.suppressByTheEnd(loopStorage[currentLoopID].body)
             history.suppressByTheEnd(loopStorage[currentLoopID].body)
-            loopStorage[currentLoopID].instances[currentLoopInstanceID].valid = \
-                1
+            curLoopInstance.valid = 1
 
 
-def closeLoop(
-    loopStorage,
-    p,
-    history,
-    time,
-    ):
+def closeLoop(loopStorage,p,history,time):
 
     currentLoop = p.pop()
 
     currentLoopID = int(currentLoop[:currentLoop.find('-')])
     currentLoopInstanceID = int(currentLoop[currentLoop.find('-') + 1:])
 
-    if loopStorage[currentLoopID].instances[currentLoopInstanceID].turns \
-        >= 2:
+    curLoop = loopStorage[currentLoopID]
+    curLoopInstance = curLoop.instances[currentLoopInstanceID]
+
+    if curLoopInstance.turns >= 2:
         if debugMode:
             print '++ Ok for close!'
 
         # Record the loop instance
 
-        loopStorage[currentLoopID].instances[currentLoopInstanceID].close = \
-            1
-        loopStorage[currentLoopID].instances[currentLoopInstanceID].endTime = \
-            time
+        curLoopInstance.close = 1
+        curLoopInstance.endTime = time
 
         # Suppress the loop instructions from the history
 
-        w8for = \
-            loopStorage[currentLoopID].instances[currentLoopInstanceID].waitFor
-        history.suppressByTheEnd(loopStorage[currentLoopID].body[:w8for])
+        w8ForIndex = curLoopInstance.waitFor
+        history.suppressByTheEnd(curLoop.body[:w8ForIndex])
 
-        history.push(executionTrace.instruction('0', '+L'
-                     + str(currentLoopID)), time)
+        history.append(executionTrace.instruction('0', '+L' + str(currentLoopID)),time)
         return 1
 
     return 0x0
 
-
-def match(
-    loopStorage,
-    ins,
-    p,
-    history,
-    time,
-    ):
+def match(loopStorage,ins,p,history,time):
 
     currentLoopID = int(p.head()[:p.head().find('-')])
     currentLoopInstanceID = int(p.head()[p.head().find('-') + 1:])
 
-    w8for = \
-        loopStorage[currentLoopID].instances[currentLoopInstanceID].waitFor
-    insW8For = loopStorage[currentLoopID].body[w8for]
+    curLoop = loopStorage[currentLoopID]
+    curLoopInstance = curLoop.instances[currentLoopInstanceID]
+
+    w8ForIndex = curLoopInstance.waitFor
+    w8ForInst = curLoop.body[w8ForIndex]
 
     if debugMode:
-        print '++ Match fonction w8 for ' + insW8For.string() \
+        print '++ Match fonction w8 for ' + w8ForInst.string() \
             + ' and I have ' + ins.string()
 
     # If the waited instruction is a loop, we have to instantiate it
 
-    if insW8For.isALoop():
+    if w8ForInst.isALoop():
         if debugMode:
             print "++ I'm on a loop... I push it!"
 
         # Get the loop ID
 
-        loopID = int(insW8For.string()[2:])
+        loopID = int(w8ForInst.string()[2:])
 
         # Create a new instance
 
-        instanceID = loopStorage[loopID].addInstance(time, 0x0, 0x0,
-                ins.address)
+        instanceID = loopStorage[loopID].addInstance(time, 0x0, 0x0,ins.address)
         newInstance = str(loopID) + '-' + str(instanceID)
+
         p.push(newInstance)
 
         return match(loopStorage, ins, p, history, time)
     else:
-        if ins.equal(insW8For):
+        if ins.equal(w8ForInst):
             if debugMode:
                 print '++ This is a match!'
 
-            # We have to check that the instruction has not been already pushed (in case it matches two loops)
-
             increment(loopStorage, p, history)
-            if loopStorage[currentLoopID].instances[currentLoopInstanceID].valid \
-                == 1 \
-                and loopStorage[currentLoopID].instances[currentLoopInstanceID].close \
-                == 0x0:
+
+            if curLoopInstance.valid == 1 and curLoopInstance.close == 0x0:
                 return 1  # success
             else:
                 return 0x0
         else:
             if debugMode:
                 print '++ No match at time.. ' + str(time)
+            
             close = closeLoop(loopStorage, p, history, time - 1)
+
             if close and not p.empty():
+
                 if debugMode:
+                
                     print '++ But we have more to match'
+            
                 increment(loopStorage, p, history)
+            
                 return match(loopStorage, ins, p, history, time)
+            
             else:
+            
                 while not p.empty():
                     closeLoop(loopStorage, p, history, time - 1)
+            
                 return 0x0
 
 
@@ -1080,8 +1048,8 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
                         break
                 i += 1
 
-            myLoop.instances[instanceCounter].inputParameters = inputVar
-            myLoop.instances[instanceCounter].outputParameters = outputVar
+            myLoop.instances[instanceCounter].inputMemoryParameters = inputVar
+            myLoop.instances[instanceCounter].outputMemoryParameters = outputVar
 
 
 def buildLoopIORegisters(myLoopStorage, myTraceFileName):
@@ -1217,7 +1185,7 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
             # Input register variables
 
-            for reg in utilities.GPR:
+            for reg in utilities.GPR32:
                 var = variable.variable(0x0, 4, reg)
                 exist = 0x0
                 if reg + '0' in registerInputBytes.keys():
@@ -1237,11 +1205,11 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
                     var.value[3] = registerInputBytes[reg + '3']
 
                 if exist:
-                    myLoop.instances[instanceCounter].inputRegisterVar.append(var)
+                    myLoop.instances[instanceCounter].inputRegisterParameter.append(var)
 
             # Output register variables
 
-            for reg in utilities.GPR:
+            for reg in utilities.GPR32:
                 var = variable.variable(0x0, 4, reg)
                 exist = 0x0
                 if reg + '0' in registerOutputBytes.keys():
@@ -1261,12 +1229,12 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
                     var.value[3] = registerOutputBytes[reg + '3']
 
                 if exist:
-                    myLoop.instances[instanceCounter].outputRegisterVar.append(var)
+                    myLoop.instances[instanceCounter].outputRegisterParameter.append(var)
 
 
 def buildLoopIOConstants(myLoopStorage, myTraceFileName):
 
-    global constantAddr
+    constantAddr = 0x0 # Fake address attributed for "constant" input parameters, like 0x1337 in MOV EAX, 0x1337
 
     for k in myLoopStorage.keys():
 
@@ -1377,6 +1345,6 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
                             for i in range(0x0, 4):
                                 var.value[i] = cte[i * 2:i * 2 + 2]
 
-                            myLoop.instances[instanceCounter].constantsVar.append(var)
+                            myLoop.instances[instanceCounter].constantParameter.append(var)
 
                     time += 1

@@ -22,10 +22,9 @@ debugMode = 0
 inputBytes = dict()
 outputBytes = dict()  # @ -> value (last one)
 
-
 class executionTrace:
 
-    ''' An execution trace is simply a list of instructions '''
+    ''' An execution trace is a list of dynamic instructions.'''
 
     def __init__(self):
         self.instructions = list()
@@ -155,13 +154,7 @@ class instruction:
         print '\n',
 
 
-def fileConnector(
-    myTraceFileName,
-    myTrace,
-    limit=0,
-    startAddr='',
-    endAddr='',
-    ):
+def fileConnector(myTraceFileName,myTrace,limit=0,startAddr='',endAddr=''):
     '''Take an execution trace and build the corresponding object. 
 
         Not a good idea for big files (cf. lineConnector()). 
