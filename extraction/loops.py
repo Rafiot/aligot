@@ -295,11 +295,14 @@ def garbageCollectorUselessLoops(loopStorage):
             loopStorage.pop(k_loop)
 
 
-def cleanOnGoingLoops():
+def cleanOnGoingLoops(p = None):
 
     global onGoingLoopsStacks
 
-    onGoingLoopsStacks = list()
+    if p != None:
+        onGoingLoopsStacks = list([p])
+    else:
+        onGoingLoopsStacks = list()
 
 
 def displayOnGoingLoops():
@@ -576,7 +579,7 @@ def detectLoop(myTraceFileName):
             print '_ _ _ _\n'
             print '++ Read from trace : ' + ins.string()
 
-        confirmedMatch = 0x0
+        confirmedLoop = None
 
         # The list order is important
 
@@ -587,19 +590,18 @@ def detectLoop(myTraceFileName):
                     print '++ Test loop stack: '
                     p.display()
                 if match(loopStorage, ins, p, history, time):
-                    confirmedMatch = 1
+                    confirmedLoop = p
+                    break  # As soon as we got a confirmed loop we are happy!
 
-                    # Le break a en fait une grosse importance, il permet de privilegier la boucle la plus ancienne, i.e. la plus a gauche dans l'historique
-                    # cas artificial3
-                    # I1 I5 I2 I3 I2 I3 I1 I5 I2 I3 I2 I3, I1 et I1 peuvent tous les deux demarrer une boucle, on privilegie celle qui commence par I1 car plus ancienne
 
-                    break  # PATCH!!!!!!
-
-        if not confirmedMatch:
+        if confirmedLoop == None:
+            # We test if the current instruction can begin a loop
             if createLoops(loopStorage, history.possibleLoops(ins),
                            time, history):
-                history.append(ins, time)  # we dont push for 1-inst loop
-
+                history.append(ins, time)  # We dont append for 1-inst loop
+        else:
+            # Only one confirmed loop at a time, we can clean the others
+            cleanOnGoingLoops(p)
         time += 1
 
     f.close()
