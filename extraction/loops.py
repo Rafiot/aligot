@@ -221,8 +221,8 @@ class loopInstance:
         self.inputMemoryParameters = list() # filled by buildLoopIOMemory()
         self.outputMemoryParameters = list()
 
-        self.inputRegisterParameter = list() # filled by buildLoopIORegisters()
-        self.outputRegisterParameter = list()
+        self.inputRegisterParameters = list() # filled by buildLoopIORegisters()
+        self.outputRegisterParameters = list()
 
         self.constantParameter = list() # filled by buildLoopIOConstants()
 
@@ -246,16 +246,16 @@ class loopInstance:
         for v in self.inputMemoryParameters:
             v.display(mode)
 
-        print '\ninput register parameters ' + str(len(self.inputRegisterParameter))
-        for v in self.inputRegisterParameter:
+        print '\ninput register parameters ' + str(len(self.inputRegisterParameters))
+        for v in self.inputRegisterParameters:
             v.display(mode)
 
         print '\noutput memory parameters ' + str(len(self.outputMemoryParameters))
         for v in self.outputMemoryParameters:
             v.display(mode)
 
-        print '\noutput register parameters ' + str(len(self.outputRegisterParameter))
-        for v in self.outputRegisterParameter:
+        print '\noutput register parameters ' + str(len(self.outputRegisterParameters))
+        for v in self.outputRegisterParameters:
             v.display(mode)
         print ""
 
@@ -283,10 +283,10 @@ def garbageCollectorUselessLoops(loopStorage):
         hasValidIOInstance = 0x0
 
         for k_inst in loopStorage[k_loop].instances.keys():
-            if len(loopStorage[k_loop].instances[k_inst].inputMemoryParameters) \
-                != 0x0 \
-                or len(loopStorage[k_loop].instances[k_inst].outputMemoryParameters) \
-                != 0x0:
+            if len(loopStorage[k_loop].instances[k_inst].inputMemoryParameters) != 0x0 \
+                or len(loopStorage[k_loop].instances[k_inst].outputMemoryParameters) != 0x0 \
+                or len(loopStorage[k_loop].instances[k_inst].inputRegisterParameters) != 0x0 \
+                or len(loopStorage[k_loop].instances[k_inst].outputRegisterParameters) != 0x0:
                 hasValidIOInstance = 1
             else:
                 loopStorage[k_loop].instances.pop(k_inst)
@@ -416,7 +416,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # regs
 
-                for inputRegVar in myLoopInstance.inputRegisterParameter:
+                for inputRegVar in myLoopInstance.inputRegisterParameters:
                     graph.add_node(pydot.Node(id, label=' '
                                    + inputRegVar.registerName + ':'
                                    + str(inputRegVar.size) + ' ',
@@ -455,7 +455,7 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 
                 # regs
 
-                for outputRegVar in myLoopInstance.outputRegisterParameter:
+                for outputRegVar in myLoopInstance.outputRegisterParameters:
                     graph.add_node(pydot.Node(id, label=' '
                                    + outputRegVar.registerName + ':'
                                    + str(outputRegVar.size) + ' ',
@@ -1185,53 +1185,168 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
             f.close()
 
-            # Input register variables
+            # Input register parameters
+
+            # for reg in utilities.GPR32:
+            #     var = variable.variable(0x0, 4, reg)
+            #     exist = 0x0
+            #     if reg + '0' in registerInputBytes.keys():
+            #         exist = 1
+            #         var.value[0x0] = registerInputBytes[reg + '0']
+
+            #     if reg + '1' in registerInputBytes.keys():
+            #         exist = 1
+            #         var.value[1] = registerInputBytes[reg + '1']
+
+            #     if reg + '2' in registerInputBytes.keys():
+            #         exist = 1
+            #         var.value[2] = registerInputBytes[reg + '2']
+
+            #     if reg + '3' in registerInputBytes.keys():
+            #         exist = 1
+            #         var.value[3] = registerInputBytes[reg + '3']
+
+            #     if exist:
+            #         myLoop.instances[instanceCounter].inputRegisterParameters.append(var)
+
 
             for reg in utilities.GPR32:
-                var = variable.variable(0x0, 4, reg)
-                exist = 0x0
-                if reg + '0' in registerInputBytes.keys():
-                    exist = 1
-                    var.value[0x0] = registerInputBytes[reg + '0']
-
-                if reg + '1' in registerInputBytes.keys():
-                    exist = 1
-                    var.value[1] = registerInputBytes[reg + '1']
-
-                if reg + '2' in registerInputBytes.keys():
-                    exist = 1
-                    var.value[2] = registerInputBytes[reg + '2']
+                
+                # Check which parts of the reg have been used
+                existL = 0x0 # AL, BL...
+                existH = 0x0 # AH, BH...
+                existX = 0x0 # EAX, EBX...
 
                 if reg + '3' in registerInputBytes.keys():
-                    exist = 1
+                    existL = 1
+                    #var.value[0x0] = registerInputBytes[reg + '0']
+
+                if reg + '2' in registerInputBytes.keys():
+                    existH = 1
+                    #var.value[1] = registerInputBytes[reg + '1']
+
+                if reg + '1' in registerInputBytes.keys():
+                    existX = 1
+                    #var.value[2] = registerInputBytes[reg + '2']
+
+                #if reg + '3' in registerInputBytes.keys():
+                 #   existX = 1
+                  #  var.value[3] = registerInputBytes[reg + '3']
+
+
+                if existX: # 32 bytes register
+
+                    var = variable.variable(0x0, 4, reg)
+
+                    var.value[0x0] = registerInputBytes[reg + '0']
+                    var.value[1] = registerInputBytes[reg + '1']
+                    var.value[2] = registerInputBytes[reg + '2']
                     var.value[3] = registerInputBytes[reg + '3']
 
-                if exist:
-                    myLoop.instances[instanceCounter].inputRegisterParameter.append(var)
+                    myLoop.instances[instanceCounter].inputRegisterParameters.append(var)
+                    
+                elif existH and existL: # 16 bytes register
 
-            # Output register variables
+                    var = variable.variable(0x0, 2, reg[1:])
+
+                    var.value[0x0] = registerInputBytes[reg + '2']
+                    var.value[1] = registerInputBytes[reg + '3']
+
+                    myLoop.instances[instanceCounter].inputRegisterParameters.append(var)
+
+                elif existH: # 8 bytes register (AH, BH...)
+
+                    var = variable.variable(0x0, 1, reg[1:2] + 'h')
+
+                    var.value[0x0] = registerInputBytes[reg + '2']
+                    
+                    myLoop.instances[instanceCounter].inputRegisterParameters.append(var)
+
+                elif existL: # 8 bytes register (AL, BL...)
+
+                    var = variable.variable(0x0, 1, reg[1:2] + 'l')
+
+                    var.value[0x0] = registerInputBytes[reg + '3']
+                    
+                    myLoop.instances[instanceCounter].inputRegisterParameters.append(var)
+
+            # Output register parameters
 
             for reg in utilities.GPR32:
-                var = variable.variable(0x0, 4, reg)
-                exist = 0x0
-                if reg + '0' in registerOutputBytes.keys():
-                    exist = 1
-                    var.value[0x0] = registerOutputBytes[reg + '0']
-
-                if reg + '1' in registerOutputBytes.keys():
-                    exist = 1
-                    var.value[1] = registerOutputBytes[reg + '1']
-
-                if reg + '2' in registerOutputBytes.keys():
-                    exist = 1
-                    var.value[2] = registerOutputBytes[reg + '2']
+            
+                # Check which parts of the reg have been used
+                existL = 0x0 # AL, BL...
+                existH = 0x0 # AH, BH...
+                existX = 0x0 # EAX, EBX...
 
                 if reg + '3' in registerOutputBytes.keys():
-                    exist = 1
+                    existL = 1
+
+                if reg + '2' in registerOutputBytes.keys():
+                    existH = 1
+
+                if reg + '1' in registerOutputBytes.keys():
+                    existX = 1
+
+                if existX: # 32 bytes register
+
+                    var = variable.variable(0x0, 4, reg)
+
+                    var.value[0x0] = registerOutputBytes[reg + '0']
+                    var.value[1] = registerOutputBytes[reg + '1']
+                    var.value[2] = registerOutputBytes[reg + '2']
                     var.value[3] = registerOutputBytes[reg + '3']
 
-                if exist:
-                    myLoop.instances[instanceCounter].outputRegisterParameter.append(var)
+                    myLoop.instances[instanceCounter].outputRegisterParameters.append(var)
+                    
+                elif existH and existL: # 16 bytes register
+
+                    var = variable.variable(0x0, 2, reg[1:])
+
+                    var.value[0x0] = registerOutputBytes[reg + '2']
+                    var.value[1] = registerOutputBytes[reg + '3']
+
+                    myLoop.instances[instanceCounter].outputRegisterParameters.append(var)
+
+                elif existH: # 8 bytes register (AH, BH...)
+
+                    var = variable.variable(0x0, 1, reg[1:2] + 'h')
+
+                    var.value[0x0] = registerOutputBytes[reg + '2']
+                    
+                    myLoop.instances[instanceCounter].outputRegisterParameters.append(var)
+
+                elif existL: # 8 bytes register (AL, BL...)
+
+                    var = variable.variable(0x0, 1, reg[1:2] + 'l')
+
+                    var.value[0x0] = registerOutputBytes[reg + '3']
+                    
+                    myLoop.instances[instanceCounter].outputRegisterParameters.append(var)
+
+            # 
+
+            # for reg in utilities.GPR32:
+            #     var = variable.variable(0x0, 4, reg)
+            #     exist = 0x0
+            #     if reg + '0' in registerOutputBytes.keys():
+            #         exist = 1
+            #         var.value[0x0] = registerOutputBytes[reg + '0']
+
+            #     if reg + '1' in registerOutputBytes.keys():
+            #         exist = 1
+            #         var.value[1] = registerOutputBytes[reg + '1']
+
+            #     if reg + '2' in registerOutputBytes.keys():
+            #         exist = 1
+            #         var.value[2] = registerOutputBytes[reg + '2']
+
+            #     if reg + '3' in registerOutputBytes.keys():
+            #         exist = 1
+            #         var.value[3] = registerOutputBytes[reg + '3']
+
+            #     if exist:
+            #         myLoop.instances[instanceCounter].outputRegisterParameters.append(var)
 
 
 def buildLoopIOConstants(myLoopStorage, myTraceFileName):

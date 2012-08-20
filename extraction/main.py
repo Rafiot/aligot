@@ -99,7 +99,7 @@ def main():
         loops.graphLoopStorage(ls, 'DebugGraph')
         print 'Done'
 
-    print 'Garbage collector for empty loops...',
+    print 'Garbage collector for useless loops...',
     before = len(ls.keys())
     loops.garbageCollectorUselessLoops(ls)
     after = len(ls.keys())

@@ -272,9 +272,9 @@ def garbageCollectorLDFG():
         if currentLDFG.valid == 0:
             LdfgDataBase.pop(k)
         elif (len(currentLDFG.inputParameters) == 0) \
-            & (len(currentLDFG.loopInstanceList[0].inputRegisterParameter)
+            & (len(currentLDFG.loopInstanceList[0].inputRegisterParameters)
                == 0) or (len(currentLDFG.outputParameters) == 0) \
-            & (len(currentLDFG.loopInstanceList[-1].outputRegisterParameter)
+            & (len(currentLDFG.loopInstanceList[-1].outputRegisterParameters)
                == 0):
 
             LdfgDataBase.pop(k)
@@ -455,7 +455,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                     if linkFound == 0:
                         currentLDFG.inputParameters.append(inputVar)
 
-                for inputRegVar in loopIns.inputRegisterParameter:
+                for inputRegVar in loopIns.inputRegisterParameters:
                     if inputRegVar.registerName not in inputRegisters:
                         inputRegisters.add(inputRegVar.registerName)
                         currentLDFG.inputParameters.append(inputRegVar)
@@ -526,7 +526,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                     i += 1
 
             for outputRegVar in \
-                currentLDFG.loopInstanceList[-1].outputRegisterParameter:
+                currentLDFG.loopInstanceList[-1].outputRegisterParameters:
                 currentLDFG.outputParameters.append(outputRegVar)
 
     # Remove invalid algos
