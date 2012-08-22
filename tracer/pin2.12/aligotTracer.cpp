@@ -66,14 +66,18 @@ VOID Analysis(int type,
 			  CONTEXT * ctx
 			  )
 {
-	if(thisIsTheEnd)
+
+	if(thisIsTheEnd && (pc != endAddress))
 		return;
 
 	// End it at the.. end address
+	// We do the test here because only the analysis function corresponds the actual execution of the end address
 	if(endAddressToTest && (pc == endAddress))
+	{
 		// Oh really ? we have to wait until the analysis function terminates
 		// Safe way : just do nothin man !
 		thisIsTheEnd = true;
+	}
 
 	if(w8ForReturnAddr != 0)
 	{
