@@ -65,7 +65,7 @@ class instruction:
         self.registersWriteValue = []
         self.x86ASM = insASM
         self.apiCall = ''
-        self.constants = []  # Like in mov eax, 0x0
+        self.constants = []  # Like 0x0 in mov eax, 0x0
 
         # Integers
 
