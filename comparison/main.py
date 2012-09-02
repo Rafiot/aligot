@@ -11,18 +11,21 @@
 
 # TODO (random order):
 #
-# - Really implement AES (PyCrypto), MD5 (PyCrypto), Modular Multiplication (Montgomery)
-# - The tool is currently only usable with a cipher argument, we should add a "default" mode where all ciphers are tested
-# - Think of a better way to allow the user to add its own algorithms (think custom algorithms, not in python)
-# - When a specific algorithm is designated by the user, only generate I/O values with the corresponding length
-# - Possible improvement: remove doublons for values
-# - Add decoding procedures for endiannes, big number libraries...
-# - Add "heuristics":
-#       + memory adjacency, i.e. prefer values containing original adjacent parameters
-#       + removal of fixed value inputs, e.g. AES SBOX, TEA delta,...
+# - Really integrate AES (PyCrypto), MD5 (PyCrypto), Modular Multiplication
+#   (Montgomery), currently we use tweaked external module to check for these
+#   algorithms. 
+# - The tool is currently only usable with a cipher argument, we should 
+#   add a "default" mode where all ciphers are tested 
+# - Think of a better way to allow the user to add its own algorithms 
+#   (think custom algorithms, not in python) .
+# - When a specific algorithm is designated by the user, only
+# generate I/O values with the corresponding length 
+# - Possible improvement: remove doublons for values 
+# - Add decoding procedures for endiannes, big number libraries... 
+# - Add "heuristics": 
+#        + memory adjacency, i.e. prefer values containing original adjacent parameters 
+#        + removal of fixed value inputs, e.g. AES SBOX, TEA delta,...
 
-# BUGS:
-# - Doesn't work when only two values either as input or output.
 
 __doc__ = \
     """
@@ -31,7 +34,7 @@ It takes as input the result file produced by the extraction module.
 """
 
 __version__ = '1'
-__versionTime__ = '08/12'
+__versionTime__ = '09/12'
 __author__ = 'j04n'
 
 import os
@@ -114,6 +117,7 @@ def main():
 
 
 def connectWithresultsFile(fileName):
+
     ''' Given the result file produced by the Aligot extraction module, builds
         a list of extractedLdfg objects. '''
 
@@ -136,7 +140,7 @@ def connectWithresultsFile(fileName):
 
         if len(inputs.split(',')) >= 10:
             print "\nERROR: More than 10 input parameters - You should try to narrow them (eg. remove memory addresses)"
-            quit()
+            quit() # Pretty rough, we could still allow the execution ?
         if len(outputs.split(',')) >= 10:
             print "\nERROR: More than 10 output parameters - You should try to narrow them (eg. remove memory addresses)"
             quit()
@@ -165,6 +169,7 @@ def connectWithresultsFile(fileName):
 
 
 def buildPossibleInputParameters(ldfg, args):
+
     ''' Build each possible parameter (that is each possible length) as a list
         of indexes, each of these index corresponding to a value in the result
         file. The list represents the concatenation of such values. 
@@ -201,6 +206,7 @@ def buildPossibleInputParameters(ldfg, args):
 
 
 def buildPossibleOutputParameters(ldfg, args):
+
     ''' Build each possible parameter (that is each possible length) as a list
         of indexes, each of these index corresponding to a value in the result
         file. The list represents the concatenation of such values. 
@@ -235,7 +241,9 @@ def buildPossibleOutputParameters(ldfg, args):
 
 
 def buildInputValue(indiceList, currentLdfg):
-    ''' Given an indexes list, and an LDFG, returns the associated input value (integer). '''
+
+    ''' Given an indexes list, and an LDFG, returns the associated input value
+        (integer). '''
 
     value = ''
     for i in indiceList:
@@ -245,7 +253,9 @@ def buildInputValue(indiceList, currentLdfg):
 
 
 def buildOutputValue(indiceList, currentLdfg):
-    ''' Given an indexes list, and an LDFG, returns the associated output value (integer). '''
+
+    ''' Given an indexes list, and an LDFG, returns the associated output
+        value (integer). '''
 
     value = ''
     for i in indiceList:
@@ -386,10 +396,7 @@ def comparison(args):
 
                         if referenceOutputD in possibleOutputs:
 
-                            print '''
-
-!! Found ''' + cipher \
-                                + ' decryption !!'
+                            print '''!! Found ''' + cipher + ' decryption !!'
 
                             print ' ===> Key (16 bytes) : ' \
                                 + binascii.hexlify(key)
@@ -402,10 +409,7 @@ def comparison(args):
 
                         if referenceOutputE in possibleOutputs:
 
-                            print '''
-
-!! Found ''' + cipher \
-                                + ' encryption !!'
+                            print '''!! Found ''' + cipher + ' encryption !!'
 
                             print ' ===> Key (16 bytes)' \
                                 + binascii.hexlify(key)

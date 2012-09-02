@@ -14,9 +14,8 @@ import copy
 import pydot
 import itertools
 import networkx as nx
-import matplotlib.pyplot as plt
 
-# These are my shit!
+# Aligot modules
 
 import loops
 import executionTrace

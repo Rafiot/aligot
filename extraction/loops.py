@@ -4,7 +4,7 @@
 # ----------------------------------------------
 # Aligot project
 
-#
+# Deal with loop detection and the building of their I/O parameters.
 
 # Copyright, licence: who cares?
 # ----------------------------------------------
@@ -12,7 +12,7 @@
 import copy
 import pydot
 
-# These are my shit!
+# Aligot modules
 
 import utilities
 import executionTrace
@@ -43,7 +43,7 @@ class executionHistory:
         rHistory.elements.reverse()
         return rHistory
 
-    # Return a list of lists of [time,instruction] that can be a loop body
+    # Return a list of lists of [time,instruction] that could be a loop body
 
     def possibleLoops(self, instToLookFor):
         
@@ -54,14 +54,12 @@ class executionHistory:
         for i in range(len(self.elements)-1, -1, -1):
 
             element = self.elements[i]
-            #myCopyHistory.append(element)
             myCopyHistory.insert(0,element)
 
             # When we find the instruction, we get the body of the associated possible loop
 
             if element[1].equal(instToLookFor):
                 newCopy = copy.copy(myCopyHistory)
-                #newCopy.reverse()
                 listOfBodies.append(newCopy)
 
         return listOfBodies
@@ -524,24 +522,16 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 # ***** LOOP DETECTION *****
 ############################
 
-# Modification of the loop detection algorithm due to the case : I1 I2 I4 I2
-# I3 I1 I2 I3 I1 Match now only push instruction if the loop is valid and
-# *only return 1* in this case It means that now either an instruction
-# participates to a *valid* (and non close) instance or either it can be test
-# for new loops (before that it was either it participates to a *possible*
-# instance or either it can be test for new loops
-
-# NO push when an instruction participates to a valid instance!!! We also set
-# a less strict removal for instructions.
-
 # Good to know :
 #  - when there is a nested loop that is matched we wait for the
-# child loop, and there is one turn on the history at this point, so during
-# the validation the classic double body suppression fail
+#   child loop, and there is one turn on the history at this point, so during
+#   the validation the classic double body suppression fail
 #  - we consider API calls to be the same for all loop instances
 
-def detectLoop(myTraceFileName):
-    ''' Holy shit. '''
+def detectLoop(myTraceFileName):     
+    
+    ''' Recognition of a loop (a word in the language w.w) from the machine
+        instructions in an execution trace. '''
 
     global onGoingLoopsStacks
 
@@ -614,6 +604,7 @@ def detectLoop(myTraceFileName):
 
 
 def createLoopInstance(loopStorage, body, time):
+
     ''' Creates an instance, with the body as a instruction list.
         The time corresponds of the first instruction of the body executed.'''
 
@@ -670,8 +661,9 @@ def createLoops(loopStorage,bodiesList,time,history):
 
         onGoingLoopsStacks.append(p)
 
-        # SPECIAL CASE : 1-inst loop :
-        # It has the priority over other possible loops because it's already valid ! (2 turns seen)
+        # SPECIAL CASE : 1-inst loop : 
+        # It has the priority over other possible
+        # loops because it's already valid ! (2 turns seen)
 
         if len(body) == 1:
             if debugMode:
@@ -755,6 +747,9 @@ def closeLoop(loopStorage,p,history,time):
 
 def match(loopStorage,ins,p,history,time):
 
+    ''' Recursive function that returns 1 if ins is awaited by a *valid*
+        loop.'''
+
     currentLoopID = int(p.head()[:p.head().find('-')])
     currentLoopInstanceID = int(p.head()[p.head().find('-') + 1:])
 
@@ -822,10 +817,15 @@ def match(loopStorage,ins,p,history,time):
 
 
 #################################
-# ***** LOOP I/O VARIABLES *****
+# ***** LOOP I/O PARAMETERS *****
 #################################
 
 def buildLoopIOMemory(myLoopStorage, myTraceFileName):
+
+    ''' Build I/O parameters from memory. A parameter is defined as a set of
+        bytes adjacent in memory *and* used (R|W) by a same instruction in a
+        loop body. The actual values of these parameters will be set later 
+        during the loop data flow graph building (buildLDFG()).'''
 
     for k in myLoopStorage.keys():
 
@@ -957,13 +957,11 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
 
             f.close()
 
-            # Build basic brick for variables: adjacence in memory + used by the same ins
-            # Inputs
+           
+            # Build input variables
 
             inputVar = list()
             for ins in range(0x0, len(myLoop.body)):
-
-                # Input bricks
 
                 if len(model[ins][0x0]) != 0x0:
                     var = variable.variable(0x0, 0x0)
@@ -975,24 +973,22 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
                             var.incrementSize()
                         else:
 
-                            # close existing var if there is one
+                            # Close existing var if there is one
 
                             if var.startAddress != 0x0:
                                 inputVar.append(var)
                                 var = variable.variable(0x0, 0x0)
 
-                    # close last one
+                    # Close last one
 
                     if var.startAddress != 0x0:
                         inputVar.append(var)
                         var = variable.variable(0x0, 0x0)
 
-            # Outputs
+            # Build output variables
 
             outputVar = list()
             for ins in range(0x0, len(myLoop.body)):
-
-                # Output bricks
 
                 if len(model[ins][1]) != 0x0:
                     var = variable.variable(0x0, 0x0)
@@ -1004,13 +1000,13 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
                             var.incrementSize()
                         else:
 
-                            # close existing var if there is one
+                            # Close existing var if there is one
 
                             if var.startAddress != 0x0:
                                 outputVar.append(var)
                                 var = variable.variable(0x0, 0x0)
 
-                    # close last one
+                    # Close last one
 
                     if var.startAddress != 0x0:
                         outputVar.append(var)
@@ -1055,6 +1051,11 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
 
 
 def buildLoopIORegisters(myLoopStorage, myTraceFileName):
+
+    ''' Build I/O parameters from register. Such parameters are defined as
+        bytes manipulated by a same instruction in a loop body *and* in the same
+        register at this moment. In contrary to memory I/O parameters, we set
+        their values here.'''
 
     for k in myLoopStorage.keys():
 
@@ -1187,29 +1188,6 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
             # Input register parameters
 
-            # for reg in utilities.GPR32:
-            #     var = variable.variable(0x0, 4, reg)
-            #     exist = 0x0
-            #     if reg + '0' in registerInputBytes.keys():
-            #         exist = 1
-            #         var.value[0x0] = registerInputBytes[reg + '0']
-
-            #     if reg + '1' in registerInputBytes.keys():
-            #         exist = 1
-            #         var.value[1] = registerInputBytes[reg + '1']
-
-            #     if reg + '2' in registerInputBytes.keys():
-            #         exist = 1
-            #         var.value[2] = registerInputBytes[reg + '2']
-
-            #     if reg + '3' in registerInputBytes.keys():
-            #         exist = 1
-            #         var.value[3] = registerInputBytes[reg + '3']
-
-            #     if exist:
-            #         myLoop.instances[instanceCounter].inputRegisterParameters.append(var)
-
-
             for reg in utilities.GPR32:
                 
                 # Check which parts of the reg have been used
@@ -1219,20 +1197,12 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
                 if reg + '3' in registerInputBytes.keys():
                     existL = 1
-                    #var.value[0x0] = registerInputBytes[reg + '0']
 
                 if reg + '2' in registerInputBytes.keys():
                     existH = 1
-                    #var.value[1] = registerInputBytes[reg + '1']
 
                 if reg + '1' in registerInputBytes.keys():
                     existX = 1
-                    #var.value[2] = registerInputBytes[reg + '2']
-
-                #if reg + '3' in registerInputBytes.keys():
-                 #   existX = 1
-                  #  var.value[3] = registerInputBytes[reg + '3']
-
 
                 if existX: # 32 bytes register
 
@@ -1324,40 +1294,20 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
                     
                     myLoop.instances[instanceCounter].outputRegisterParameters.append(var)
 
-            # 
-
-            # for reg in utilities.GPR32:
-            #     var = variable.variable(0x0, 4, reg)
-            #     exist = 0x0
-            #     if reg + '0' in registerOutputBytes.keys():
-            #         exist = 1
-            #         var.value[0x0] = registerOutputBytes[reg + '0']
-
-            #     if reg + '1' in registerOutputBytes.keys():
-            #         exist = 1
-            #         var.value[1] = registerOutputBytes[reg + '1']
-
-            #     if reg + '2' in registerOutputBytes.keys():
-            #         exist = 1
-            #         var.value[2] = registerOutputBytes[reg + '2']
-
-            #     if reg + '3' in registerOutputBytes.keys():
-            #         exist = 1
-            #         var.value[3] = registerOutputBytes[reg + '3']
-
-            #     if exist:
-            #         myLoop.instances[instanceCounter].outputRegisterParameters.append(var)
-
 
 def buildLoopIOConstants(myLoopStorage, myTraceFileName):
 
-    constantAddr = 0x0 # Fake address attributed for "constant" input parameters, like 0x1337 in MOV EAX, 0x1337
+    ''' Build constant parameters for loops, e.g. 0x42 in MOV EAX, 0x42. In
+        particular, these are only input parameters. It actually only works 
+        for 4-byte contants (cf. TODO list).'''
+
+    constantAddr = 0x0
 
     for k in myLoopStorage.keys():
 
         myLoop = myLoopStorage[k]
 
-        # for all instances of the loop
+        # For all instances of the loop
 
         for instanceCounter in myLoop.instances.keys():
 
@@ -1415,14 +1365,12 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
                                 if myLoopStorage[k].instances[kk].startTime \
                                     == time:
 
-                                    # carry out the instance length in the trace
+                                    # Carry out the instance length in the trace
 
-                                    lengthToJump = \
-    myLoopStorage[k].instances[kk].endTime \
-    - myLoopStorage[k].instances[kk].startTime + 1
+                                    lengthToJump = myLoopStorage[k].instances[kk].endTime \
+                                                    - myLoopStorage[k].instances[kk].startTime + 1
                                     foundBis = 1
-                                    myLoop.instances[instanceCounter].imbricatedInstanceID.append([k,
-        kk])
+                                    myLoop.instances[instanceCounter].imbricatedInstanceID.append([k,kk])
                                     break
 
                             if foundBis == 0x0:
@@ -1450,15 +1398,18 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
                     for cte in myIns.constants:
 
                         if cte not in constantSet:
+
                             constantSet.add(cte)
 
-                            # l'addresse doit etre un entier, mais on veut des addresses
-                            # qui sont uniques pour chaque constante... (pour eviter qu'elles
-                            # servent pour le data flow)
+                            # Due to the way we represent parameters, we have
+                            # to attribute fake addresses to constant parameters. These
+                            # adresses need to be unique, in order to not
+                            # influence the data-flow building step.
 
                             var = variable.variable(constantAddr, 4)
                             var.constant = 1
                             constantAddr += 4
+
                             for i in range(0x0, 4):
                                 var.value[i] = cte[i * 2:i * 2 + 2]
 

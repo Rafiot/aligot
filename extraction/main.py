@@ -3,18 +3,23 @@
 # ----------------------------------------------
 # Aligot project
 #
-# Extraction module
+# Extraction module. Given an execution trace, it extracts I/O values for
+# possible cryptographic algorithms.
 #
 # Copyright, licence: who cares?
 # ----------------------------------------------
 
-__doc__ = \
-    """
-Aligot project. This module takes care of the extraction of possible crypto algorithms from an execution trace.
-"""
+# TODO: 
+# - the code that extracts constants from an instruction works only with
+#   4-bytes constant. Do we need to extract more ?
+# - should we merge parameters building (memory, register, constant) in order
+#   to speed up the process ?
+
+__doc__ = """ Aligot project. This module takes care of the extraction
+from an execution trace of I/O values for possible crypto algorithms. """
 
 __version__ = '1'
-__versionTime__ = '08/12'
+__versionTime__ = '09/12'
 __author__ = 'j04n'
 
 import os
@@ -32,10 +37,8 @@ def main():
 
     # # Arguments parsing
 
-    parser = \
-        argparse.ArgumentParser(description='Extraction of possible crypto algorithms\
-                                        from an execution trace.'
-                                )
+    parser = argparse.ArgumentParser(description='Extraction of possible\
+    crypto algorithms from an execution trace.' )
 
     # Mandatory
 
@@ -118,7 +121,8 @@ def main():
             loopDataFlowGraph.LdfgDataBase[k].display()
 
     print 'Dumping results...',
-    loopDataFlowGraph.dumpResults(args.result_file,os.path.split(myTraceFileName)[-1])
+    loopDataFlowGraph.dumpResults(args.result_file,
+                                os.path.split(myTraceFileName)[-1])
     print 'Done'
 
     print 'Magic ended at'

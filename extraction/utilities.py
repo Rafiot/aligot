@@ -9,7 +9,7 @@
 # Copyright, licence: who cares?
 # ----------------------------------------------
 
-# General Purpose Registers - kind of "C define"
+# General Purpose Registers
 
 GPR32 = set(['eax','ebx','ecx','edx','esi','edi','esp','ebp'])
 

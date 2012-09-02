@@ -3,17 +3,20 @@
 
 # ----------------------------------------------
 # Aligot project
-# This module contains a simple framework to write algorithms on execution traces
 
-# The trace is collected by a tracer (Pin) and a "connector" feeds
-# our representation here
+# Simple framework to write algorithms on execution traces. The trace is
+# collected by a tracer (usually Pin) and a "connector" feeds an
+# executionTrace object.
 
 # Copyright, licence: who cares?
 # ----------------------------------------------
 
 import os
-import utilities
 import mmap
+
+# Aligot modules
+
+import utilities
 
 debugMode = 0
 
@@ -153,6 +156,9 @@ class instruction:
 
         print '\n',
 
+######################
+# Trace parsing
+######################
 
 def fileConnector(myTraceFileName,myTrace,limit=0,startAddr='',endAddr=''):
     '''Take an execution trace and build the corresponding object. 
