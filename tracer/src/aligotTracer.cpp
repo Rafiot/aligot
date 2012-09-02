@@ -1,9 +1,4 @@
-// This is a simple tracer that collect all the classic information
-
-// Possible bugs:
-// - plusieurs adresse mémoires écrites
-// - plusieurs registres écrits
-
+// Aligot tracer. Collect all possible informations.
 
 #include "pin.H"
 extern "C" {
@@ -16,8 +11,6 @@ extern "C" {
 #include <sstream>
 #include <set>
 #include <map>
-
-
 
 using namespace std;
 
@@ -740,7 +733,7 @@ void displayHelpMessage()
 	cout << "pin -t MyTracer.dll [startA DEADBEEF] [endA DEADBEEF] [noAPIs] [binRep] [flags] -- MyExe.exe arguments" << endl;
 	cout << "noAPIs : do not follow API calls" << endl;
 	cout << "binRep : instructions are outputed in their executable form (hex)" << endl;
-	cout << "flags : display Potentially Written Flags, and Read Flags" << endl;
+	cout << "flags : display Written Flags, and Read Flags" << endl;
 }
 
 int main(int argc, char * argv[])
