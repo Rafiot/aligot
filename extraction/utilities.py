@@ -29,15 +29,18 @@ def registersAddress(reg):
 
     elif reg[1] == 'l':
         return ['e' + reg[0] + 'x3']
-    
+
     print 'Error during registers parsing, register length: ' + len(reg)
     quit()
 
 
 def normalizeValueToSize(val, size):
-    ''' Returns val as an hexa string of length 2 * size '''
-    
-    return val.zfill(2*size)
+
+    ''' 
+        Returns val as an hexa string of length 2 * size
+    '''
+
+    return val.zfill(2 *size)
 
 
 def getRegisterLength(reg):
@@ -51,14 +54,18 @@ def getRegisterLength(reg):
 
 
 def normalizeValueToRegister(val, reg):
-    ''' Returns val as an hexa string of length 2 * register length '''
+    ''' Returns val as an hexa string of length 2 * register length 
+    '''
 
     return val.zfill(2*getRegisterLength(reg))
 
     
 def bigToLittleEndian(leVal):
-    '''Take a 8 hex char input value in little endian order and transform it
-        in big endian order...'''
+
+    '''
+        Take a 8 hex char input value in little endian order and transform it
+        in big endian order...
+    '''
 
     beVal = ''
     for i in range(0, len(leVal), 2):

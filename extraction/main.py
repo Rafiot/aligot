@@ -15,8 +15,10 @@
 # - should we merge parameters building (memory, register, constant) in order
 #   to speed up the process ?
 
-__doc__ = """ Aligot project. This module takes care of the extraction
-from an execution trace of I/O values for possible crypto algorithms. """
+__doc__ = ''' 
+Aligot project. This module takes care of the extraction
+from an execution trace of I/O values for possible crypto algorithms. 
+'''
 
 __version__ = '1'
 __versionTime__ = '09/12'
@@ -30,12 +32,10 @@ from datetime import datetime
 # These are my shit!
 
 import loops
-import loopDataFlowGraph
+import loopDataFlowGraph as LDFG
 
 
 def main():
-
-    # # Arguments parsing
 
     parser = argparse.ArgumentParser(description='Extraction of possible\
     crypto algorithms from an execution trace.' )
@@ -48,27 +48,38 @@ def main():
 
     parser.add_argument('-dg', '--debug_graph', dest='debug_graph',
                         action='store_true', default=False)
+
     parser.add_argument('-lsd', '--loop_storage_display',
-                        dest='loop_storage_display', action='store_true'
-                        , default=False)
-    parser.add_argument('-ap', '--all_possible_paths',
-                        dest='all_possible_paths', action='store_true',
+                        dest='loop_storage_display', action='store_true', 
                         default=False)
+
+    parser.add_argument('-ap', '--all_subgraphs',
+                        dest='all_subgraphs', 
+                        help='Each possible subgraph of the LDFG will be extracted.',
+                        action='store_true',
+                        default=False)
+
+    parser.add_argument('-sil', '--single_ins_loop',
+                        dest='single_ins_loop', 
+                        help='Take in consideration 1-ins loop, like rep-prefixed instruction (not done by default).',
+                        action='store_true',
+                        default=False)
+    
     parser.add_argument('-rf', '--result_file', action='store',
                         dest='result_file', default='result.txt')
+    
     parser.add_argument('-gn', '--graph_name', action='store',
                         dest='graph_name', default='finalGraph')
+    
     parser.add_argument('-lf', '--log_file', action='store',
                         dest='log_file', default='')
 
     args = parser.parse_args()
 
-    myTraceFileName = args.trace
+    tracePath = args.trace
 
     if args.log_file != '':
         sys.stdout = open(args.log_file, 'w')
-
-    # # The real stuff begins!
 
     print 'Aligot extraction module'
 
@@ -76,60 +87,73 @@ def main():
     print datetime.now()
 
     print 'Loop detection...',
-    ls = dict()
-    ls = loops.detectLoop(myTraceFileName)
+    # dict: ID -> loop object
+    loopStorage = loops.detectLoop(tracePath)
     print 'Done'
 
     print 'Garbage collector for invalid loops...',
-    before = len(ls.keys())
-    loops.garbageCollector(ls)
-    after = len(ls.keys())
+    before = len(loopStorage.keys())
+    loops.garbageCollector(loopStorage)
+    after = len(loopStorage.keys())
     print 'Done (' + str(before - after) + ' loops suppressed)'
 
     print 'Loop I/O...',
-    loops.buildLoopIORegisters(ls, myTraceFileName)
-    loops.buildLoopIOMemory(ls, myTraceFileName)
-    loops.buildLoopIOConstants(ls, myTraceFileName)
+    loops.buildLoopIORegisters(loopStorage, tracePath)
+    loops.buildLoopIOMemory(loopStorage, tracePath)
+    loops.buildLoopIOConstants(loopStorage, tracePath)
     print 'Done'
 
-    if args.loop_storage_display == True:
+    if args.loop_storage_display:
         print 'Loop storage display...',
-        loops.displayLoopStorage(ls)
+        loops.displayLoopStorage(loopStorage)
         print 'Done'
 
-    if args.debug_graph == True:
+    if args.debug_graph:
         print 'Debug graph...',
-        loops.graphLoopStorage(ls, 'DebugGraph')
+        loops.pydotGraphLoopStorage(loopStorage, 'DebugGraph')
         print 'Done'
 
-    print 'Garbage collector for useless loops...',
-    before = len(ls.keys())
-    loops.garbageCollectorUselessLoops(ls)
-    after = len(ls.keys())
+    print 'Garbage collector for useless loops (no I/O)...',
+    before = len(loopStorage.keys())
+    loops.garbageCollectorUselessLoops(loopStorage)
+    after = len(loopStorage.keys())
     print 'Done (' + str(before - after) + ' loops suppressed)'
 
     print 'Loop data flow graph building...',
-    if args.all_possible_paths:
-        loopDataFlowGraph.buildLDFG(ls, myTraceFileName,
-                                    allPossiblePaths=1)
-    else:
-        loopDataFlowGraph.buildLDFG(ls, myTraceFileName)
+    # dict: ID -> LoopDataFlow (connected component of the LDFG)
+    graphStorage = LDFG.build(loopStorage, 
+                            allSubgraphs=args.all_subgraphs, 
+                            singleInsLoop = args.single_ins_loop)
     print 'Done'
 
-    for k in loopDataFlowGraph.LdfgDataBase.keys():  # This is nasty.
-        if loopDataFlowGraph.LdfgDataBase[k].valid:
-            loopDataFlowGraph.LdfgDataBase[k].display()
+    print 'Garbage collector for invalid LDFs...',
+    LDFG.garbageCollector(graphStorage)
+    print 'Done'
+
+    print 'Loop data flow I/O building...',
+    LDFG.buildIO(graphStorage)
+    print 'Done'
+
+    print 'Garbage collector for useless LDFs...',
+    LDFG.garbageCollectorUselessLDF(graphStorage)
+    print 'Done'
+
+    print 'Assigning values to I/O memory parameters...',
+    LDFG.assignIOValues(graphStorage,tracePath)
+    print 'Done'
+
+    LDFG.display(graphStorage)
 
     print 'Dumping results...',
-    loopDataFlowGraph.dumpResults(args.result_file,
-                                os.path.split(myTraceFileName)[-1])
+    LDFG.dumpResults(graphStorage,args.result_file,
+                                os.path.split(tracePath)[-1])
     print 'Done'
 
     print 'Magic ended at'
     print datetime.now()
 
     print 'Producing graph...',
-    loopDataFlowGraph.graphLdfgDataBase(args.graph_name)
+    LDFG.pydotGraph(graphStorage,args.graph_name)
     print 'Done'
 
 

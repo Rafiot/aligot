@@ -4,8 +4,9 @@
 # ----------------------------------------------
 # Aligot project
 
-# A loop data flow graph (LDFG) is a graph whose nodes are loops, and edges
+# A Loop Data Flow Graph (LDFG) is a graph whose nodes are loops, and edges
 # represent data flow relationships between such loops.
+# Each connected component of the graph is named a Loop Data Flow (LDF).
 
 # Copyright, licence: who cares?
 # ----------------------------------------------
@@ -21,15 +22,17 @@ import loops
 import executionTrace
 import utilities
 
-LdfgDataBase = dict()
-LdfgID = 0
+ 
 
+class LoopDataFlow: 
 
-class LDFG:
+    '''
+        Connected component of the LDFG.
+    '''
 
     def __init__(self, ID, loopInstance):
 
-        self.ID = ID  # Key in LdfgDataBase
+        self.ID = ID 
 
         self.startTime = loopInstance.startTime
         self.endTime = loopInstance.endTime
@@ -47,7 +50,7 @@ class LDFG:
     def display(self):
 
         print '-----------------------------------'
-        print 'Loop data flow graph ' + str(self.ID)
+        print 'Loop Data Flow ' + str(self.ID)
 
         print str(len(self.loopInstanceList)) + ' loop instances'
 
@@ -69,11 +72,14 @@ class LDFG:
 
         print '\n-----------------------------------'
 
-    def merge(self, otherLDFG):
+    def merge(self, otherLDF):
 
-        # We keep this LDFG, extend it with otherLDFG, and disable otherLDFG
+        ''' 
+            We merge the two LDFs by keeping this one, extending it with
+            otherLDF, and finally disable otherLDF.         
+        '''
 
-        for loopIns1 in otherLDFG.loopInstanceList:
+        for loopIns1 in otherLDF.loopInstanceList:
 
             # We need to keep the start time ordering
 
@@ -92,29 +98,29 @@ class LDFG:
         self.startTime = self.loopInstanceList[0].startTime
         self.endTime = self.loopInstanceList[-1].endTime
 
-        otherLDFG.valid = 0
+        otherLDF.valid = 0
 
 
-def dumpResults(fileName='results.txt', inTrace=''):
+def dumpResults(graphStorage, fileName='results.txt', inTrace=''):
     
-    ''' Create the final result file. Each line contains the I/O parameter
-        values for one extracted LDFG. '''
-
-    global LdfgDataBase
+    ''' 
+        Create the final result file. Each line contains the I/O parameter
+        values for one LDF. 
+    '''
 
     out = open(fileName, 'w')
 
     # Header building
 
-    out.write('Aligot - Parameters extracted for each LDFG')
+    out.write('Aligot - Parameters extracted for each LDF')
     if len(inTrace) != 0:
         out.write(' from ' + inTrace + '\n')
-    out.write('Format: \"input parameter 1,input parameter 2:output paramter1,output parameter2\"\n\n')
+    out.write('Format: \"input parameter 1,input parameter 2:output parameter1,output parameter2\"\n\n')
 
-    for k in LdfgDataBase.keys():
-        myLDFG = LdfgDataBase[k]
+    for k in graphStorage.keys():
+        currentLDF = graphStorage[k]
         line = ''
-        for iv in myLDFG.inputParameters:
+        for iv in currentLDF.inputParameters:
             val = ''
             for byte in range(0, iv.size):
                 val += iv.value[byte]
@@ -122,7 +128,7 @@ def dumpResults(fileName='results.txt', inTrace=''):
 
         line = line[:-1] + ':'
 
-        for ov in myLDFG.outputParameters:
+        for ov in currentLDF.outputParameters:
             val = ''
             for byte in range(0, ov.size):
                 val += ov.value[byte]
@@ -135,30 +141,35 @@ def dumpResults(fileName='results.txt', inTrace=''):
 
         out.write(line)
 
+    out.close()
 
-def graphLdfgDataBase(name):
+def display(graphStorage):
 
-    global LdfgDataBase
+    for k in graphStorage.keys():
+        graphStorage[k].display()
 
-    # We do not graph everyone
 
-    limit = 10
+def pydotGraph(graphStorage,name, limit=10):
 
-    # For each LDFG
+    '''
+        limit indicates the maximal number of graphs to produce.
+    '''
 
-    for k in LdfgDataBase.keys():
+    # For each LDF
 
-        currentLDFG = LdfgDataBase[k]
+    for k in graphStorage.keys():
 
-        if currentLDFG.valid == 0:
+        currentLDF = graphStorage[k]
+
+        if currentLDF.valid == 0:
             continue
 
         graph = pydot.Dot(graph_type='digraph')
         nodeId = 0
-        label = 'LDFG ' + str(k)
-        label += '\n' + str(len(currentLDFG.loopInstanceList)) + ' LI'
+        label = 'LDF ' + str(k)
+        label += '\n' + str(len(currentLDF.loopInstanceList)) + ' LI'
 
-        # The LDFG node
+        # The LDF node
 
         graph.add_node(pydot.Node(
             nodeId,
@@ -172,12 +183,12 @@ def graphLdfgDataBase(name):
             shape='Mrecord',
             ))
 
-        curLdfgID = nodeId
+        ldfID = nodeId
         nodeId += 1
 
         # The input vars
 
-        for iv in currentLDFG.inputParameters:
+        for iv in currentLDF.inputParameters:
 
             label = '{'
 
@@ -207,7 +218,7 @@ def graphLdfgDataBase(name):
                 fontsize='20',
                 ))
 
-            edge = pydot.Edge(nodeId, curLdfgID, width='5',
+            edge = pydot.Edge(nodeId, ldfID, width='5',
                               color='chocolate1', penwidth='3')
             nodeId += 1
 
@@ -215,7 +226,7 @@ def graphLdfgDataBase(name):
 
         # The output vars
 
-        for ov in currentLDFG.outputParameters:
+        for ov in currentLDF.outputParameters:
 
             label = '{'
 
@@ -244,7 +255,7 @@ def graphLdfgDataBase(name):
                 fontsize='20',
                 ))
 
-            edge = pydot.Edge(curLdfgID, nodeId, color='deepskyblue1',
+            edge = pydot.Edge(ldfID, nodeId, color='deepskyblue1',
                               penwidth='3')
             nodeId += 1
             graph.add_edge(edge)
@@ -259,111 +270,118 @@ def graphLdfgDataBase(name):
             return
 
 
-# Remove invalid algos, and without input or output
+def garbageCollector(graphStorage):
 
-def garbageCollectorLDFG():
+    ''' 
+        Remove invalid LDFs
+    '''
 
-    global LdfgDataBase
+    for k in graphStorage.keys():
+        currentLDF = graphStorage[k]
 
-    for k in LdfgDataBase.keys():
-        currentLDFG = LdfgDataBase[k]
+        if currentLDF.valid == 0:
+            graphStorage.pop(k)
 
-        if currentLDFG.valid == 0:
-            LdfgDataBase.pop(k)
-        elif (len(currentLDFG.inputParameters) == 0) \
-            & (len(currentLDFG.loopInstanceList[0].inputRegisterParameters)
-               == 0) or (len(currentLDFG.outputParameters) == 0) \
-            & (len(currentLDFG.loopInstanceList[-1].outputRegisterParameters)
-               == 0):
+def garbageCollectorUselessLDF(graphStorage):
 
-            LdfgDataBase.pop(k)
+    '''
+        Remove LDFs without input or output parameters.
+    '''
+
+    for k in graphStorage.keys():
+        currentLDF = graphStorage[k]
+
+        if (len(currentLDF.inputParameters) == 0) & (len(currentLDF.loopInstanceList[0].inputRegisterParameters) == 0) \
+            or (len(currentLDF.outputParameters) == 0) & (len(currentLDF.loopInstanceList[-1].outputRegisterParameters) == 0):
+
+            graphStorage.pop(k)
 
 
-def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
+def build(loopStorage, allSubgraphs=False, singleInsLoop = False):
 
-    global LdfgDataBase
-    global LdfgID
+    '''
+        Create the LDFG by testing the following binary relation between loop instances:
+        
+        L1 and L2 are connected iff:
+            -  L1 started before L2 in the execution trace 
+            -  OUT(L1) intersects IN(L2)
 
-    # 1. Sort the loop instance by time
+        As a result, graphStorage is filled with the loop data flows
+        (connected components of the graph, or any subgraph, depending on the argument
+        allSubgraph)          
+    '''
 
-    sortedLoops = list()  # List of [loopID,IntanceID,0] where 0 stands for no LDFG associated yet
+    graphStorage = dict()
 
-                            # WARNING: the IDs use there are the dict keys... (probably the same that the "real" IDs though)
+    # Sort loop instances by time
 
-    for k in ls.keys():
-        myLoop = ls[k]
+    sortedLoopInstances = list()  # List of [loopID,InstanceID]
 
-        # For all instances of the loop
+    for loopKey in loopStorage.keys():
+        myLoop = loopStorage[loopKey]
 
-        for instanceCounter in myLoop.instances.keys():
+        if len(myLoop.body) == 1 and not singleInsLoop:
+            print 'WARNING: 1 instruction loop ignored'
+            continue
 
-            myLoopInstance = myLoop.instances[instanceCounter]
+        # Insertion sort on loop instances
+        for instanceKey in myLoop.instances.keys():
 
-            # Only take into account the valid instances
-
-            if myLoopInstance.valid == 0:
-                continue
-
-            # TODO: SET AN ARGUMENT FOR THAT
-
-            if len(myLoop.body) == 1:
-                print 'WARNING: 1 instruction loop ignored'
-                continue
-
+            myLoopInstance = myLoop.instances[instanceKey]
             cursor = 0
             insertionDone = 0
-            for element in sortedLoops:
+
+            for element in sortedLoopInstances:
+
                 loopID = element[0]
                 instanceID = element[1]
 
-                if ls[loopID].instances[instanceID].startTime \
+                if loopStorage[loopID].instances[instanceID].startTime \
                     > myLoopInstance.startTime:
 
-                    # insertion
-
-                    sortedLoops.insert(cursor, [k, instanceCounter, 0])
+                    sortedLoopInstances.insert(cursor, [loopKey, instanceKey])
                     insertionDone = 1
                     break
+
                 cursor += 1
 
             if insertionDone == 0:
-                sortedLoops.append([k, instanceCounter, 0])
+                sortedLoopInstances.append([loopKey, instanceKey])
 
-    # 2.1 LDFG creation
-
-    # Construct graph
+    # Graph building
+    # Each node is an index in the sortedLoopInstances list
 
     G = nx.DiGraph()
+    for i in range(0, len(sortedLoopInstances)):
 
-    for i in range(0, len(sortedLoops)):
+        G.add_node(i)
 
-        G.add_node(str(sortedLoops[i][0]) + ':'
-                   + str(sortedLoops[i][1]))
-
-        curLoopInstance = \
-            ls[sortedLoops[i][0]].instances[sortedLoops[i][1]]
+        curLoopID = sortedLoopInstances[i][0]
+        curLoopInstanceID = sortedLoopInstances[i][1]
+        curLoopInstance = loopStorage[curLoopID].instances[curLoopInstanceID]
 
         for j in range(0, i):
-            previousLoopInstance = \
-                ls[sortedLoops[j][0]].instances[sortedLoops[j][1]]
-            for outputVar in previousLoopInstance.outputMemoryParameters:
+
+            prevLoopID = sortedLoopInstances[j][0]
+            prevLoopInstanceID = sortedLoopInstances[j][1]
+            prevLoopInstance = loopStorage[prevLoopID].instances[prevLoopInstanceID]
+
+            for outputVar in prevLoopInstance.outputMemoryParameters:
                 for inputVar in curLoopInstance.inputMemoryParameters:
 
+                    # Test data flow relationship
                     if outputVar.contains(inputVar) \
                         | inputVar.contains(outputVar) \
                         | inputVar.intersects(outputVar):
 
-                        G.add_edge(str(sortedLoops[j][0]) + ':'
-                                   + str(sortedLoops[j][1]),
-                                   str(sortedLoops[i][0]) + ':'
-                                   + str(sortedLoops[i][1]))
+                        G.add_edge(j,i)
 
-    allPaths = set()
+    # Find connected components as strings "-NodeID1-NodeID2-..."
+    connectedComponents = set()
 
-    if allPossiblePaths:
+    if allSubgraphs:
 
-    # Each path in ze graph is a LDFG
-    # The graph is a DAG, we enumerate all possible paths...
+        # We add all possible subgraphs to the connected components
 
         for n in G.nodes():
             pathsToDo = set()
@@ -375,7 +393,7 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                 pathsCreated = set()
 
                 for p in pathsToDo:
-                    allPaths.add(p)
+                    connectedComponents.add(p)
                     pathsDone.add(p)
                     lastNode = p[p.rfind('-') + 1:]
 
@@ -387,175 +405,175 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
                 pathsToDo = pathsToDo.difference(pathsDone)
     else:
 
-        # Default mode: only (weakly) connected component We collect paths not
-        # necessarily in the time order, but the next phase will build
-        # LDFG with the correct ordering (thanks to merge())
+        # Default mode: only (weakly) connected component are considered
 
         for weakConnectedComponent in nx.weakly_connected_components(G):
-            path = '-' + weakConnectedComponent[0]
+            cc = '-' + str(weakConnectedComponent[0])
             for node in weakConnectedComponent[1:]:
-                path = path + '-' + node
-            allPaths.add(path)
+                cc = cc + '-' + str(node)
+            connectedComponents.add(cc)
 
-    # Create a LDFG for each path
+    # Create one LDF for each connected component
 
-    for path in allPaths:
-        loopInstancePath = path.split('-')[1:]
+    for cc in connectedComponents:
+        loopInstancePath = cc.split('-')[1:]
 
-        # First loop instance
-        # TODO: REWRITE THIS SHIT
+        firstLoopID = sortedLoopInstances[int(loopInstancePath[0])][0]
+        firstLoopInstanceID = sortedLoopInstances[int(loopInstancePath[0])][1]
+        firstLoopInstance = loopStorage[firstLoopID].instances[firstLoopInstanceID]
 
-        firstLoopInstance = \
-            ls[int((loopInstancePath[0])[:loopInstancePath[0].find(':'
-               )])].instances[int((loopInstancePath[0])[loopInstancePath[0].find(':'
-                              ) + 1:])]
-
-        currentLDFG = LDFG(LdfgID, firstLoopInstance)
-        LdfgDataBase[LdfgID] = currentLDFG
-        LdfgID += 1
+        currentLDF = LoopDataFlow(len(graphStorage.keys()), firstLoopInstance)
+        graphStorage[len(graphStorage.keys())] = currentLDF
 
         for loopInstanceIDs in loopInstancePath[1:]:
-            curLoopInstance = \
-                ls[int(loopInstanceIDs[:loopInstanceIDs.find(':'
-                   )])].instances[int(loopInstanceIDs[loopInstanceIDs.find(':'
-                                  ) + 1:])]
-            currentLDFG.merge(LDFG(0, curLoopInstance))
 
-    # 3. Define LDFG input-output basic variable
+            curLoopID = sortedLoopInstances[int(loopInstanceIDs)][0]
+            curLoopInstanceID = sortedLoopInstances[int(loopInstanceIDs)][1]
+            curLoopInstance = loopStorage[curLoopID].instances[curLoopInstanceID]
 
-    for k in LdfgDataBase.keys():
-        currentLDFG = LdfgDataBase[k]
+            currentLDF.merge(LoopDataFlow(0, curLoopInstance))
 
-        if currentLDFG.valid == 1:
+    return graphStorage
 
-            inputRegisters = set()  # Already assigned input registers
+def buildIO(graphStorage):
 
-            for i in range(0, len(currentLDFG.loopInstanceList)):
-                loopIns = currentLDFG.loopInstanceList[i]
+    '''         
+        Define LDF input-output parameters. Values are not collected
+        there (see assignIOValues())     
+    '''
 
-                # Deal with *memory* input vars
+    for ldfKey in graphStorage.keys():
+        currentLDF = graphStorage[ldfKey]
 
-                for inputVar in loopIns.inputMemoryParameters:
+        inputRegisters = set()  # Already assigned input registers
 
-                    linkFound = 0
-                    for j in range(0, i):
-                        prevLoopIns = currentLDFG.loopInstanceList[j]
+        for i in range(0, len(currentLDF.loopInstanceList)):
+            loopIns = currentLDF.loopInstanceList[i]
 
-                        for outputVar in prevLoopIns.outputMemoryParameters:
-                            if outputVar.contains(inputVar) \
-                                | inputVar.contains(outputVar) \
-                                | inputVar.intersects(outputVar):
-                                linkFound = 1
-                                break
+            # Deal with *memory* input vars
 
-                        if linkFound:
+            for inputVar in loopIns.inputMemoryParameters:
+
+                linkFound = 0
+                for j in range(0, i):
+                    prevLoopIns = currentLDF.loopInstanceList[j]
+
+                    for outputVar in prevLoopIns.outputMemoryParameters:
+                        if outputVar.contains(inputVar) \
+                            | inputVar.contains(outputVar) \
+                            | inputVar.intersects(outputVar):
+                            linkFound = 1
                             break
 
-                    if linkFound == 0:
-                        currentLDFG.inputParameters.append(inputVar)
+                    if linkFound:
+                        break
 
-                for inputRegVar in loopIns.inputRegisterParameters:
-                    if inputRegVar.registerName not in inputRegisters:
-                        inputRegisters.add(inputRegVar.registerName)
-                        currentLDFG.inputParameters.append(inputRegVar)
+                if linkFound == 0:
+                    currentLDF.inputParameters.append(inputVar)
 
-                for cte in loopIns.constantParameter:
-                    currentLDFG.inputParameters.append(cte)
+            for inputRegVar in loopIns.inputRegisterParameters:
+                if inputRegVar.registerName not in inputRegisters:
+                    inputRegisters.add(inputRegVar.registerName)
+                    currentLDF.inputParameters.append(inputRegVar)
 
-                # Deal with output vars
+            for cte in loopIns.constantParameter:
+                currentLDF.inputParameters.append(cte)
 
-                for outputVar in loopIns.outputMemoryParameters:
+            # Deal with output vars
 
-                    linkFound = 0
-                    for j in range(i + 1,
-                                   len(currentLDFG.loopInstanceList)):
-                        futureLoopIns = currentLDFG.loopInstanceList[j]
+            for outputVar in loopIns.outputMemoryParameters:
 
-                        for inputVar in futureLoopIns.inputMemoryParameters:
-                            if outputVar.contains(inputVar) \
-                                | inputVar.contains(outputVar) \
-                                | inputVar.intersects(outputVar):
-                                linkFound = 1
-                                break
+                linkFound = 0
+                for j in range(i + 1,
+                               len(currentLDF.loopInstanceList)):
+                    futureLoopIns = currentLDF.loopInstanceList[j]
 
-                        if linkFound:
+                    for inputVar in futureLoopIns.inputMemoryParameters:
+                        if outputVar.contains(inputVar) \
+                            | inputVar.contains(outputVar) \
+                            | inputVar.intersects(outputVar):
+                            linkFound = 1
                             break
 
-                    if linkFound == 0:
+                    if linkFound:
+                        break
 
-                        # No doublons
+                if linkFound == 0:
 
-                        currentLDFG.outputParameters.append(outputVar)
+                    # No doublons
 
-                # Input vars doublons (loops belonging to the same LDFG
-                # can have same or intersecting input variables)
+                    currentLDF.outputParameters.append(outputVar)
 
-                i = 0
-                while i < len(currentLDFG.inputParameters):
-                    for j in range(i + 1,
-                                   len(currentLDFG.inputParameters)):
-                        if currentLDFG.inputParameters[i].contains(currentLDFG.inputParameters[j]):
-                            del currentLDFG.inputParameters[j]
-                            i = -1
-                            break
-                        if currentLDFG.inputParameters[i].intersects(currentLDFG.inputParameters[j]):
-                            currentLDFG.inputParameters[i] = \
-                                currentLDFG.inputParameters[i].merge(currentLDFG.inputParameters[j])
-                            del currentLDFG.inputParameters[j]
-                            i = -1
-                            break
-                    i += 1
+            # Input vars doublons (loops belonging to the same LDF
+            # can have same or intersecting input variables)
 
-                # Output vars doublons
+            i = 0
+            while i < len(currentLDF.inputParameters):
+                for j in range(i + 1,
+                               len(currentLDF.inputParameters)):
+                    if currentLDF.inputParameters[i].contains(currentLDF.inputParameters[j]):
+                        del currentLDF.inputParameters[j]
+                        i = -1
+                        break
+                    if currentLDF.inputParameters[i].intersects(currentLDF.inputParameters[j]):
+                        currentLDF.inputParameters[i] = currentLDF.inputParameters[i].merge(currentLDF.inputParameters[j])
+                        del currentLDF.inputParameters[j]
+                        i = -1
+                        break
+                i += 1
 
-                i = 0
-                while i < len(currentLDFG.outputParameters):
-                    for j in range(i + 1,
-                                   len(currentLDFG.outputParameters)):
-                        if currentLDFG.outputParameters[i].contains(currentLDFG.outputParameters[j]):
-                            del currentLDFG.outputParameters[j]
-                            i = -1
-                            break
-                        if currentLDFG.outputParameters[i].intersects(currentLDFG.outputParameters[j]):
-                            currentLDFG.outputParameters[i] = \
-                                currentLDFG.outputParameters[i].merge(currentLDFG.outputParameters[j])
-                            del currentLDFG.outputParameters[j]
-                            i = -1
-                            break
-                    i += 1
+            # Output vars doublons
 
-            for outputRegVar in \
-                currentLDFG.loopInstanceList[-1].outputRegisterParameters:
-                currentLDFG.outputParameters.append(outputRegVar)
+            i = 0
+            while i < len(currentLDF.outputParameters):
+                for j in range(i + 1,
+                               len(currentLDF.outputParameters)):
+                    if currentLDF.outputParameters[i].contains(currentLDF.outputParameters[j]):
+                        del currentLDF.outputParameters[j]
+                        i = -1
+                        break
+                    if currentLDF.outputParameters[i].intersects(currentLDF.outputParameters[j]):
+                        currentLDF.outputParameters[i] = currentLDF.outputParameters[i].merge(currentLDF.outputParameters[j])
+                        del currentLDF.outputParameters[j]
+                        i = -1
+                        break
+                i += 1
 
-    # Remove invalid algos
+        for outputRegVar in \
+            currentLDF.loopInstanceList[-1].outputRegisterParameters:
+            currentLDF.outputParameters.append(outputRegVar)
 
-    garbageCollectorLDFG()
 
-    # 4. Collect values for I/O variables
-    # 4.1 - Init the start and end time for easy research
+def assignIOValues(graphStorage, myTraceFileName):
 
-    startTimeLDFG = dict()  # time -> LDFG
-    for k in LdfgDataBase.keys():
-        myLDFG = LdfgDataBase[k]
+    '''
+        Collect values for I/O *memory* parameters
+        (registers already have their values)
+    '''
 
-        if myLDFG.startTime not in startTimeLDFG.keys():
-            startTimeLDFG[myLDFG.startTime] = set()
+    # Init the start and end time for easy research
 
-        startTimeLDFG[myLDFG.startTime].add(myLDFG)
+    startTimeLDF = dict()  # time -> LDF
+    for ldfKey in graphStorage.keys():
+        currentLDF = graphStorage[ldfKey]
 
-    endTimeLDFG = dict()  # time -> LDFG
-    for k in LdfgDataBase.keys():
-        myLDFG = LdfgDataBase[k]
-        if myLDFG.endTime not in endTimeLDFG.keys():
-            endTimeLDFG[myLDFG.endTime] = set()
+        if currentLDF.startTime not in startTimeLDF.keys():
+            startTimeLDF[currentLDF.startTime] = set()
 
-        endTimeLDFG[myLDFG.endTime].add(myLDFG)  # ref
+        startTimeLDF[currentLDF.startTime].add(currentLDF)
 
-    # 4.2 - Collect values
+    endTimeLDF = dict()  # time -> LDF
+    for ldfKey in graphStorage.keys():
+        currentLDF = graphStorage[ldfKey]
+        if currentLDF.endTime not in endTimeLDF.keys():
+            endTimeLDF[currentLDF.endTime] = set()
 
-    LdfgIDs = set()
-    currentLDFG = dict()
+        endTimeLDF[currentLDF.endTime].add(currentLDF)  # ref
+
+    # Collect values
+
+    ldfIDs = set()
+    currentLDF = dict()
 
     time = 0
     f = open(myTraceFileName, 'r')
@@ -567,114 +585,96 @@ def buildLDFG(ls, myTraceFileName, allPossiblePaths=0):
             time += 1
             continue
 
-        if time in startTimeLDFG.keys():
+        if time in startTimeLDF.keys():
 
-            # patch
+            for startingLDF in startTimeLDF[time]:
 
-            for myCalc in startTimeLDFG[time]:
-
-                LdfgIDs.add(myCalc.ID)
-                currentLDFG[myCalc.ID] = myCalc
+                ldfIDs.add(startingLDF.ID)
+                currentLDF[startingLDF.ID] = startingLDF
 
                 # Build the set of input bytes
 
-                for iv in myCalc.inputParameters:
+                for iv in startingLDF.inputParameters:
 
                     # Registers AND constants have already their values
 
                     if iv.registerName == '' and iv.constant == 0:
                         for c in range(0, iv.size):
                             addr = iv.startAddress + c
-                            myCalc.WALFI[addr] = 'U'  # Undefined value
+                            startingLDF.WALFI[addr] = 'U'  # Undefined value
 
                 # Build the set of output bytes
 
-                for ov in myCalc.outputParameters:
+                for ov in startingLDF.outputParameters:
 
                     # Registers have already their values
 
                     if ov.registerName == '':
                         for c in range(0, ov.size):
                             addr = ov.startAddress + c
-                            myCalc.WALFO[addr] = 'U'  # Undefined value
+                            startingLDF.WALFO[addr] = 'U'  # Undefined value
 
-        if len(LdfgIDs) != 0:
-            for myLdfgID in LdfgIDs:
+        if len(ldfIDs) != 0:
+
+            for currentLDFID in ldfIDs:
+
                 count = 0
                 for rAddr in ins.memoryReadAddress:
                     for indexByte in range(0,
                             ins.memoryReadSize[count]):
                         addrReadByte = int(rAddr, 16) + indexByte  # int
-                        valueReadByte = \
-                            (ins.memoryReadValue[count])[indexByte
-                            * 2:indexByte * 2 + 2]
-                        if addrReadByte \
-                            in currentLDFG[myLdfgID].WALFI.keys():
+                        
+                        if addrReadByte in currentLDF[currentLDFID].WALFI.keys():
 
-                            # PATCH: we still recollect values (if *not*
-                            # already written), in the hope to avoid
-                            # endianness problems...
+                            # First time it is read, it gives its final value
+                            if currentLDF[currentLDFID].WALFI[addrReadByte] == 'U':
+                                valueReadByte = (ins.memoryReadValue[count])[indexByte* 2:indexByte * 2 + 2]
+                                currentLDF[currentLDFID].WALFI[addrReadByte] = valueReadByte
 
-                            if currentLDFG[myLdfgID].WALFI[addrReadByte] \
-                                == 'U':
-                                currentLDFG[myLdfgID].WALFI[addrReadByte] = \
-                                    valueReadByte
-                            elif addrReadByte \
-                                in currentLDFG[myLdfgID].WALFO.keys() \
-                                and currentLDFG[myLdfgID].WALFO[addrReadByte] \
-                                == 'U':
-                                currentLDFG[myLdfgID].WALFI[addrReadByte] = \
-                                    valueReadByte
                     count += 1
 
                 count = 0
                 for wAddr in ins.memoryWriteAddress:
-                    for indexByte in range(0,
-                            ins.memoryWriteSize[count]):
+                    for indexByte in range(0, ins.memoryWriteSize[count]):
+
                         addrWriteByte = int(wAddr, 16) + indexByte  # int
-                        valueWriteByte = \
-                            (ins.memoryWriteValue[count])[indexByte
-                            * 2:indexByte * 2 + 2]
 
-                        # Different processing than for inputs: we collect all output access
+                        # Each time it is written, it updates its value
 
-                        if addrWriteByte \
-                            in currentLDFG[myLdfgID].WALFO.keys():
-                            currentLDFG[myLdfgID].WALFO[addrWriteByte] = \
-                                valueWriteByte
+                        if addrWriteByte in currentLDF[currentLDFID].WALFO.keys():
+                            valueWriteByte = (ins.memoryWriteValue[count])[indexByte* 2:indexByte * 2 + 2]
+                            currentLDF[currentLDFID].WALFO[addrWriteByte] = valueWriteByte
                     count += 1
 
-        if time in endTimeLDFG.keys():
+        if time in endTimeLDF.keys():
 
-            for myCalc in endTimeLDFG[time]:
+            for endingLDF in endTimeLDF[time]:
 
                 # Copy the collected values back in the input variables
 
-                for iv in myCalc.inputParameters:
+                for iv in endingLDF.inputParameters:
                     if iv.registerName == '' and iv.constant == 0:
                         for c in range(0, iv.size):
 
-                            if myCalc.WALFI[iv.startAddress + c] == 'U':
+                            if endingLDF.WALFI[iv.startAddress + c] == 'U':
                                 print 'ERROR - A value missed ?! (r)'
                                 return
 
-                            iv.value[c] = myCalc.WALFI[iv.startAddress
-                                    + c]
+                            iv.value[c] = endingLDF.WALFI[iv.startAddress + c]
 
                 # Copy the collected values back in the output variables
 
-                for ov in myCalc.outputParameters:
+                for ov in endingLDF.outputParameters:
                     if ov.registerName == '':
                         for c in range(0, ov.size):
 
-                            if myCalc.WALFO[ov.startAddress + c] == 'U':
+                            if endingLDF.WALFO[ov.startAddress + c] == 'U':
                                 print 'ERROR - A value missed ?! (w)'
                                 return
 
-                            ov.value[c] = myCalc.WALFO[ov.startAddress
-                                    + c]
+                            ov.value[c] = endingLDF.WALFO[ov.startAddress + c]
 
-                LdfgIDs.remove(myCalc.ID)
+                ldfIDs.remove(endingLDF.ID)
 
         time += 1
 

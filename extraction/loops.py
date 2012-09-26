@@ -4,7 +4,9 @@
 # ----------------------------------------------
 # Aligot project
 
-# Deal with loop detection and the building of their I/O parameters.
+# Deal with loop detection and the building of their I/O parameters. A loop is
+# defined a the repetition of a same sequence of machine instructions in an
+# execution trace.
 
 # Copyright, licence: who cares?
 # ----------------------------------------------
@@ -20,115 +22,15 @@ import variable
 
 debugMode = 0x0
 
-onGoingLoopsStacks = list()  # The order is important, it represents the loop age
-
-
-class executionHistory:
-
-    ''' A list of [timestamp, instruction or loop ID] used for loop detection. '''
-
-    def __init__(self):
-
-        self.elements = list()
-
-    def append(self, ins, time):
-        self.elements.append([time, ins])
-
-    def pop(self):
-        return self.elements.pop()
-
-    def reverse(self):
-        rHistory = executionHistory()
-        rHistory.elements = self.elements
-        rHistory.elements.reverse()
-        return rHistory
-
-    # Return a list of lists of [time,instruction] that could be a loop body
-
-    def possibleLoops(self, instToLookFor):
-        
-        myCopyHistory = list()
-        listOfBodies = list()
-
-        # Backward pass
-        for i in range(len(self.elements)-1, -1, -1):
-
-            element = self.elements[i]
-            myCopyHistory.insert(0,element)
-
-            # When we find the instruction, we get the body of the associated possible loop
-
-            if element[1].equal(instToLookFor):
-                newCopy = copy.copy(myCopyHistory)
-                listOfBodies.append(newCopy)
-
-        return listOfBodies
-
-    # Take a list of instructions to suppress, starting at the end of the history
-
-    def suppressByTheEnd(self, body):
-
-        if body == []:
-            if debugMode:
-                print '++ The list of instructions to suppress is empty!'
-            return
-
-        rBody = copy.copy(body)
-        rBody.reverse()
-        for inst in rBody:
-            if self.elements[-1][1].equal(inst):
-                self.pop()
-            else:
-                if debugMode:
-                    print '++ Fail to suppress this instruction (Can be normal for nested loops):'
-                    print '\t' + inst.string()
-
-                # PATCH !
-                # return
-
-    def display(self):
-        for e in self.elements:
-            print '[ t:' + str(e[0x0]) + ' ins: ' + e[1].string() + ']'
-   
-
-class stackOfLoop:
-
-    ''' A stack containing loop instances, representing the loop nesting. The
-        stack head is the most nested loop. Each element is stored as a string
-        "LoopID-InstanceID"'''
-
-    def __init__(self):
-        self.elements = list()
-
-    def push(self, e):
-        self.elements.append(e)
-
-    def pop(self):
-        return self.elements.pop()
-
-    def head(self):
-        return self.elements[-1]
-
-    def reverse(self):
-        rStack = stackOfLoop()
-        rStack.elements = self.elements
-        rStack.elements.reverse()
-        return rStack
-
-    def display(self):
-        for e in self.elements:
-            print '[' + e + ']'
-
-    def empty(self):
-        return len(self.elements) == 0x0
-
 
 class loop:
 
-    ''' A loop is identified by its body, that is a list of machine
+    ''' 
+        A loop is identified by its body, that is a list of machine
         instructions or loop IDs (representing nested loops). Each 
         execution of a loop corresponds to a different instance 
-        (cf. loopInstance())'''
+        (cf. loopInstance())
+    '''
 
     def __init__(self,id,startTime,l,):
 
@@ -143,7 +45,9 @@ class loop:
 
     def display(self, mode=0x0):
 
-        ''' Display mode = 0 for valid instances only, 1 for all instances. '''
+        ''' 
+            Display mode = 0 for valid instances only, 1 for all instances.
+        '''
 
         if mode == 0x0:
             validInstance = 0x0
@@ -199,8 +103,9 @@ class loop:
 
 class loopInstance:
 
-    '''A same loop can have loop instances with different startAddress
-        (what identify a loop is its body)'''
+    '''
+        A same loop can have several instances with different startAddress
+    '''
 
     def __init__(self,id,startTime,cursor,turn,startAddr='',):
 
@@ -210,7 +115,7 @@ class loopInstance:
         self.valid = 0x0 # to 1 if the loop instance iterated at least two times
         self.turns = turn # number of iterations
         self.startTime = startTime
-        self.endTime = 0x0
+        self.endTime = 0x0 # default
         self.startAddress = startAddr
 
         self.imbricatedInstanceID = list()  # List of nested loop instances contained in this one 
@@ -258,62 +163,47 @@ class loopInstance:
         print ""
 
 
+
+
 def garbageCollector(loopStorage):
-    ''' Remove loops whose all instances are invalid. '''
 
-    for k_loop in loopStorage.keys():
-        hasValidInstance = 0x0
+    ''' 
+        Remove loops whose all instances are invalid. 
+    '''
 
-        for k_inst in loopStorage[k_loop].instances.keys():
-            if loopStorage[k_loop].instances[k_inst].valid == 1:
-                hasValidInstance = 1
+    for loopKey in loopStorage.keys():
+        hasValidInstance = False
+
+        for instKey in loopStorage[loopKey].instances.keys():
+            if loopStorage[loopKey].instances[instKey].valid == 1:
+                hasValidInstance = True
             else:
-                loopStorage[k_loop].instances.pop(k_inst)
+                loopStorage[loopKey].instances.pop(instKey)
 
-        if hasValidInstance == 0x0:
-            loopStorage.pop(k_loop)
+        if not hasValidInstance:
+            loopStorage.pop(loopKey)
 
 
 def garbageCollectorUselessLoops(loopStorage):
-    ''' Remove loops whose all instances don't have any I/O parameters. '''
+    
+    ''' 
+        Remove loops whose all instances don't have any I/O parameters. 
+    '''
 
-    for k_loop in loopStorage.keys():
-        hasValidIOInstance = 0x0
+    for loopKey in loopStorage.keys():
+        hasValidIOInstance = False
 
-        for k_inst in loopStorage[k_loop].instances.keys():
-            if len(loopStorage[k_loop].instances[k_inst].inputMemoryParameters) != 0x0 \
-                or len(loopStorage[k_loop].instances[k_inst].outputMemoryParameters) != 0x0 \
-                or len(loopStorage[k_loop].instances[k_inst].inputRegisterParameters) != 0x0 \
-                or len(loopStorage[k_loop].instances[k_inst].outputRegisterParameters) != 0x0:
-                hasValidIOInstance = 1
+        for instKey in loopStorage[loopKey].instances.keys():
+            if len(loopStorage[loopKey].instances[instKey].inputMemoryParameters) != 0x0 \
+                or len(loopStorage[loopKey].instances[instKey].outputMemoryParameters) != 0x0 \
+                or len(loopStorage[loopKey].instances[instKey].inputRegisterParameters) != 0x0 \
+                or len(loopStorage[loopKey].instances[instKey].outputRegisterParameters) != 0x0:
+                hasValidIOInstance = True
             else:
-                loopStorage[k_loop].instances.pop(k_inst)
+                loopStorage[loopKey].instances.pop(instKey)
 
-        if hasValidIOInstance == 0x0:
-            loopStorage.pop(k_loop)
-
-
-def cleanOnGoingLoops(p = None):
-
-    global onGoingLoopsStacks
-
-    if p != None:
-        onGoingLoopsStacks = list([p])
-    else:
-        onGoingLoopsStacks = list()
-
-
-def displayOnGoingLoops():
-
-    global onGoingLoopsStacks
-
-    print '\nonGoingLoopsStacks:'
-    number = 0x0
-    for p in onGoingLoopsStacks:
-        print 'Stack %d ' % number
-        number += 1
-        p.display()
-
+        if not hasValidIOInstance:
+            loopStorage.pop(loopKey)
 
 def displayLoopStorage(loopStorage, mode=0x0):
 
@@ -324,202 +214,8 @@ def displayLoopStorage(loopStorage, mode=0x0):
     for k in loopStorage.keys():
         loopStorage[k].display(mode)
 
-
-def graphLoopStorage(loopStorage, name, mode=0x0):
-    ''' Produces a graph whose loops and their parameters are the nodes,
-        whereas edges shows variable intersection.
-        It serves mainly as a debug graph.
-        '''
-
-    # mode : 0 for full display, 1 for light (only loop ID)
-
-    # 0. Graph
-
-    graph = pydot.Dot(graph_type='digraph')
-    id = 0x0
-
-    inputVarLoop = set()
-    outputVarLoop = set()
-
-    # For each loop instances
-
-    for l in loopStorage.keys():
-
-        for instan in loopStorage[l].instances.keys():
-
-            # Only valid instance
-
-            myLoopInstance = loopStorage[l].instances[instan]
-            if myLoopInstance.valid == 1:
-
-                # 1. Create Loop Node
-
-                label = ''
-                if mode == 0x0:
-                    label = \
-                        '<<table border="0" cellborder="0" cellpadding="3" bgcolor="white"><tr><td bgcolor="black" align="center" colspan="1"><font color="white">LOOP ' \
-                        + str(loopStorage[l].ID) + '-' \
-                        + str(myLoopInstance.ID) \
-                        + ' ++ Start address : 0x' \
-                        + myLoopInstance.startAddress \
-                        + '</font></td></tr>'
-                    index = 0x0
-                    for ins in loopStorage[l].body:
-
-                        label += '<tr><td align="left">' + ins.x86ASM
-
-                        if len(ins.apiCall) != 0x0:
-                            label += ' ' + ins.apiCall + '()'
-
-                        label += '</td></tr>'
-
-                        index += 1
-                    label += '</table>>'
-                else:
-                    label = str(loopStorage[l].ID) + '-' \
-                        + str(myLoopInstance.ID) \
-                        + ' Start address : 0x' \
-                        + myLoopInstance.startAddress
-
-                # Courier New graph.add_node(pydot.Node(id, label="<<table border=\"0\" cellborder=\"0\" cellpadding=\"3\" bgcolor=\"white\"><tr><td bgcolor=\"black\" align=\"center\" colspan=\"1\"><font color=\"white\">Boucle</font></td></tr><tr><td align=\"left\">test</td></tr></table>>",fontname = "Courier New", shape = "Mrecord"))
-
-                graph.add_node(pydot.Node(id, label=label,
-                               fontname='Consolas', shape='Mrecord'))
-
-                edge = pydot.Edge(id, id, color='blue',
-                                  fontname='Consolas')
-                edge.set_label(str(myLoopInstance.turns))
-                graph.add_edge(edge)
-
-                myLoopInstance.pydotNodeID = id
-
-                id += 1
-
-                # 2. Create Input Var Node
-
-                for inputVar in myLoopInstance.inputMemoryParameters:
-                    graph.add_node(pydot.Node(id,
-                                   label=hex(inputVar.startAddress)
-                                   + ':' + str(inputVar.size),
-                                   style='filled', fillcolor='#970000',
-                                   fontname='Consolas'))
-
-                    edge = pydot.Edge(id, myLoopInstance.pydotNodeID)
-                    inputVar.pydotNodeID = id
-                    inputVar.loopInstanceID = loopStorage[l].ID * 100 \
-                        + myLoopInstance.ID
-                    graph.add_edge(edge)
-                    inputVarLoop.add(inputVar)
-                    id += 1
-
-                # regs
-
-                for inputRegVar in myLoopInstance.inputRegisterParameters:
-                    graph.add_node(pydot.Node(id, label=' '
-                                   + inputRegVar.registerName + ':'
-                                   + str(inputRegVar.size) + ' ',
-                                   style='filled', fillcolor='#970000',
-                                   fontname='Consolas'))
-
-                    edge = pydot.Edge(id, myLoopInstance.pydotNodeID)
-                    inputRegVar.pydotNodeID = id
-                    inputRegVar.loopInstanceID = loopStorage[l].ID \
-                        * 100 + myLoopInstance.ID
-                    graph.add_edge(edge)
-
-            #               inputVarLoop.add(inputRegVar)
-
-                    id += 1
-
-                # 2. Create Ouput Var Node
-
-                for outputVar in myLoopInstance.outputMemoryParameters:
-
-                    # graph.add_node(pydot.Node(id, label=hex(outputVar.startAddress)+":"+str(outputVar.size),style="filled", fillcolor="#976856",fontname = "Consolas"))
-
-                    graph.add_node(pydot.Node(id,
-                                   label=hex(outputVar.startAddress)
-                                   + ':' + str(outputVar.size),
-                                   style='filled', fillcolor='#976856',
-                                   fontname='Consolas'))
-
-                    edge = pydot.Edge(myLoopInstance.pydotNodeID, id)
-                    outputVar.pydotNodeID = id
-                    outputVar.loopInstanceID = loopStorage[l].ID * 100 \
-                        + myLoopInstance.ID
-                    graph.add_edge(edge)
-                    outputVarLoop.add(outputVar)
-                    id += 1
-
-                # regs
-
-                for outputRegVar in myLoopInstance.outputRegisterParameters:
-                    graph.add_node(pydot.Node(id, label=' '
-                                   + outputRegVar.registerName + ':'
-                                   + str(outputRegVar.size) + ' ',
-                                   style='filled', fillcolor='#976856',
-                                   fontname='Consolas'))
-
-                    edge = pydot.Edge(myLoopInstance.pydotNodeID, id)
-                    outputRegVar.pydotNodeID = id
-                    outputRegVar.loopInstanceID = loopStorage[l].ID \
-                        * 100 + myLoopInstance.ID
-                    graph.add_edge(edge)
-
-                    # outputVarLoop.add(outputRegVar)
-
-                    id += 1
-
-    # Loop nesting :
-
-    for l in loopStorage.keys():
-        for instan in loopStorage[l].instances.keys():
-
-            # Only valid instance
-
-            myLoopInstance = loopStorage[l].instances[instan]
-
-            if myLoopInstance.valid == 1:
-
-                # 3. Create links with nested loops
-
-                for ins in loopStorage[l].body:
-                    if ins.string()[:2] == '+L':
-                        loopID = int(ins.string()[2:])
-                        for imbricatedInstance in \
-                            myLoopInstance.imbricatedInstanceID:
-                            if imbricatedInstance[0x0] != loopID:
-                                continue
-                            idSmallLoop = \
-                                loopStorage[imbricatedInstance[0x0]].instances[imbricatedInstance[1]].pydotNodeID
-                            edge = \
-                                pydot.Edge(myLoopInstance.pydotNodeID,
-                                    idSmallLoop, color='red')
-                            graph.add_edge(edge)
-
-    # Link between same var
-
-    for ov in outputVarLoop:
-        for iv in inputVarLoop:
-
-            # Broad notion of data-flow
-
-            if ov.contains(iv) or iv.contains(ov):
-                if ov.loopInstanceID != iv.loopInstanceID:
-                    edge = pydot.Edge(ov.pydotNodeID, iv.pydotNodeID,
-                            color='blue')
-                    graph.add_edge(edge)
-
-    # X. Final
-    # 0.5s for jpeg
-    # 1.5s for png
-    # 0.1 for dot
-
-    graph.write_dot(name + '.dot')
-
-
 ############################
-# ***** LOOP DETECTION *****
+# LOOP DETECTION
 ############################
 
 # Good to know :
@@ -528,10 +224,117 @@ def graphLoopStorage(loopStorage, name, mode=0x0):
 #   the validation the classic double body suppression fail
 #  - we consider API calls to be the same for all loop instances
 
+onGoingLoopsStacks = list()  # The order is important, it represents the loop age
+
+class executionHistory:
+
+    ''' 
+        A list of [timestamp, (machine instruction||loop ID)] used for loop detection. 
+    '''
+
+    def __init__(self):
+
+        self.elements = list()
+
+    def append(self, ins, time):
+        self.elements.append([time, ins])
+
+    def pop(self):
+        return self.elements.pop()
+
+    def reverse(self):
+        rHistory = executionHistory()
+        rHistory.elements = self.elements
+        rHistory.elements.reverse()
+        return rHistory
+
+    # Return a list of lists of [timestamp, (machine instruction||loop ID)] that could be a loop body
+
+    def possibleLoops(self, instToLookFor):
+        
+        myCopyHistory = list()
+        listOfBodies = list()
+
+        # Backward pass
+
+        for i in range(len(self.elements)-1, -1, -1):
+
+            element = self.elements[i]
+            myCopyHistory.insert(0,element)
+
+            # When we find the instruction, we get the body of the associated possible loop
+
+            if element[1].equal(instToLookFor):
+                newCopy = copy.copy(myCopyHistory)
+                listOfBodies.append(newCopy)
+
+        return listOfBodies
+
+    # Take a list of instructions to suppress, starting at the end of the history
+
+    def suppressByTheEnd(self, body):
+
+        if body == []:
+            if debugMode:
+                print '++ The list of instructions to suppress is empty!'
+            return
+
+        rBody = copy.copy(body)
+        rBody.reverse()
+        for inst in rBody:
+            if self.elements[-1][1].equal(inst):
+                self.pop()
+            else:
+                if debugMode:
+                    print '++ Fail to suppress this instruction (Can be normal for nested loops):'
+                    print '\t' + inst.string()
+
+
+    def display(self):
+        for e in self.elements:
+            print '[ t:' + str(e[0x0]) + ' ins: ' + e[1].string() + ']'
+   
+
+class stackOfLoop:
+
+    ''' 
+        A stack containing loop instances, where the stack order represents
+        the loop nesting. The stack head is the most nested loop. Each loop
+        instance is stored as a string "LoopID-InstanceID"     
+    '''
+
+    def __init__(self):
+        self.elements = list()
+
+    def push(self, e):
+        self.elements.append(e)
+
+    def pop(self):
+        return self.elements.pop()
+
+    def head(self):
+        return self.elements[-1]
+
+    def reverse(self):
+        rStack = stackOfLoop()
+        rStack.elements = self.elements
+        rStack.elements.reverse()
+        return rStack
+
+    def display(self):
+        for e in self.elements:
+            print '[' + e + ']'
+
+    def empty(self):
+        return len(self.elements) == 0x0
+
+
 def detectLoop(myTraceFileName):     
     
-    ''' Recognition of a loop (a word in the language w.w) from the machine
-        instructions in an execution trace. '''
+    ''' 
+        Recognition of a loop (a word in the language w.w) from the machine
+        instructions in an execution trace. 
+    '''
 
     global onGoingLoopsStacks
 
@@ -584,7 +387,7 @@ def detectLoop(myTraceFileName):
                     break  # As soon as we got a confirmed loop we are happy!
 
 
-        if confirmedLoop == None:
+        if confirmedLoop is None:
             # We test if the current instruction can begin a loop
             if createLoops(loopStorage, history.possibleLoops(ins),
                            time, history):
@@ -605,8 +408,10 @@ def detectLoop(myTraceFileName):
 
 def createLoopInstance(loopStorage, body, time):
 
-    ''' Creates an instance, with the body as a instruction list.
-        The time corresponds of the first instruction of the body executed.'''
+    ''' 
+        Creates an instance, with the body as a instruction list.
+        The time corresponds of the first instruction of the body executed.
+    '''
 
     # Create a possible new loop with fake id
 
@@ -642,7 +447,9 @@ def createLoopInstance(loopStorage, body, time):
 
 def createLoops(loopStorage,bodiesList,time,history):
 
-    ''' Create possible loops with a list of bodies. '''
+    ''' 
+        Create possible loops with a list of bodies. 
+    '''
 
     global onGoingLoopsStacks
 
@@ -747,8 +554,10 @@ def closeLoop(loopStorage,p,history,time):
 
 def match(loopStorage,ins,p,history,time):
 
-    ''' Recursive function that returns 1 if ins is awaited by a *valid*
-        loop.'''
+    ''' 
+        Recursive function that returns 1 if ins is awaited by a *valid*
+        loop.
+    '''
 
     currentLoopID = int(p.head()[:p.head().find('-')])
     currentLoopInstanceID = int(p.head()[p.head().find('-') + 1:])
@@ -815,17 +624,30 @@ def match(loopStorage,ins,p,history,time):
             
                 return 0x0
 
+def cleanOnGoingLoops(p = None):
+
+    global onGoingLoopsStacks
+
+    if p is not None:
+        onGoingLoopsStacks = list([p])
+    else:
+        onGoingLoopsStacks = list()
+
+
+
 
 #################################
-# ***** LOOP I/O PARAMETERS *****
+# LOOP I/O PARAMETERS
 #################################
 
 def buildLoopIOMemory(myLoopStorage, myTraceFileName):
 
-    ''' Build I/O parameters from memory. A parameter is defined as a set of
+    ''' 
+        Build I/O parameters from memory. A parameter is defined as a set of
         bytes adjacent in memory *and* used (R|W) by a same instruction in a
         loop body. The actual values of these parameters will be set later 
-        during the loop data flow graph building (buildLDFG()).'''
+        during the loop data flow graph building.
+    '''
 
     for k in myLoopStorage.keys():
 
@@ -854,7 +676,7 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
             f = open(myTraceFileName, 'r')
             lineCounter = 1
 
-            # Get the first line
+            # Go to the first line
 
             while lineCounter != time + 1:
                 f.readline()
@@ -871,21 +693,18 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
                 # Jump over nested loops
                 # The nested loop can turn a different number of times at each turn of the big loop
 
-                if myLoop.body[insCounter].string()[:2] == '+L':
+                if myLoop.body[insCounter].string().startswith('+L'):
 
                     # Goal : move the time over the loop in the trace
-                    # What loop ?
 
                     loopId = int(myLoop.body[insCounter].string()[2:])
 
-                    # Look for the associated instance (could we make the assumption that the key == ID ?)
+                    # Look for the associated instance based on its starttime
 
                     found = 0x0
                     for k in myLoopStorage.keys():
                         if myLoopStorage[k].ID == loopId:
                             found = 1
-
-                            # Look for the instance with the right start time
 
                             foundBis = 0x0
                             for kk in myLoopStorage[k].instances.keys():
@@ -917,7 +736,7 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
 
                     lineCounter = 0x0
 
-                    # Get the first line
+                    # Go to the first line
 
                     while lineCounter != lengthToJump - 1:
                         f.readline()
@@ -1052,10 +871,12 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
 
 def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
-    ''' Build I/O parameters from register. Such parameters are defined as
+    ''' 
+        Build I/O parameters from register. Such parameters are defined as
         bytes manipulated by a same instruction in a loop body *and* in the same
         register at this moment. In contrary to memory I/O parameters, we set
-        their values here.'''
+        their values here.
+    '''
 
     for k in myLoopStorage.keys():
 
@@ -1079,7 +900,7 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
             f = open(myTraceFileName, 'r')
             lineCounter = 1
 
-            # Get the first line
+            # Go to the first line
 
             while lineCounter != time + 1:
                 f.readline()
@@ -1100,7 +921,7 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
                 # Jump over nested loops
                 # The nested loop can turn a different number of times at each turn of the big loop
 
-                if myLoop.body[insCounter].string()[:2] == '+L':
+                if myLoop.body[insCounter].string().startswith('+L'):
 
                     # Goal : move the time over the loop in the trace
                     # What loop ?
@@ -1146,7 +967,7 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
                     lineCounter = 0x0
 
-                    # Get the first line
+                    # Go to the first line
 
                     while lineCounter != lengthToJump - 1:
                         f.readline()
@@ -1297,9 +1118,11 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
 def buildLoopIOConstants(myLoopStorage, myTraceFileName):
 
-    ''' Build constant parameters for loops, e.g. 0x42 in MOV EAX, 0x42. In
+    ''' 
+        Build constant parameters for loops, e.g. 0x42 in MOV EAX, 0x42. In
         particular, these are only input parameters. It actually only works 
-        for 4-byte contants (cf. TODO list).'''
+        for 4-byte contants (cf. TODO list).
+    '''
 
     constantAddr = 0x0
 
@@ -1323,7 +1146,7 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
             f = open(myTraceFileName, 'r')
             lineCounter = 1
 
-            # Get the first line
+            # Go to the first line
 
             while lineCounter != time + 1:
                 f.readline()
@@ -1344,7 +1167,7 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
                 # Jump over nested loops
                 # The nested loop can turn a different number of times at each turn of the big loop
 
-                if myLoop.body[insCounter].string()[:2] == '+L':
+                if myLoop.body[insCounter].string().startswith('+L'):
 
                     # Goal : move the time over the loop in the trace
                     # What loop ?
@@ -1388,7 +1211,7 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
 
                     lineCounter = 0x0
 
-                    # Get the first line
+                    # Go to the first line
 
                     while lineCounter != lengthToJump - 1:
                         f.readline()
@@ -1416,3 +1239,206 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
                             myLoop.instances[instanceCounter].constantParameter.append(var)
 
                     time += 1
+
+############################
+# DEBUG FUNCTIONS
+############################
+
+def pydotGraphLoopStorage(loopStorage, name, mode=0x0):
+    
+    ''' 
+        Produces a graph whose loops and their parameters are the nodes,
+        whereas edges shows variable intersection.
+        mode : 0 for full display, 1 for light (only loop ID)
+    '''
+
+    # 0. Graph
+
+    graph = pydot.Dot(graph_type='digraph')
+    id = 0x0
+
+    inputVarLoop = set()
+    outputVarLoop = set()
+
+    # For each loop instances
+
+    for l in loopStorage.keys():
+
+        for instan in loopStorage[l].instances.keys():
+
+            # Only valid instance
+
+            myLoopInstance = loopStorage[l].instances[instan]
+            if myLoopInstance.valid == 1:
+
+                # 1. Create Loop Node
+
+                label = ''
+                if mode == 0x0:
+                    label = \
+                        '<<table border="0" cellborder="0" cellpadding="3" bgcolor="white"><tr><td bgcolor="black" align="center" colspan="1"><font color="white">LOOP ' \
+                        + str(loopStorage[l].ID) + '-' \
+                        + str(myLoopInstance.ID) \
+                        + ' ++ Start address : 0x' \
+                        + myLoopInstance.startAddress \
+                        + '</font></td></tr>'
+                    index = 0x0
+                    for ins in loopStorage[l].body:
+
+                        label += '<tr><td align="left">' + ins.x86ASM
+
+                        if len(ins.apiCall) != 0x0:
+                            label += ' ' + ins.apiCall + '()'
+
+                        label += '</td></tr>'
+
+                        index += 1
+                    label += '</table>>'
+                else:
+                    label = str(loopStorage[l].ID) + '-' \
+                        + str(myLoopInstance.ID) \
+                        + ' Start address : 0x' \
+                        + myLoopInstance.startAddress
+
+                graph.add_node(pydot.Node(id, label=label,
+                               fontname='Consolas', shape='Mrecord'))
+
+                edge = pydot.Edge(id, id, color='blue',
+                                  fontname='Consolas')
+                edge.set_label(str(myLoopInstance.turns))
+                graph.add_edge(edge)
+
+                myLoopInstance.pydotNodeID = id
+
+                id += 1
+
+                # 2. Create Input Var Node
+
+                for inputVar in myLoopInstance.inputMemoryParameters:
+                    graph.add_node(pydot.Node(id,
+                                   label=hex(inputVar.startAddress)
+                                   + ':' + str(inputVar.size),
+                                   style='filled', fillcolor='#970000',
+                                   fontname='Consolas'))
+
+                    edge = pydot.Edge(id, myLoopInstance.pydotNodeID)
+                    inputVar.pydotNodeID = id
+                    inputVar.loopInstanceID = loopStorage[l].ID * 100 \
+                        + myLoopInstance.ID
+                    graph.add_edge(edge)
+                    inputVarLoop.add(inputVar)
+                    id += 1
+
+                # regs
+
+                for inputRegVar in myLoopInstance.inputRegisterParameters:
+                    graph.add_node(pydot.Node(id, label=' '
+                                   + inputRegVar.registerName + ':'
+                                   + str(inputRegVar.size) + ' ',
+                                   style='filled', fillcolor='#970000',
+                                   fontname='Consolas'))
+
+                    edge = pydot.Edge(id, myLoopInstance.pydotNodeID)
+                    inputRegVar.pydotNodeID = id
+                    inputRegVar.loopInstanceID = loopStorage[l].ID \
+                        * 100 + myLoopInstance.ID
+                    graph.add_edge(edge)
+
+
+
+                    id += 1
+
+                # 2. Create Ouput Var Node
+
+                for outputVar in myLoopInstance.outputMemoryParameters:
+
+                    
+                    graph.add_node(pydot.Node(id,
+                                   label=hex(outputVar.startAddress)
+                                   + ':' + str(outputVar.size),
+                                   style='filled', fillcolor='#976856',
+                                   fontname='Consolas'))
+
+                    edge = pydot.Edge(myLoopInstance.pydotNodeID, id)
+                    outputVar.pydotNodeID = id
+                    outputVar.loopInstanceID = loopStorage[l].ID * 100 \
+                        + myLoopInstance.ID
+                    graph.add_edge(edge)
+                    outputVarLoop.add(outputVar)
+                    id += 1
+
+                # regs
+
+                for outputRegVar in myLoopInstance.outputRegisterParameters:
+                    graph.add_node(pydot.Node(id, label=' '
+                                   + outputRegVar.registerName + ':'
+                                   + str(outputRegVar.size) + ' ',
+                                   style='filled', fillcolor='#976856',
+                                   fontname='Consolas'))
+
+                    edge = pydot.Edge(myLoopInstance.pydotNodeID, id)
+                    outputRegVar.pydotNodeID = id
+                    outputRegVar.loopInstanceID = loopStorage[l].ID \
+                        * 100 + myLoopInstance.ID
+                    graph.add_edge(edge)
+
+                    id += 1
+
+    # Loop nesting :
+
+    for l in loopStorage.keys():
+        for instan in loopStorage[l].instances.keys():
+
+            # Only valid instance
+
+            myLoopInstance = loopStorage[l].instances[instan]
+
+            if myLoopInstance.valid == 1:
+
+                # 3. Create links with nested loops
+
+                for ins in loopStorage[l].body:
+                    if ins.string().startswith('+L'):
+                        loopID = int(ins.string()[2:])
+                        for imbricatedInstance in \
+                            myLoopInstance.imbricatedInstanceID:
+                            if imbricatedInstance[0x0] != loopID:
+                                continue
+                            idSmallLoop = \
+                                loopStorage[imbricatedInstance[0x0]].instances[imbricatedInstance[1]].pydotNodeID
+                            edge = \
+                                pydot.Edge(myLoopInstance.pydotNodeID,
+                                    idSmallLoop, color='red')
+                            graph.add_edge(edge)
+
+    # Link between same var
+
+    for ov in outputVarLoop:
+        for iv in inputVarLoop:
+
+            # Broad notion of data-flow
+
+            if ov.contains(iv) or iv.contains(ov):
+                if ov.loopInstanceID != iv.loopInstanceID:
+                    edge = pydot.Edge(ov.pydotNodeID, iv.pydotNodeID,
+                            color='blue')
+                    graph.add_edge(edge)
+
+    # X. Final
+    # 0.5s for jpeg
+    # 1.5s for png
+    # 0.1 for dot
+
+    graph.write_dot(name + '.dot')
+
+
+def displayOnGoingLoops():
+
+    global onGoingLoopsStacks
+
+    print '\nonGoingLoopsStacks:'
+    number = 0x0
+    for p in onGoingLoopsStacks:
+        print 'Stack %d ' % number
+        number += 1
+        p.display()
