@@ -366,13 +366,13 @@ def build(loopStorage, allSubgraphs=False, singleInsLoop = False):
             prevLoopInstanceID = sortedLoopInstances[j][1]
             prevLoopInstance = loopStorage[prevLoopID].instances[prevLoopInstanceID]
 
-            for outputVar in prevLoopInstance.outputMemoryParameters:
-                for inputVar in curLoopInstance.inputMemoryParameters:
+            for outputParam in prevLoopInstance.outputMemoryParameters:
+                for inputParam in curLoopInstance.inputMemoryParameters:
 
                     # Test data flow relationship
-                    if outputVar.contains(inputVar) \
-                        | inputVar.contains(outputVar) \
-                        | inputVar.intersects(outputVar):
+                    if outputParam.contains(inputParam) \
+                        | inputParam.contains(outputParam) \
+                        | inputParam.intersects(outputParam):
 
                         G.add_edge(j,i)
 
@@ -438,7 +438,7 @@ def build(loopStorage, allSubgraphs=False, singleInsLoop = False):
 def buildIO(graphStorage):
 
     '''         
-        Define LDF input-output parameters. Values are not collected
+        Define LDF input-output parameters. Memory parameter values are not collected
         there (see assignIOValues())     
     '''
 
@@ -450,18 +450,18 @@ def buildIO(graphStorage):
         for i in range(0, len(currentLDF.loopInstanceList)):
             loopIns = currentLDF.loopInstanceList[i]
 
-            # Deal with *memory* input vars
+            # Input parameters
 
-            for inputVar in loopIns.inputMemoryParameters:
+            for inputParam in loopIns.inputMemoryParameters:
 
                 linkFound = 0
                 for j in range(0, i):
                     prevLoopIns = currentLDF.loopInstanceList[j]
 
-                    for outputVar in prevLoopIns.outputMemoryParameters:
-                        if outputVar.contains(inputVar) \
-                            | inputVar.contains(outputVar) \
-                            | inputVar.intersects(outputVar):
+                    for outputParam in prevLoopIns.outputMemoryParameters:
+                        if outputParam.contains(inputParam) \
+                            | inputParam.contains(outputParam) \
+                            | inputParam.intersects(outputParam):
                             linkFound = 1
                             break
 
@@ -469,7 +469,7 @@ def buildIO(graphStorage):
                         break
 
                 if linkFound == 0:
-                    currentLDF.inputParameters.append(inputVar)
+                    currentLDF.inputParameters.append(inputParam)
 
             for inputRegVar in loopIns.inputRegisterParameters:
                 if inputRegVar.registerName not in inputRegisters:
@@ -479,19 +479,19 @@ def buildIO(graphStorage):
             for cte in loopIns.constantParameter:
                 currentLDF.inputParameters.append(cte)
 
-            # Deal with output vars
+            # Output parameters
 
-            for outputVar in loopIns.outputMemoryParameters:
+            for outputParam in loopIns.outputMemoryParameters:
 
                 linkFound = 0
                 for j in range(i + 1,
                                len(currentLDF.loopInstanceList)):
                     futureLoopIns = currentLDF.loopInstanceList[j]
 
-                    for inputVar in futureLoopIns.inputMemoryParameters:
-                        if outputVar.contains(inputVar) \
-                            | inputVar.contains(outputVar) \
-                            | inputVar.intersects(outputVar):
+                    for inputParam in futureLoopIns.inputMemoryParameters:
+                        if outputParam.contains(inputParam) \
+                            | inputParam.contains(outputParam) \
+                            | inputParam.intersects(outputParam):
                             linkFound = 1
                             break
 
@@ -502,10 +502,10 @@ def buildIO(graphStorage):
 
                     # No doublons
 
-                    currentLDF.outputParameters.append(outputVar)
+                    currentLDF.outputParameters.append(outputParam)
 
-            # Input vars doublons (loops belonging to the same LDF
-            # can have same or intersecting input variables)
+            # Parameter doublons (loops belonging to the same LDF
+            # can have same or intersecting input parameters)
 
             i = 0
             while i < len(currentLDF.inputParameters):
@@ -522,8 +522,6 @@ def buildIO(graphStorage):
                         break
                 i += 1
 
-            # Output vars doublons
-
             i = 0
             while i < len(currentLDF.outputParameters):
                 for j in range(i + 1,
@@ -539,6 +537,8 @@ def buildIO(graphStorage):
                         break
                 i += 1
 
+        # Output registers: only the last loop instance
+        
         for outputRegVar in \
             currentLDF.loopInstanceList[-1].outputRegisterParameters:
             currentLDF.outputParameters.append(outputRegVar)
