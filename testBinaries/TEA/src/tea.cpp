@@ -57,15 +57,26 @@ int main()
     v1[0] = 0x01234567;
     v1[1] = 0x89ABCDEF;
 
+	cout << "Input text:" << endl;
+	cout << hex << v1[0];
+    cout << hex << v1[1] << endl;
+
     uint32_t key[4];
     key[0] = 0xDEADBEE1;
     key[1] = 0xDEADBEE2;
     key[2] = 0xDEADBEE3;
     key[3] = 0xDEADBEE4;
 
+	cout << "Key:" << endl;
+	cout << hex << key[0];
+	cout << hex << key[1];
+	cout << hex << key[2];
+	cout << hex << key[3] << endl;
+
     decrypt(v1, key);
 
-    cout << hex << v1[0] << endl;
+	cout << "Output text:" << endl;
+    cout << hex << v1[0];
     cout << hex << v1[1] << endl;
 
     return 0;
