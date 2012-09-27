@@ -202,6 +202,7 @@ def pydotGraph(graphStorage,name, limit=10):
             valueSize = 0
             for ivP in iv.value.keys():
                 if valueSize == 16:
+                    label+="..."
                     break
                 label += iv.value[ivP]
                 valueSize += 1
@@ -239,6 +240,7 @@ def pydotGraph(graphStorage,name, limit=10):
             valueSize = 0
             for ovP in ov.value.keys():
                 if valueSize == 16:
+                    label+="..."
                     break
                 label += ov.value[ovP]
                 valueSize += 1

@@ -112,7 +112,5 @@ int main()
 	cout << "Encrypted text:" << endl;
 	cout << char_to_hex(plaintext.c_str()) << endl;
 
-	getchar();
-
 	return 0;
 }

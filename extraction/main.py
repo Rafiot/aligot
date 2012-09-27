@@ -56,6 +56,10 @@ def main():
                         dest='loop_storage_display', action='store_true', 
                         default=False)
 
+    parser.add_argument('-ldfgd', '--ldfg_display',
+                        dest='ldfg_display', action='store_true', 
+                        default=False)
+
     parser.add_argument('-ap', '--all_subgraphs',
                         dest='all_subgraphs', 
                         help='Each possible subgraph of the LDFG will be extracted.',
@@ -84,84 +88,90 @@ def main():
     if args.log_file != '':
         sys.stdout = open(args.log_file, 'w')
 
-    print 'Aligot extraction module'
+    print ''
+    print '> Aligot extraction module'
 
-    print 'Magic started at'
+    print '> Start:',
     print datetime.now()
+    print '---------------------------\n'
 
     if args.debug_mode:
-        print 'DEBUG MODE ENABLED'
+        print '> DEBUG MODE ENABLED'
         loops.debugMode = 1
 
-    print 'Loop detection...',
+    print '> Loop detection...',
     # dict: ID -> loop object
     loopStorage = loops.detectLoop(tracePath)
     print 'Done'
 
-    print 'Garbage collector for invalid loops...',
+    print '> Garbage collector for invalid loops...',
     before = len(loopStorage.keys())
     loops.garbageCollector(loopStorage)
     after = len(loopStorage.keys())
     print 'Done (' + str(before - after) + ' loops suppressed)'
 
-    print 'Loop I/O...',
+    print '> Loop I/O...',
     loops.buildLoopIORegisters(loopStorage, tracePath)
     loops.buildLoopIOMemory(loopStorage, tracePath)
     loops.buildLoopIOConstants(loopStorage, tracePath)
     print 'Done'
 
     if args.loop_storage_display:
-        print 'Loop storage display...',
+        print '> Loop storage display...',
         loops.displayLoopStorage(loopStorage)
         print 'Done'
 
     if args.debug_graph:
-        print 'Debug graph...',
+        print '> Debug graph...',
         loops.pydotGraphLoopStorage(loopStorage, 'DebugGraph')
         print 'Done'
 
-    print 'Garbage collector for useless loops (no I/O)...',
+    print '> Garbage collector for useless loops (no I/O)...',
     before = len(loopStorage.keys())
     loops.garbageCollectorUselessLoops(loopStorage)
     after = len(loopStorage.keys())
     print 'Done (' + str(before - after) + ' loops suppressed)'
 
-    print 'Loop data flow graph building...',
+    print '> Loop data flow graph building...',
     # dict: ID -> LoopDataFlow (connected component of the LDFG)
     graphStorage = LDFG.build(loopStorage, 
                             allSubgraphs=args.all_subgraphs, 
                             singleInsLoop = args.single_ins_loop)
     print 'Done'
 
-    print 'Garbage collector for invalid LDFs...',
+    print '> Garbage collector for invalid LDFs...',
     LDFG.garbageCollector(graphStorage)
     print 'Done'
 
-    print 'Loop data flow I/O building...',
+    print '> Loop data flow I/O building...',
     LDFG.buildIO(graphStorage)
     print 'Done'
 
-    print 'Garbage collector for useless LDFs...',
+    print '> Garbage collector for useless LDFs...',
     LDFG.garbageCollectorUselessLDF(graphStorage)
     print 'Done'
 
-    print 'Assigning values to I/O memory parameters...',
+    print '> Assigning values to I/O memory parameters...',
     LDFG.assignIOValues(graphStorage,tracePath)
     print 'Done'
 
-    LDFG.display(graphStorage)
+    if args.ldfg_display:
+        print '> LDFG display...'
+        LDFG.display(graphStorage)
 
-    print 'Dumping results...',
+    print '> Dumping results...',
     LDFG.dumpResults(graphStorage,args.result_file,
                                 os.path.split(tracePath)[-1])
     print 'Done'
 
-    print 'Magic ended at'
-    print datetime.now()
-
-    print 'Producing graph...',
+    print '> Producing graph...',
     LDFG.pydotGraph(graphStorage,args.graph_name)
     print 'Done'
+
+    print '\n---------------------------'
+    print '> End:',
+    print datetime.now()
+    
 
 
 if __name__ == '__main__':

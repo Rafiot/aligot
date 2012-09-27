@@ -1423,13 +1423,13 @@ def pydotGraphLoopStorage(loopStorage, name, mode=0x0):
                     edge = pydot.Edge(ov.pydotNodeID, iv.pydotNodeID,
                             color='blue')
                     graph.add_edge(edge)
-
-    # X. Final
+                    
     # 0.5s for jpeg
     # 1.5s for png
     # 0.1 for dot
 
     graph.write_dot(name + '.dot')
+    graph.write_png(name + '.png')
 
 
 def displayOnGoingLoops():
