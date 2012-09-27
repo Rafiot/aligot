@@ -1,3 +1,11 @@
+/*
+Aligot project
+TEA example source code
+
+Stolen from: http://en.wikipedia.org/wiki/Tiny_Encryption_Algorithm
+*/
+
+
 #include "stdint.h"
 #include <iostream> 
 using namespace std;
@@ -27,7 +35,8 @@ void decrypt (uint32_t* v, uint32_t* k) {
     v[0]=v0; v[1]=v1;
 }
 
-void decode(long* v, long* k)
+// non-standard delta value and round number
+void modified_decrypt(long* v, long* k)
 {
     unsigned long n=16,sum,y=v[0],z=v[1],delta=0x12345678;
     sum = delta << 4;
@@ -58,26 +67,7 @@ int main()
 
     cout << hex << v1[0] << endl;
     cout << hex << v1[1] << endl;
-    
-
-    // Original implementation
-    /*long v_bis[2];
-    long key_bis[4];
-
-    v_bis[0] = 0x01234567;
-    v_bis[1] = 0x89ABCDEF;
-    
-    key_bis[0] = 0xDEADBEE1;
-    key_bis[1] = 0xDEADBEE2;
-    key_bis[2] = 0xDEADBEE3;
-    key_bis[3] = 0xDEADBEE4;
-
-    decode(v_bis,key_bis);
-    
-    cout << hex << v_bis[0] << endl;
-    cout << hex << v_bis[1] << endl;*/
 
     return 0;
 
-    
 }
