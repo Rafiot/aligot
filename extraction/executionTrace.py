@@ -18,8 +18,6 @@ import mmap
 
 import utilities
 
-debugMode = 0
-
 class executionTrace:
 
     ''' 

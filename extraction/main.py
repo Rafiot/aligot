@@ -49,6 +49,9 @@ def main():
     parser.add_argument('-dg', '--debug_graph', dest='debug_graph',
                         action='store_true', default=False)
 
+    parser.add_argument('-d', '--debug_mode', dest='debug_mode',
+                        action='store_true', default=False)
+
     parser.add_argument('-lsd', '--loop_storage_display',
                         dest='loop_storage_display', action='store_true', 
                         default=False)
@@ -85,6 +88,10 @@ def main():
 
     print 'Magic started at'
     print datetime.now()
+
+    if args.debug_mode:
+        print 'DEBUG MODE ENABLED'
+        loops.debugMode = 1
 
     print 'Loop detection...',
     # dict: ID -> loop object
