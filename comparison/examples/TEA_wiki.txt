@@ -1,0 +1,4 @@
+Aligot - Parameters extracted for each LDF from TEA_wiki.out
+Format: "input parameter 1,input parameter 2:output parameter1,output parameter2"
+
+deadbee4,deadbee3,deadbee2,deadbee1,00000020,89abcdef,0012ff54,c6ef3720,01234567,61c88647:00000000,0c400e4d,6e089494,00000000,516905ea,df5ec153

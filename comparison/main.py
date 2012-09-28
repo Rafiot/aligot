@@ -101,10 +101,12 @@ def main():
 
     connectWithresultsFile(args.resultsFile)
 
-    print 'Aligot identification module'
+    print ''
+    print '> Aligot identification module'
 
-    print 'Magic started at'
+    print '> Start:',
     print datetime.now()
+    print '---------------------------\n'
 
     for ldfg in ldfgList:
         buildPossibleInputParameters(ldfg, args)
@@ -112,7 +114,8 @@ def main():
 
     comparison(args)
 
-    print 'Magic ended at'
+    print '\n---------------------------'
+    print '> End:',
     print datetime.now()
 
 
@@ -272,11 +275,11 @@ def comparison(args):
 
     for currentLdfg in ldfgList:
 
-        print '** Crypto Algorithm Identification starting !** ',
+        print '> Comparison phase starting...',
         print str(len(currentLdfg.inputValues.keys())) + ' inputs - ',
         print str(len(currentLdfg.outputValues.keys())) + ' outputs'
 
-        print 'Comparison phase starting...',
+        
 
         # ------------------
         # # Category 1
@@ -295,7 +298,7 @@ def comparison(args):
             if args.tea_russian:
                 cipher = 'Russian TEA ' + cipher
 
-            print '\nTest for ' + cipher + ' encryption/decryption...',
+            print '\n> Test for ' + cipher + ' encryption/decryption...',
             suitableParameters = 1
             possibleOutputs = set()
 
@@ -319,7 +322,7 @@ def comparison(args):
             except:
 
                 suitableParameters = 0
-                print 'Fail: no suitable parameters found'
+                print '> Fail: no suitable parameters found'
 
             if suitableParameters == 1:
 
@@ -398,11 +401,11 @@ def comparison(args):
 
                             print '''!! Found ''' + cipher + ' decryption !!'
 
-                            print ' ===> Key (16 bytes) : ' \
+                            print ' ==> Key (16 bytes) : ' \
                                 + binascii.hexlify(key)
-                            print '\n ===> Crypted text (8 bytes) : ' \
+                            print '\n ==> Crypted text (8 bytes) : ' \
                                 + binascii.hexlify(inputText)[0:16]
-                            print '\n ===> Decrypted text (8 bytes) : ' \
+                            print '\n ==> Decrypted text (8 bytes) : ' \
                                 + referenceOutputD
 
                             found = 1
@@ -411,11 +414,11 @@ def comparison(args):
 
                             print '''!! Found ''' + cipher + ' encryption !!'
 
-                            print ' ===> Key (16 bytes)' \
+                            print ' ==> Key (16 bytes)' \
                                 + binascii.hexlify(key)
-                            print '\n ===> Deypted text (8 bytes) : ' \
+                            print '\n ==> Deypted text (8 bytes) : ' \
                                 + binascii.hexlify(inputText)[0:16]
-                            print '\n ===> Encrypted text (8 bytes) : ' \
+                            print '\n ==> Encrypted text (8 bytes) : ' \
                                 + referenceOutputE
 
                             found = 1
@@ -435,7 +438,7 @@ def comparison(args):
             if args.xtea_x:
                 cipher = 'XTEA Modified ' + cipher
 
-            print '\nTest for ' + cipher + ' encryption/decryption...',
+            print '\n> Test for ' + cipher + ' encryption/decryption...',
 
             suitableParameters = 1
             possibleOutputs = set()
@@ -521,22 +524,22 @@ def comparison(args):
 
                                     print '''\n\n!! Found ''' + cipher + ' decryption !!'
 
-                                    print ' ===> Key (16 bytes) : 0x' + binascii.hexlify(key)
-                                    print '\n ===> Delta (4 bytes) : 0x' + binascii.hexlify(myDelta)
-                                    print '\n ===> Round number (4 bytes) : 0x' + binascii.hexlify(myRoundNumber)
-                                    print '\n ===> Crypted text (8 bytes) : 0x' + binascii.hexlify(inputText)[0:16]
-                                    print '\n ===> Decrypted text (8 bytes) : ' + referenceOutputD
+                                    print ' ==> Key (16 bytes) : 0x' + binascii.hexlify(key)
+                                    print '\n ==> Delta (4 bytes) : 0x' + binascii.hexlify(myDelta)
+                                    print '\n ==> Round number (4 bytes) : 0x' + binascii.hexlify(myRoundNumber)
+                                    print '\n ==> Crypted text (8 bytes) : 0x' + binascii.hexlify(inputText)[0:16]
+                                    print '\n ==> Decrypted text (8 bytes) : ' + referenceOutputD
                                     found = 1
 
                                 if referenceOutputE in possibleOutputs:
 
                                     print '''!! Found ''' + cipher + ' encryption !!'
 
-                                    print ' ===> Key (16 bytes) : 0x' + binascii.hexlify(key)
-                                    print '\n ===> Delta (4 bytes) : 0x' + binascii.hexlify(myDelta)
-                                    print '\n ===> Round number (4 bytes) : 0x' + binascii.hexlify(myRoundNumber)
-                                    print '\n ===> Decrypted text (8 bytes) : 0x' + binascii.hexlify(inputText)[0:16]
-                                    print '\n ===> Encrypted text (8 bytes) : ' + referenceOutputE
+                                    print ' ==> Key (16 bytes) : 0x' + binascii.hexlify(key)
+                                    print '\n ==> Delta (4 bytes) : 0x' + binascii.hexlify(myDelta)
+                                    print '\n ==> Round number (4 bytes) : 0x' + binascii.hexlify(myRoundNumber)
+                                    print '\n ==> Decrypted text (8 bytes) : 0x' + binascii.hexlify(inputText)[0:16]
+                                    print '\n ==> Encrypted text (8 bytes) : ' + referenceOutputE
                                     found = 1
 
         # ------------------
@@ -552,7 +555,7 @@ def comparison(args):
             if args.rc4:
                 cipher = 'RC4 ' + cipher
 
-            print '\nTest for ' + cipher + ' encryption/decryption...',
+            print '\n> Test for ' + cipher + ' encryption/decryption...',
 
             # Store all possible input texts and keys, i.e. all possible length inputs
             # These are indexes list
@@ -604,21 +607,21 @@ def comparison(args):
 
                         print '''\n\n ** Found ''' + cipher + " encryption/decryption "
 
-                        print ' ===> Key (' + str(len(keyBE)) + ' bytes) : '+ binascii.hexlify(keyBE)
+                        print ' ==> Key (' + str(len(keyBE)) + ' bytes) : '+ binascii.hexlify(keyBE)
 
-                        print '\n ===> Crypted text (' + str(len(inputTextBE)) + ' bytes) : ',
+                        print '\n ==> Crypted text (' + str(len(inputTextBE)) + ' bytes) : ',
 
                         if len(inputTextBE) >= 32:
                             print binascii.hexlify(inputTextBE)[0:16] + '...'
                         else:
                             print binascii.hexlify(inputTextBE)
 
-                        print '\n ===> Decrypted text (' + str(len(resultRC4)) + ' bytes) : ',
+                        print '\n ==> Decrypted text (' + str(len(resultRC4.decode('hex'))) + ' bytes) : ',
                         
-                        if len(resultRC4) >= 32:
-                            print binascii.hexlify(resultRC4)[0:16] + '...'
+                        if len(resultRC4.decode('hex')) >= 32:
+                            print binascii.hexlify(resultRC4.decode('hex'))[0:16] + '...'
                         else:
-                            print binascii.hexlify(resultRC4)
+                            print binascii.hexlify(resultRC4.decode('hex'))
                         
                         found = 1
                         break
