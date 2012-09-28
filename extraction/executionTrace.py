@@ -68,21 +68,24 @@ class instruction:
         self.memoryReadSize = []
         self.memoryWriteSize = []
 
-    def equal(self, e):
-        return e.x86ASM == self.x86ASM
-
-    def string(self):
+    def __str__(self):
         return self.x86ASM
 
+    def __eq__(self, e):
+        return e.x86ASM == self.x86ASM
+
+    def __ne__(self, e):
+        return not self.__eq__(e)
+
     def firstOperand(self):
-        operands = self.string().split(',')
+        operands = str(self).split(',')
         if operands[0].find(' ') != -1: # push eax
             return (operands[0])[operands[0].find(' ') + 1:]
         else:
             return None
 
     def secondOperand(self):
-        operands = self.string().split(',')
+        operands = str(self).split(',')
         if len(operands) == 2:
             return (operands[1])[1:]
         else:
@@ -93,18 +96,18 @@ class instruction:
 
     def display(self, m=0, r=0):
 
-        # Classic display
+        '''
+            m and r indicate the level of display for memory and registers respectively:
+               - 0 don't display
+               - 1 for read accesses only
+               - 2 for write accesses only
+               - 3 for both
+        '''
 
         print '0x' + self.address + ' ' + self.x86ASM,
 
         if len(self.apiCall) != 0:
             print ' ' + self.apiCall,
-
-        # Registers
-        # 0 don't display
-        # 1 for read
-        # 2 for write
-        # 3 for both
 
         if r == 1 or r == 3:
             if self.registersRead != []:
@@ -113,6 +116,7 @@ class instruction:
                     print ' ' + self.registersRead[i] + ':' \
                         + self.registersReadValue[i],
                 print ']',
+
         if r == 2 or r == 3:
             if self.registersWrite != []:
                 print '\n\t[WR',
@@ -120,12 +124,6 @@ class instruction:
                     print ' ' + self.registersWrite[i] + ':' \
                         + self.registersWriteValue[i],
                 print ']',
-
-        # Memory
-        # 0 don't display
-        # 1 for read
-        # 2 for write
-        # 3 for both
 
         if m == 1 or m == 3:
             if self.memoryReadAddress != []:
@@ -135,6 +133,7 @@ class instruction:
                         + str(self.memoryReadSize[i]) + ':' \
                         + self.memoryReadValue[i],
                 print ']',
+
         if m == 2 or m == 3:
             if self.memoryWriteAddress != []:
                 print '\n\t[WM',
@@ -164,7 +163,7 @@ def lineConnector(line):
     '''
 
     if line.startswith('API CALL'):
-        return -1
+        return None
     else:
         myLine = line.split('!')
 
@@ -220,4 +219,4 @@ def lineConnector(line):
             if line != '\n':
                 print 'Error in readling line (connector)'
                 print line
-            return -1
+            return None

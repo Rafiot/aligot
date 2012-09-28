@@ -21,7 +21,7 @@ from an execution trace of I/O values for possible crypto algorithms.
 '''
 
 __version__ = '1'
-__versionTime__ = '09/12'
+__versionTime__ = '10/12'
 __author__ = 'j04n'
 
 import os

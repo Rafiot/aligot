@@ -54,7 +54,8 @@ def getRegisterLength(reg):
 
 
 def normalizeValueToRegister(val, reg):
-    ''' Returns val as an hexa string of length 2 * register length 
+    ''' 
+        Returns val as an hexa of length 2 * register length 
     '''
 
     return val.zfill(2*getRegisterLength(reg))

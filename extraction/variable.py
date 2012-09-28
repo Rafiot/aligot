@@ -23,10 +23,6 @@ class variable:
             for k in self.value.keys():
                 print self.value[k],
 
-    def equal(self, var):
-        return (self.startAddress == var.startAddress) & (self.size
-                == var.size)
-
     def incrementSize(self):
 
         self.value[self.size] = '00'
@@ -34,7 +30,9 @@ class variable:
 
     def intersects(self, otherVar):
 
-        # Applies only to memory variables
+        '''
+            Applies only to memory variables
+        '''
 
         if self.registerName != '' or otherVar.registerName != '':
             return 0
@@ -56,11 +54,12 @@ class variable:
 
     def contains(self, otherVar):
 
-        # Our var contains otherVar if:
-        # - otherVar startaddress is equal or more our sa
-        # - otherVar endaddress is no more than our end address
-
-        # applies only to memory variables
+        '''
+            Our var contains otherVar if:
+                - otherVar startaddress is equal or more our sa
+                - otherVar endaddress is no more than our end address
+            (applies only to memory variables)
+        '''
 
         if self.registerName != '' or otherVar.registerName != '':
             return 0
@@ -69,14 +68,13 @@ class variable:
                 & (otherVar.startAddress + otherVar.size
                    <= self.startAddress + self.size)
 
-    # Either startAddress is null and registerName not null, or the contrary
+    
+    def __init__(self,startAddress,size,registerName=''):
 
-    def __init__(
-        self,
-        startAddress,
-        size,
-        registerName='',
-        ):
+        '''             
+            Either startAddress is null and registerName not null,
+            or the contrary (xD)
+        '''
 
         # ints!
 

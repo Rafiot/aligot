@@ -73,7 +73,7 @@ class loop:
                 ins.display()
             print '\n************************************'
 
-    def equal(self, loopToCompare):
+    def __eq__(self, loopToCompare):
 
         if len(loopToCompare.body) != len(self.body):
             return 0x0
@@ -83,10 +83,14 @@ class loop:
 
             cursor = 0x0
             for ins in loopToCompare.body:
-                if not ins.equal(self.body[cursor]):
+                if ins != self.body[cursor]:
                     return 0x0
                 cursor += 1
             return 1
+
+    def __ne__(self, loopToCompare):
+
+        return not self.__eq__(loopToCompare)
 
     def addInstance(self,startTime,cursor,turn,startAddress='',):
 
@@ -264,7 +268,7 @@ class executionHistory:
 
             # When we find the instruction, we get the body of the associated possible loop
 
-            if element[1].equal(instToLookFor):
+            if element[1] == instToLookFor:
                 newCopy = copy.copy(myCopyHistory)
                 listOfBodies.append(newCopy)
 
@@ -282,17 +286,17 @@ class executionHistory:
         rBody = copy.copy(body)
         rBody.reverse()
         for inst in rBody:
-            if self.elements[-1][1].equal(inst):
+            if self.elements[-1][1] == inst:
                 self.pop()
             else:
                 if debugMode:
                     print '++ Fail to suppress this instruction (Can be normal for nested loops):'
-                    print '\t' + inst.string()
+                    print '\t' + str(inst)
 
 
     def display(self):
         for e in self.elements:
-            print '[ t:' + str(e[0x0]) + ' ins: ' + e[1].string() + ']'
+            print '[ t:' + str(e[0x0]) + ' ins: ' + str(e[1]) + ']'
    
 
 class stackOfLoop:
@@ -364,13 +368,13 @@ def detectLoop(myTraceFileName):
 
         ins = executionTrace.lineConnector(line)
 
-        if ins == -1:
+        if ins is None:
             time += 1  # time is actually the number of lines (including "API CALL .." lines)
             continue
 
         if debugMode:
             print '_ _ _ _\n'
-            print '++ Read from trace : ' + ins.string()
+            print '++ Read from trace : ' + str(ins)
 
         confirmedLoop = None
 
@@ -427,7 +431,7 @@ def createLoopInstance(loopStorage, body, time):
     # Could be improve by using hashes + set
 
     for k in loopStorage.keys():
-        if loopStorage[k].equal(newLoop):
+        if loopStorage[k] == newLoop:
             loopStorage[k].addInstance(time, 1, 1,
                     loopInstanceStartAddress)
             return (loopStorage[k].ID, loopStorage[k].numberOfInstances
@@ -457,7 +461,7 @@ def createLoops(loopStorage,bodiesList,time,history):
         if debugMode:
             print '++ Loop creation with body :'
             for e in body:
-                print '\t t:' + str(e[0x0]) + ' ins:' + e[1].string()
+                print '\t t:' + str(e[0x0]) + ' ins:' + str(e[1])
         
         p = stackOfLoop()
         
@@ -569,8 +573,8 @@ def match(loopStorage,ins,p,history,time):
     w8ForInst = curLoop.body[w8ForIndex]
 
     if debugMode:
-        print '++ Match fonction w8 for ' + w8ForInst.string() \
-            + ' and I have ' + ins.string()
+        print '++ Match fonction w8 for ' + str(w8ForInst) \
+            + ' and I have ' + str(ins)
 
     # If the waited instruction is a loop, we have to instantiate it
 
@@ -580,7 +584,7 @@ def match(loopStorage,ins,p,history,time):
 
         # Get the loop ID
 
-        loopID = int(w8ForInst.string()[2:])
+        loopID = int(str(w8ForInst)[2:])
 
         # Create a new instance
 
@@ -591,7 +595,7 @@ def match(loopStorage,ins,p,history,time):
 
         return match(loopStorage, ins, p, history, time)
     else:
-        if ins.equal(w8ForInst):
+        if ins == w8ForInst:
             if debugMode:
                 print '++ This is a match!'
 
@@ -686,18 +690,18 @@ def buildLoopIOMemory(myLoopStorage, myTraceFileName):
             while time <= myLoop.instances[instanceCounter].endTime:
 
                 myIns = executionTrace.lineConnector(f.readline())
-                if myIns == -1:
+                if myIns is None:
                     time += 1
                     continue
 
                 # Jump over nested loops
                 # The nested loop can turn a different number of times at each turn of the big loop
 
-                if myLoop.body[insCounter].string().startswith('+L'):
+                if str(myLoop.body[insCounter]).startswith('+L'):
 
                     # Goal : move the time over the loop in the trace
 
-                    loopId = int(myLoop.body[insCounter].string()[2:])
+                    loopId = int(str(myLoop.body[insCounter])[2:])
 
                     # Look for the associated instance based on its starttime
 
@@ -911,7 +915,7 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
 
                 myIns = executionTrace.lineConnector(f.readline())
 
-                if myIns == -1:
+                if myIns is None:
 
                     # print "continue"
 
@@ -921,12 +925,12 @@ def buildLoopIORegisters(myLoopStorage, myTraceFileName):
                 # Jump over nested loops
                 # The nested loop can turn a different number of times at each turn of the big loop
 
-                if myLoop.body[insCounter].string().startswith('+L'):
+                if str(myLoop.body[insCounter]).startswith('+L'):
 
                     # Goal : move the time over the loop in the trace
                     # What loop ?
 
-                    loopId = int(myLoop.body[insCounter].string()[2:])
+                    loopId = int(str(myLoop.body[insCounter])[2:])
 
                     # Look for the associated instance (could we make the assumption that the key == ID ?)
 
@@ -1157,7 +1161,7 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
 
                 myIns = executionTrace.lineConnector(f.readline())
 
-                if myIns == -1:
+                if myIns is None:
 
                     # print "continue"
 
@@ -1167,12 +1171,12 @@ def buildLoopIOConstants(myLoopStorage, myTraceFileName):
                 # Jump over nested loops
                 # The nested loop can turn a different number of times at each turn of the big loop
 
-                if myLoop.body[insCounter].string().startswith('+L'):
+                if str(myLoop.body[insCounter]).startswith('+L'):
 
                     # Goal : move the time over the loop in the trace
                     # What loop ?
 
-                    loopId = int(myLoop.body[insCounter].string()[2:])
+                    loopId = int(str(myLoop.body[insCounter])[2:])
 
                     # Look for the associated instance (could we make the assumption that the key == ID ?)
 
@@ -1398,8 +1402,8 @@ def pydotGraphLoopStorage(loopStorage, name, mode=0x0):
                 # 3. Create links with nested loops
 
                 for ins in loopStorage[l].body:
-                    if ins.string().startswith('+L'):
-                        loopID = int(ins.string()[2:])
+                    if str(ins).startswith('+L'):
+                        loopID = int(str(ins)[2:])
                         for imbricatedInstance in \
                             myLoopInstance.imbricatedInstanceID:
                             if imbricatedInstance[0x0] != loopID:

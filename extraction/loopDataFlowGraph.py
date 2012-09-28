@@ -583,7 +583,7 @@ def assignIOValues(graphStorage, myTraceFileName):
     for line in f:
 
         ins = executionTrace.lineConnector(line)
-        if ins == -1:
+        if ins is None:
             time += 1
             continue
 
