@@ -10,6 +10,8 @@
 # ----------------------------------------------
 
 # TODO: 
+#
+# - Minimal data-flow on registers between loops, with a window
 # - the code that extracts constants from an instruction works only with
 #   4-bytes constant. Do we need to extract more ?
 # - should we merge parameters building (memory, register, constant) in order

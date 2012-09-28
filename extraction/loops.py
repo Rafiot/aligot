@@ -137,7 +137,8 @@ class loopInstance:
 
     def display(self, mode=0x0):
 
-        print '=> Instance %d' % self.ID
+        print '-----------------------------------'
+        print '\n=> Instance %d' % self.ID
         print ' SA = 0x%s  w8for = %d - close = %d - valid = %d - turns = %d - startTime = %d - endTime = %d ' \
             % (
             self.startAddress,
@@ -164,7 +165,7 @@ class loopInstance:
         print '\noutput register parameters ' + str(len(self.outputRegisterParameters))
         for v in self.outputRegisterParameters:
             v.display(mode)
-        print ""
+        print "\n-----------------------------------"
 
 
 
@@ -213,8 +214,6 @@ def displayLoopStorage(loopStorage, mode=0x0):
 
     # mode : 0 : default (only valid loops)
     #        1 : all loops
-
-    print '\nLoopStorage:'
     for k in loopStorage.keys():
         loopStorage[k].display(mode)
 
