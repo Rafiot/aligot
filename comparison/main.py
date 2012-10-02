@@ -7,9 +7,11 @@ It takes as input the result file produced by the extraction module.
 """
 
 # TODO: 
+#
 # - allows more than 2-input parameters functions:
 #       + hash functions
 #       + parametrized implementations (tea)
+# - one thread for each cipher ?
 
 __version__ = '1'
 __versionTime__ = '10/12'
@@ -114,19 +116,24 @@ def compare(ldf, refCipher):
 
             if refCipher.encipher(i1,i2) in possibleOutputs:
 
+                ciphertext = refCipher.encipher(i1,i2)
+
                 print "\n\n!! Identification successful: " + refCipher._name + " encryption with:"
                 print "> " + refCipher._name + " encryption"
-                print ' ==> Plain text (' + str(refCipher.getPlaintextLength()) + ' bytes) : 0x' + i1
-                print ' ==> Key ('+ str(refCipher.getKeyLength()) +' bytes) : 0x' + i2
-                print ' ==> Encrypted text (' + str(refCipher.getCiphertextLength()) + ' bytes) : 0x' + refCipher.encipher(i1,i2)
+    
+                print ' ==> Plain text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
+                print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
+                print ' ==> Encrypted text (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
                 return True
             
             elif refCipher.decipher(i1,i2) in possibleOutputs:
 
+                plaintext = refCipher.decipher(i1,i2)
+
                 print "\n\n!! Identification successful: " + refCipher._name + " decryption with:"
-                print ' ==> Encrypted text (' + str(refCipher.getCiphertextLength()) + ' bytes) : 0x' + i1
-                print ' ==> Key ('+ str(refCipher.getKeyLength()) +' bytes) : 0x' + i2
-                print ' ==> Decrypted text (' + str(refCipher.getPlaintextLength()) + ' bytes) : 0x' + refCipher.decipher(i1,i2)
+                print ' ==> Encrypted text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
+                print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
+                print ' ==> Decrypted text (' + str(len(plaintext)/2) + ' bytes) : 0x' + plaintext
                 return True
 
 

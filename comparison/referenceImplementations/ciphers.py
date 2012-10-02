@@ -1,5 +1,5 @@
-
-implementedCiphers = ['tea','rc4','xtea','russian_tea']
+# When no cipher specified, all of them will be test in the list order
+implementedCiphers = ['tea','xtea','russian_tea','rc4']
 
 
 class cipherTemplate():
