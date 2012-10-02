@@ -12,6 +12,10 @@ It takes as input the result file produced by the extraction module.
 #       + hash functions
 #       + parametrized implementations (tea)
 # - one thread for each cipher ?
+# - Add decoding procedures for endiannes, big number libraries... 
+# - Add "heuristics": 
+#        + memory adjacency, i.e. prefer values containing original adjacent parameters 
+#        + removal of fixed value inputs, e.g. AES SBOX, TEA delta,...
 
 __version__ = '1'
 __versionTime__ = '10/12'
@@ -92,7 +96,7 @@ def main():
 
 def compare(ldf, refCipher):
 
-    print "  > Comparison with " + refCipher._name + "...",
+    print "  > Comparison with " + refCipher.getName() + "...",
 
     [i1,i2,o] = generateParameterOrganization(ldf, 
                                                 refCipher.getPlaintextLength(),
@@ -118,8 +122,8 @@ def compare(ldf, refCipher):
 
                 ciphertext = refCipher.encipher(i1,i2)
 
-                print "\n\n!! Identification successful: " + refCipher._name + " encryption with:"
-                print "> " + refCipher._name + " encryption"
+                print "\n\n!! Identification successful: " + refCipher.getName() + " encryption with:"
+                print "> " + refCipher.getName() + " encryption"
     
                 print ' ==> Plain text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
                 print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
@@ -130,7 +134,7 @@ def compare(ldf, refCipher):
 
                 plaintext = refCipher.decipher(i1,i2)
 
-                print "\n\n!! Identification successful: " + refCipher._name + " decryption with:"
+                print "\n\n!! Identification successful: " + refCipher.getName() + " decryption with:"
                 print ' ==> Encrypted text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
                 print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
                 print ' ==> Decrypted text (' + str(len(plaintext)/2) + ' bytes) : 0x' + plaintext
