@@ -1,0 +1,57 @@
+import ciphers
+
+from Crypto.Cipher import ARC4
+
+class cipher(ciphers.cipherTemplate):
+
+	def __init__(self):
+
+		self._name = 'RC4'
+		self._inputTextLength = -1
+		self._keyLength = -1
+		self._outputTextLength = -1
+
+	def encipher(self, inputText, key):
+		
+		from Crypto.Cipher import ARC4
+
+		encKey = self._encode(key)
+		encInputText = self._encode(inputText)
+		
+		cipher = ARC4.new(encKey)
+		outputText = cipher.encrypt(encInputText)
+
+		return self._decode(outputText)
+
+
+	def decipher(self, inputText, key):
+		
+		'''
+			Same as encipher
+		'''
+
+		return self.encipher(inputText,key)
+
+	def _encode(self, inputText):
+
+		return inputText.decode('hex')
+
+	def _decode(self, inputText):
+
+		return inputText.encode('hex')
+
+	def getName(self):
+
+		return self._name
+
+	def getInputTextLength(self):
+
+		return self._inputTextLength
+
+	def getKeyLength(self):
+
+		return self._keyLength
+
+	def getOutputTextLength(self):
+
+		return self._outputTextLength

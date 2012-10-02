@@ -1,31 +1,4 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
-# ----------------------------------------------
-# Aligot project
-#
-# Identification module
-#
-# Copyright, licence: who cares?
-# ----------------------------------------------
-
-# TODO (random order):
-#
-# - Really integrate AES (PyCrypto), MD5 (PyCrypto), Modular Multiplication
-#   (Montgomery), currently we use tweaked external module to check for these
-#   algorithms. 
-# - The tool is currently only usable with a cipher argument, we should 
-#   add a "default" mode where all ciphers are tested 
-# - Think of a better way to allow the user to add its own algorithms 
-#   (think custom algorithms, not in python) .
-# - When a specific algorithm is designated by the user, only
-# generate I/O values with the corresponding length 
-# - Possible improvement: remove doublons for values 
-# - Add decoding procedures for endiannes, big number libraries... 
-# - Add "heuristics": 
-#        + memory adjacency, i.e. prefer values containing original adjacent parameters 
-#        + removal of fixed value inputs, e.g. AES SBOX, TEA delta,...
-
+# TODO: test that ciphers implement all the needed methods
 
 __doc__ = \
     """
@@ -34,597 +7,308 @@ It takes as input the result file produced by the extraction module.
 """
 
 __version__ = '1'
-__versionTime__ = '09/12'
+__versionTime__ = '10/12'
 __author__ = 'j04n'
 
-import os
-import itertools
-import binascii
 import argparse
 from datetime import datetime
+from collections import defaultdict
+import itertools
 
-## Reference implementations
-
-# PyCrypto
-
-from Crypto.Cipher import ARC4
-
-# Custom
-
-import referenceImplementations.xtea as xtea
-import referenceImplementations.tea as tea
-import referenceImplementations.russian_tea as russian_tea
-import referenceImplementations.tea_parametrized as tea_parametrized
+import referenceImplementations.ciphers as ciphers
 
 
-ldfgList = list()  # list of extractedLdfg objects
-
-
-class extractedLdfg:
+class LDF():
 
     def __init__(self):
 
-        # I/O values from the extracted result file
-
-        self.inputValues = dict()  # index -> value
+        self.inputValues = dict()  # id -> parameter
         self.outputValues = dict()
+        self.minLengthInput = 0x10000 # for combinations generation
+        self.minLengthOutput = 0x10000
+        self.maxLengthInput = 0x0
+        self.maxLengthOutput = 0x0
 
-        # Filled by the combination step
+    def display(self):
 
-        self.possibleInputParameterValues = dict()  # length (bytes) -> value
-        self.possibleOutputParameterValues = dict()
+        print self.inputValues
+        print self.outputValues
+
+class parameter():
+
+    def __init__(self, length, value):
+
+        self.length = length # int, in bytes
+        self.value = value # hexa string
 
 
 def main():
 
-    parser = \
-        argparse.ArgumentParser(description='Identification of crypto algorithms based on their input-output values.'
-                                )
-    parser.add_argument('--xtea', dest='xtea', action='store_true',
-                        default=False)
-    parser.add_argument('--xtea-x', dest='xtea_x', action='store_true',
-                        default=False)
-    parser.add_argument('--tea', dest='tea', action='store_true',
-                        default=False)
-    parser.add_argument('--tea-x', dest='tea_x', action='store_true',
-                        default=False)
-    parser.add_argument('--tea-russian', dest='tea_russian',
-                        action='store_true', default=False)
-    parser.add_argument('--rc4', dest='rc4', action='store_true',
-                        default=False)
-    parser.add_argument('--xor', dest='xor', action='store_true',
-                        default=False)
-    parser.add_argument('-dg', dest='debug_mode', action='store_true',
-                        default=False)
+    parser = argparse.ArgumentParser(description='Identification of crypto \
+                                                algorithms based on their input-output values.')
     parser.add_argument('resultsFile', action='store')
+    parser.add_argument('--ciphers',
+                            nargs='*',
+                            choices=ciphers.implementedCiphers)
     args = parser.parse_args()
-
-    connectWithresultsFile(args.resultsFile)
 
     print ''
     print '> Aligot identification module'
 
     print '> Start:',
     print datetime.now()
-    print '---------------------------\n'
+    print '-----------------------------------\n'
 
-    for ldfg in ldfgList:
-        buildPossibleInputParameters(ldfg, args)
-        buildPossibleOutputParameters(ldfg, args)
+    dbLDF = connectResultFile(args.resultsFile)
 
-    comparison(args)
+    if args.ciphers is None:
+        listOfCiphers = instantiateCiphers(ciphers.implementedCiphers)
+    else:
+        listOfCiphers = instantiateCiphers(args.ciphers)
 
-    print '\n---------------------------'
+    count = 1
+    for ldf in dbLDF:
+        
+        print "> Testing LDF " + str(count) + " ..."
+
+        # TODO: 0 length parameter (hash functions)
+
+        for c in listOfCiphers:
+            if compare(ldf,c):
+                break
+
+        count+=1
+
+    print '\n-----------------------------------'
     print '> End:',
     print datetime.now()
 
+def compare(ldf, refCipher):
 
-def connectWithresultsFile(fileName):
+    print "> Comparison with " + refCipher._name + "...",
+
+    [i1,i2,o] = generateParameterOrganization(ldf, 
+                                                refCipher.getInputTextLength(),
+                                                refCipher.getKeyLength(),
+                                                refCipher.getOutputTextLength())
+    
+    possibleInput1s = buildInputValues(ldf,i1)
+    possibleInput2s = buildInputValues(ldf,i2)
+    possibleOutputs = buildOutputValues(ldf,o)
+
+    for i1 in possibleInput1s:
+
+
+        if (refCipher.getInputTextLength() != -1) and (len(i1)/2 != refCipher.getInputTextLength()):
+            continue
+
+        for i2 in possibleInput2s:
+
+            if (refCipher.getKeyLength() != -1) and (len(i2)/2 != refCipher.getKeyLength()):
+                continue
+
+            if refCipher.encipher(i1,i2) in possibleOutputs:
+
+                print "\n\n!! Identification successful: " + refCipher._name + " encryption with:"
+                print "> " + refCipher._name + " encryption"
+                print ' ==> Plain text (' + str(refCipher.getInputTextLength()) + ' bytes) : 0x' + i1
+                print ' ==> Key ('+ str(refCipher.getKeyLength()) +' bytes) : 0x' + i2
+                print ' ==> Encrypted text (' + str(refCipher.getOutputTextLength()) + ' bytes) : 0x' + refCipher.encipher(i1,i2)
+                return True
+            
+            elif refCipher.decipher(i1,i2) in possibleOutputs:
+
+                print "\n\n!! Identification successful: " + refCipher._name + " decryption with:"
+                print ' ==> Encrypted text (' + str(refCipher.getOutputTextLength()) + ' bytes) : 0x' + i1
+                print ' ==> Key ('+ str(refCipher.getKeyLength()) +' bytes) : 0x' + i2
+                print ' ==> Decrypted text (' + str(refCipher.getInputLength()) + ' bytes) : 0x' + refCipher.decipher(i1,i2)
+                return True
+
+
+    print "Fail!"
+    return False
+
+def buildOutputValues(ldf,organizations):
+
+    r = set()
+
+    for o in organizations:
+        val = ''
+        for index in o:
+            val += ldf.outputValues[index].value
+        r.add(val)
+
+    return r
+
+def buildInputValues(ldf,organizations):
+
+    r = set()
+
+    for o in organizations:
+        val = ''
+        for index in o:
+            val += ldf.inputValues[index].value
+        r.add(val)
+
+    return r
+
+def generateParameterOrganization(ldf, input1Length = -1, input2Length = -1, outputLength = -1):
+
+    '''
+        Given a particular LDF, and parameter filters, generate the corresponding combinations of parameters. 
+        Such combination is defined as a list of parameter index for ldf.
+        Returns a tuple [a,b,c] where a,b,c are respectively input 1, input 2 and output possible organizations.
+    '''
+    
+    # ** Inputs
+
+    # Generate a reference string with parameter IDs appended
+    referenceList = [i for i in range(len(ldf.inputValues.keys()))]
+
+    if len(referenceList) > 10:
+
+            print '\n\nWARNING: The number of input values to combined is pretty high (' + str(len(referenceList)) + ')'
+            print '\t  You should check for specific ciphers, or at least try to remove some non-crypto values (memory addresses, counter...)'
+
+    # * Input 1
+
+    if input1Length != -1:
+
+        # Calculate lower and upper bounds of the number of parameters to combined
+        # in order to respect parameter filter
+
+        combinationMaxLengthI1 = input1Length // ldf.minLengthInput
+        combinationMinLengthI1 = input1Length // ldf.maxLengthInput # Could be better
+
+
+        possibleCombinationsI1 = list()
+
+        # For each possible length
+        for i in range(combinationMinLengthI1, combinationMaxLengthI1+1):
+            possibleCombinationsI1.extend(list(itertools.permutations(referenceList,i)))
+
+    else:
+
+        possibleCombinationsI1 = generateAllCombinations(referenceList)
+
+    # * Input 2
+
+    if input2Length != -1:
+
+        combinationMaxLengthI2 = input2Length // ldf.minLengthInput
+        combinationMinLengthI2 = input2Length // ldf.maxLengthInput
+
+        possibleCombinationsI2 = list()
+
+        for i in range(combinationMinLengthI2, combinationMaxLengthI2+1):
+            possibleCombinationsI2.extend(list(itertools.permutations(referenceList,i)))
+    else:
+
+        possibleCombinationsI2 = generateAllCombinations(referenceList)
+
+    # ** Output
+
+    referenceList = [i for i in range(len(ldf.outputValues.keys()))]
+
+    if len(referenceList) > 10:
+
+            print '\n\nWARNING: The number of output values to combined is pretty high (' + str(len(referenceList)) + ')'
+            print '\t  You should check for specific ciphers, or at least try to remove some non-crypto values (memory addresses, counter...)'
+
+    if outputLength != -1:
+
+        combinationMaxLengthO = outputLength // ldf.minLengthOutput
+        combinationMinLengthO = outputLength // ldf.maxLengthOutput
+
+        possibleCombinationsO = list()
+
+        for i in range(combinationMinLengthO, combinationMaxLengthO+1):
+            possibleCombinationsO.extend(list(itertools.permutations(referenceList,i)))
+
+    else:
+        
+        possibleCombinationsO = generateAllCombinations(referenceList)
+
+    return [possibleCombinationsI1,possibleCombinationsI2,possibleCombinationsO]
+
+def generateAllCombinations(l):
+
+    possibleCombinations = list()
+
+    # For each possible length
+    i = 1
+    while len(list(itertools.permutations(l,i))) != 0:
+        possibleCombinations.extend(list(itertools.permutations(l,i)))
+        i += 1
+
+    return possibleCombinations
+
+def instantiateCiphers(cipherList):
+
+    listOfCiphers = []
+
+    for newCipher in cipherList:
+
+        # Is there a better way to do that ?
+        exec('import referenceImplementations.%s' % newCipher)
+        exec('c=referenceImplementations.%s.cipher()' % newCipher)
+
+        listOfCiphers.append(c)
+
+    return listOfCiphers
+
+def connectResultFile(filename):
 
     ''' Given the result file produced by the Aligot extraction module, builds
-        a list of extractedLdfg objects. '''
+        a list of LDFs. '''
 
-    f = open(fileName, 'r')
+    f = open(filename, 'r')
 
     # Jump over the header
 
-    line = f.readline()
-    line = f.readline()
-    line = f.readline()
+    f.readline()
+    f.readline()
+    f.readline()
 
-    # Here is the real stuff
+    dbLDF = list()
 
     for line in f:
+        inputs = line.split(":")[0]
+        outputs = line.split(":")[1].rstrip()
 
-        newLdfg = extractedLdfg()
+        curLDF = LDF()
 
-        inputs = line.split(':')[0]
-        outputs = line.split(':')[1]
+        for inputVal in inputs.split(","):
+            
+            byteLength = len(inputVal)/2
+            if byteLength < curLDF.minLengthInput:
+                curLDF.minLengthInput = byteLength
 
-        if len(inputs.split(',')) >= 10:
-            print "\nERROR: More than 10 input parameters - You should try to narrow them (eg. remove memory addresses)"
-            quit() # Pretty rough, we could still allow the execution ?
-        if len(outputs.split(',')) >= 10:
-            print "\nERROR: More than 10 output parameters - You should try to narrow them (eg. remove memory addresses)"
-            quit()
+            if byteLength > curLDF.maxLengthInput:
+                curLDF.maxLengthInput = byteLength
 
-        if len(inputs) and len(outputs):
+            p = parameter(byteLength, inputVal)  
+            newId = len(curLDF.inputValues.keys())          
+            curLDF.inputValues[newId] = p
 
-            for iv in inputs.split(','):
+        for outputVal in outputs.split(","):
+ 
+            byteLength = len(outputVal)/2 
+            if byteLength < curLDF.minLengthOutput:
+                curLDF.minLengthOutput = byteLength
 
-                # We need the integer value, not a string
+            if byteLength > curLDF.maxLengthOutput:
+                curLDF.maxLengthOutput = byteLength
 
-                value = iv.decode('hex')
-                newLdfg.inputValues[len(newLdfg.inputValues.keys())] = \
-                    value
+            p = parameter(byteLength,outputVal)
+            newId = len(curLDF.outputValues.keys())
+            curLDF.outputValues[newId] = p
 
-            for ov in outputs.split(','):
-
-                # We need the integer value, not a string
-
-                value = ov.strip().decode('hex')
-                newLdfg.outputValues[len(newLdfg.outputValues.keys())] = \
-                    value
-
-            ldfgList.append(newLdfg)
+        dbLDF.append(curLDF)
 
     f.close()
 
+    return dbLDF
 
-def buildPossibleInputParameters(ldfg, args):
-
-    ''' Build each possible parameter (that is each possible length) as a list
-        of indexes, each of these index corresponding to a value in the result
-        file. The list represents the concatenation of such values. 
-        (Done this way in order to use itertools module)'''
-
-    # We need a string as '12...n' where n is the number of input values
-    # (to use itertools module)
-
-    myValues = ''
-    for k in range(0, len(ldfg.inputValues.keys())):
-        myValues += str(k)
-
-    inputParameterValues = list(itertools.permutations(myValues, 1))
-
-    # For each possible length
-    for i in range(2, len(ldfg.inputValues.keys())+1):
-
-        if args.debug_mode:
-            print 'Round ' + str(i)
-
-        inputParameterValues.extend(list(itertools.permutations(myValues,
-                                    i)))
-
-    for p in inputParameterValues:
-        length = 0
-
-        for i in p:
-            length += len(ldfg.inputValues[int(i)])
-
-        if length in ldfg.possibleInputParameterValues.keys():
-            ldfg.possibleInputParameterValues[length].append(p)
-        else:
-            ldfg.possibleInputParameterValues[length] = list([p])
-
-
-def buildPossibleOutputParameters(ldfg, args):
-
-    ''' Build each possible parameter (that is each possible length) as a list
-        of indexes, each of these index corresponding to a value in the result
-        file. The list represents the concatenation of such values. 
-        (Done this way in order to use itertools module)'''
-
-    # We need a string as '12...n' where n is the number of output values
-    # (to use itertools module)
-
-    myValues = ''
-    for k in range(0, len(ldfg.outputValues.keys())):
-        myValues += str(k)
-
-    outputParameterValues = list(itertools.permutations(myValues, 1))
-
-    # For each possible length
-    for i in range(2, len(ldfg.outputValues.keys())+1):
-        if args.debug_mode:
-            print 'Round ' + str(i)
-        outputParameterValues.extend(list(itertools.permutations(myValues,
-                i)))
-
-    for p in outputParameterValues:
-        length = 0
-
-        for i in p:
-            length += len(ldfg.outputValues[int(i)])
-
-        if length in ldfg.possibleOutputParameterValues.keys():
-            ldfg.possibleOutputParameterValues[length].append(p)
-        else:
-            ldfg.possibleOutputParameterValues[length] = list([p])
-
-
-def buildInputValue(indiceList, currentLdfg):
-
-    ''' Given an indexes list, and an LDFG, returns the associated input value
-        (integer). '''
-
-    value = ''
-    for i in indiceList:
-        value += currentLdfg.inputValues[int(i)].encode('hex')
-
-    return value.decode('hex')
-
-
-def buildOutputValue(indiceList, currentLdfg):
-
-    ''' Given an indexes list, and an LDFG, returns the associated output
-        value (integer). '''
-
-    value = ''
-    for i in indiceList:
-        value += currentLdfg.outputValues[int(i)].encode('hex')
-
-    return value.decode('hex')
-
-
-def comparison(args):
-
-    global ldfgList
-
-    # For each unknown LDFG
-
-    for currentLdfg in ldfgList:
-
-        print '> Comparison phase starting...',
-        print str(len(currentLdfg.inputValues.keys())) + ' inputs - ',
-        print str(len(currentLdfg.outputValues.keys())) + ' outputs'
-
-        
-
-        # ------------------
-        # # Category 1
-        # ------------------
-        # Block ciphers with 16-bytes key, 8-bytes input text, 8-bytes output text
-        # TEA, XTEA, Russian TEA
-
-        if args.xtea or args.tea or args.tea_russian:
-
-            cipher = '(16,8:8)'
-
-            if args.xtea:
-                cipher = 'XTEA ' + cipher
-            if args.tea:
-                cipher = 'TEA ' + cipher
-            if args.tea_russian:
-                cipher = 'Russian TEA ' + cipher
-
-            print '\n> Test for ' + cipher + ' encryption/decryption...',
-            suitableParameters = 1
-            possibleOutputs = set()
-
-            try:
-
-                # These are indexes list
-
-                possibleKey = \
-                    currentLdfg.possibleInputParameterValues[16]
-                possibleInputText = \
-                    currentLdfg.possibleInputParameterValues[8]
-                possibleOutputText = \
-                    currentLdfg.possibleOutputParameterValues[8]
-
-                # Build a set with output parameter *values* for O(1) test
-                # (possible because the ciphers have only one output parameter)
-
-                for outputTextIndice in possibleOutputText:
-                    possibleOutputs.add(binascii.hexlify(buildOutputValue(outputTextIndice,
-                            currentLdfg)))
-            except:
-
-                suitableParameters = 0
-                print '> Fail: no suitable parameters found'
-
-            if suitableParameters == 1:
-
-                found = 0
-
-                # We test all input possibilities
-
-                for keyIndice in possibleKey:
-                    for inputTextIndice in possibleInputText:
-
-                        if found == 1:
-
-                            # We stop as soon we found a match
-
-                            return
-
-                        key = buildInputValue(keyIndice, currentLdfg)
-                        inputText = buildInputValue(inputTextIndice,
-                                currentLdfg)
-
-                        # Calls to reference implementations
-
-                        if args.xtea:
-
-                            referenceOutputD = xtea.xtea_decrypt(key,
-                                    inputText).encode('hex')
-
-                            referenceOutputE = xtea.xtea_encrypt(key,
-                                    inputText).encode('hex')
-
-                        if args.tea:
-
-                            # Specific encoding for TEA reference implementation
-
-                            k = [int(key.encode('hex')[0:8], 16),
-                                 int(key.encode('hex')[8:16], 16),
-                                 int(key.encode('hex')[16:24], 16),
-                                 int(key.encode('hex')[24:32], 16)]
-                            v = [int(inputText.encode('hex')[0:8], 16),
-                                 int(inputText.encode('hex')[8:16], 16)]
-
-                            r = tea.decipher(v, k)
-
-                            referenceOutputD = hex((r[0] << 32)
-                                    + r[1])[2:-1]  # probably a better way to do that...
-
-                            r = tea.encipher(v, k)
-
-                            referenceOutputE = hex((r[0] << 32)
-                                    + r[1])[2:-1]  # probably a better way to do that...
-
-                        if args.tea_russian:
-
-                             # Specific encoding for Russian TEA reference implementation
-
-                            k = [int(key.encode('hex')[0:8], 16),
-                                 int(key.encode('hex')[8:16], 16),
-                                 int(key.encode('hex')[16:24], 16),
-                                 int(key.encode('hex')[24:32], 16)]
-                            v = [int(inputText.encode('hex')[0:8], 16),
-                                 int(inputText.encode('hex')[8:16], 16)]
-
-                            r = russian_tea.decipher(v, k)
-
-                            referenceOutputD = hex((r[0] << 32)
-                                    + r[1])[2:-1]  # probably a better way to do that...
-
-                            r = russian_tea.encipher(v, k)
-
-                            referenceOutputE = hex((r[0] << 32)
-                                    + r[1])[2:-1]  # probably a better way to do that...
-
-                        # Do we have the reference output in our generated output values ?
-
-                        if referenceOutputD in possibleOutputs:
-
-                            print '''!! Found ''' + cipher + ' decryption !!'
-
-                            print ' ==> Key (16 bytes) : ' \
-                                + binascii.hexlify(key)
-                            print '\n ==> Crypted text (8 bytes) : ' \
-                                + binascii.hexlify(inputText)[0:16]
-                            print '\n ==> Decrypted text (8 bytes) : ' \
-                                + referenceOutputD
-
-                            found = 1
-
-                        if referenceOutputE in possibleOutputs:
-
-                            print '''!! Found ''' + cipher + ' encryption !!'
-
-                            print ' ==> Key (16 bytes)' \
-                                + binascii.hexlify(key)
-                            print '\n ==> Deypted text (8 bytes) : ' \
-                                + binascii.hexlify(inputText)[0:16]
-                            print '\n ==> Encrypted text (8 bytes) : ' \
-                                + referenceOutputE
-
-                            found = 1
-
-        # ------------------
-        # # Category 2
-        # ------------------
-        # Block ciphers with 16-bytes key, 8-bytes input text, 4-bytes delta, 4-bytes round number, 8-bytes output text
-        # TEA and XTEA parametrized
-
-        if args.tea_x or args.xtea_x:
-
-            cipher = '(16,8,4,4:8)'
-
-            if args.tea_x:
-                cipher = 'TEA Modified ' + cipher
-            if args.xtea_x:
-                cipher = 'XTEA Modified ' + cipher
-
-            print '\n> Test for ' + cipher + ' encryption/decryption...',
-
-            suitableParameters = 1
-            possibleOutputs = set()
-
-            try:
-
-                # These are indexes list
-
-                possibleKey = \
-                    currentLdfg.possibleInputParameterValues[16]
-                possibleInputText = \
-                    currentLdfg.possibleInputParameterValues[8]
-                possibleDelta = \
-                    currentLdfg.possibleInputParameterValues[4]
-                possibleRoundNumber = \
-                    currentLdfg.possibleInputParameterValues[4]
-                possibleOutputText = \
-                    currentLdfg.possibleOutputParameterValues[8]
-
-                # Build a set with output parameters to ease the check
-                # Only possible because all ciphers have one output parameter
-
-                for outputTextIndice in possibleOutputText:
-                    possibleOutputs.add(binascii.hexlify(buildOutputValue(outputTextIndice,
-                            currentLdfg)))
-            except:
-                print ' fail: no suitable parameters found'
-                suitableParameters = 0
-
-            if suitableParameters:
-                found = 0
-
-                for keyIndice in possibleKey:
-                    for inputTextIndice in possibleInputText:
-                        for deltaIndice in possibleDelta:
-                            for roundNumberIndice in \
-                                possibleRoundNumber:
-
-                                if found == 1:
-
-                                    # We stop as soon we found a match
-
-                                    return
-
-                                key = buildInputValue(keyIndice,currentLdfg)
-
-                                inputText = buildInputValue(inputTextIndice, currentLdfg)
-
-                                myDelta = buildInputValue(deltaIndice, currentLdfg)
-
-                                myRoundNumber = buildInputValue(roundNumberIndice, currentLdfg)
-
-                                if args.tea_x:
-
-                                    # Specific encoding for TEA reference implementation
-
-                                    k = [int(key.encode('hex')[0:8],16), 
-                                        int(key.encode('hex')[8:16], 16), 
-                                        int(key.encode('hex')[16:24], 16), 
-                                        int(key.encode('hex')[24:32], 16)]
-                                    v = [int(inputText.encode('hex')[0:8], 16), 
-                                        int(inputText.encode('hex')[8:16], 16)]
-
-                                    # Delta needs to be an int
-
-                                    d = int(myDelta.encode('hex'), 16)
-                                    rn = int(myRoundNumber.encode('hex'), 16)
-
-                                    if rn < 1 or rn > 0x100:
-                                        continue  # Improbable round number (document this shit somewhere)
-
-                                    r = tea_parametrized.decipher(v, k, d, rn)
-
-                                    referenceOutputD = hex((r[0] << 32) + r[1])[2:-1] 
-
-                                    r = tea_parametrized.encipher(v, k, d, rn)
-
-                                    referenceOutputE = hex((r[0] << 32) + r[1])[2:-1]  # probably a better way to do that...
-
-                                # Comparison
-
-                                if referenceOutputD in possibleOutputs:
-
-                                    print '''\n\n!! Found ''' + cipher + ' decryption !!'
-
-                                    print ' ==> Key (16 bytes) : 0x' + binascii.hexlify(key)
-                                    print '\n ==> Delta (4 bytes) : 0x' + binascii.hexlify(myDelta)
-                                    print '\n ==> Round number (4 bytes) : 0x' + binascii.hexlify(myRoundNumber)
-                                    print '\n ==> Crypted text (8 bytes) : 0x' + binascii.hexlify(inputText)[0:16]
-                                    print '\n ==> Decrypted text (8 bytes) : ' + referenceOutputD
-                                    found = 1
-
-                                if referenceOutputE in possibleOutputs:
-
-                                    print '''!! Found ''' + cipher + ' encryption !!'
-
-                                    print ' ==> Key (16 bytes) : 0x' + binascii.hexlify(key)
-                                    print '\n ==> Delta (4 bytes) : 0x' + binascii.hexlify(myDelta)
-                                    print '\n ==> Round number (4 bytes) : 0x' + binascii.hexlify(myRoundNumber)
-                                    print '\n ==> Decrypted text (8 bytes) : 0x' + binascii.hexlify(inputText)[0:16]
-                                    print '\n ==> Encrypted text (8 bytes) : ' + referenceOutputE
-                                    found = 1
-
-        # ------------------
-        # # Category 3
-        # ------------------
-        # Variable length input text, variable length key, variable length output text (stream ciphers)
-        # RC4
-
-        if args.rc4:
-
-            cipher = '(VL,VL:VL)'
-
-            if args.rc4:
-                cipher = 'RC4 ' + cipher
-
-            print '\n> Test for ' + cipher + ' encryption/decryption...',
-
-            # Store all possible input texts and keys, i.e. all possible length inputs
-            # These are indexes list
-
-            possibleKey = list()
-            possibleInputText = list()
-            
-            for length in currentLdfg.possibleInputParameterValues.keys():
-
-                possibleKey.extend(currentLdfg.possibleInputParameterValues[length])
-                possibleInputText.extend(currentLdfg.possibleInputParameterValues[length])
-
-            # Build a set with output parameter *values* for O(1) test
-
-            possibleOutputs = set() # for O(1) tests
-
-            for length in currentLdfg.possibleOutputParameterValues.keys():
-
-                for outputTextIndice in currentLdfg.possibleOutputParameterValues[length]:
-
-                    possibleOutputs.add(binascii.hexlify(buildOutputValue(outputTextIndice,
-                                currentLdfg)))
-
-            #print possibleOutputs
-
-            found = 0
-
-            for keyIndice in possibleKey:
-                for inputTextIndice in possibleInputText:
-
-                    if found == 1:
-
-                        # We stop as soon we found a match
-
-                        return
-
-                    # Endianess assumed to be BIG ENDIAN 
-
-                    keyBE = buildInputValue(keyIndice, currentLdfg)
-                    inputTextBE = buildInputValue(inputTextIndice,
-                            currentLdfg)
-
-                    rc4Cipher = ARC4.new(keyBE)
-                    resultRC4 = binascii.hexlify(rc4Cipher.decrypt(inputTextBE))
-
-                    # Comparison with the possible output values of the same length
-
-                    if resultRC4 in possibleOutputs:
-
-                        print '''\n\n ** Found ''' + cipher + " encryption/decryption "
-
-                        print ' ==> Key (' + str(len(keyBE)) + ' bytes) : '+ binascii.hexlify(keyBE)
-
-                        print '\n ==> Crypted text (' + str(len(inputTextBE)) + ' bytes) : ',
-
-                        if len(inputTextBE) >= 32:
-                            print binascii.hexlify(inputTextBE)[0:16] + '...'
-                        else:
-                            print binascii.hexlify(inputTextBE)
-
-                        print '\n ==> Decrypted text (' + str(len(resultRC4.decode('hex'))) + ' bytes) : ',
-                        
-                        if len(resultRC4.decode('hex')) >= 32:
-                            print binascii.hexlify(resultRC4.decode('hex'))[0:16] + '...'
-                        else:
-                            print binascii.hexlify(resultRC4.decode('hex'))
-                        
-                        found = 1
-                        break
-
-if __name__ == '__main__':
+if __name__=="__main__":
     main()
