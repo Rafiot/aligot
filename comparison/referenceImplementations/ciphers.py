@@ -1,5 +1,5 @@
 
-implementedCiphers = ['tea','rc4','xtea']
+implementedCiphers = ['tea','rc4','xtea','russian_tea']
 
 
 class cipherTemplate():

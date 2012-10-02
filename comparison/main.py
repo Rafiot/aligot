@@ -7,7 +7,9 @@ It takes as input the result file produced by the extraction module.
 """
 
 # TODO: 
-# - integrates hash functions (0 length parameter)
+# - allows more than 2-input parameters functions:
+#       + hash functions
+#       + parametrized implementations (tea)
 
 __version__ = '1'
 __versionTime__ = '10/12'
