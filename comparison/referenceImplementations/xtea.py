@@ -12,13 +12,13 @@ class cipher(ciphers.cipherTemplate):
 	def __init__(self):
 
 		self._name = 'XTEA'
-		self._inputTextLength = 8
+		self._plaintextLength = 8
 		self._keyLength = 16
-		self._outputTextLength = 8
+		self._ciphertextLength = 8
 
 	def encipher(self, inputText, key):
 
-		assert len(inputText) == 2*self._inputTextLength, "Bad parameter size for enciphering " + self._name
+		assert len(inputText) == 2*self._plaintextLength, "Bad parameter size for enciphering " + self._name
 		
 		n = 32
 		endian = '!'
@@ -40,7 +40,7 @@ class cipher(ciphers.cipherTemplate):
 
 	def decipher(self, inputText, key):
 
-		assert len(inputText) == 2*self._outputTextLength, "Bad parameter size for deciphering " + self._name
+		assert len(inputText) == 2*self._ciphertextLength, "Bad parameter size for deciphering " + self._name
 
 		n = 32
 		endian = '!'
@@ -73,15 +73,15 @@ class cipher(ciphers.cipherTemplate):
 
 		return self._name
 
-	def getInputTextLength(self):
+	def getPlaintextLength(self):
 
-		return self._inputTextLength
+		return self._plaintextLength
 
 	def getKeyLength(self):
 
 		return self._keyLength
 
-	def getOutputTextLength(self):
+	def getCiphertextLength(self):
 
-		return self._outputTextLength
+		return self._ciphertextLength
 

@@ -6,6 +6,9 @@ Aligot project. This module takes care of the actual identification of possible 
 It takes as input the result file produced by the extraction module.
 """
 
+# TODO: 
+# - integrates hash functions (0 length parameter)
+
 __version__ = '1'
 __versionTime__ = '10/12'
 __author__ = 'j04n'
@@ -62,6 +65,8 @@ def main():
     dbLDF = connectResultFile(args.resultsFile)
 
     if args.ciphers is None:
+        print "> No particular ciphers selected, test with all of them :",
+        print ciphers.implementedCiphers
         listOfCiphers = instantiateCiphers(ciphers.implementedCiphers)
     else:
         listOfCiphers = instantiateCiphers(args.ciphers)
@@ -70,8 +75,6 @@ def main():
     for ldf in dbLDF:
         
         print "> Testing LDF " + str(count) + " ..."
-
-        # TODO: 0 length parameter (hash functions)
 
         for c in listOfCiphers:
             if compare(ldf,c):
@@ -85,12 +88,12 @@ def main():
 
 def compare(ldf, refCipher):
 
-    print "> Comparison with " + refCipher._name + "...",
+    print "  > Comparison with " + refCipher._name + "...",
 
     [i1,i2,o] = generateParameterOrganization(ldf, 
-                                                refCipher.getInputTextLength(),
+                                                refCipher.getPlaintextLength(),
                                                 refCipher.getKeyLength(),
-                                                refCipher.getOutputTextLength())
+                                                refCipher.getCiphertextLength())
     
     possibleInput1s = buildInputValues(ldf,i1)
     possibleInput2s = buildInputValues(ldf,i2)
@@ -99,7 +102,7 @@ def compare(ldf, refCipher):
     for i1 in possibleInput1s:
 
 
-        if (refCipher.getInputTextLength() != -1) and (len(i1)/2 != refCipher.getInputTextLength()):
+        if (refCipher.getPlaintextLength() != -1) and (len(i1)/2 != refCipher.getPlaintextLength()):
             continue
 
         for i2 in possibleInput2s:
@@ -111,17 +114,17 @@ def compare(ldf, refCipher):
 
                 print "\n\n!! Identification successful: " + refCipher._name + " encryption with:"
                 print "> " + refCipher._name + " encryption"
-                print ' ==> Plain text (' + str(refCipher.getInputTextLength()) + ' bytes) : 0x' + i1
+                print ' ==> Plain text (' + str(refCipher.getPlaintextLength()) + ' bytes) : 0x' + i1
                 print ' ==> Key ('+ str(refCipher.getKeyLength()) +' bytes) : 0x' + i2
-                print ' ==> Encrypted text (' + str(refCipher.getOutputTextLength()) + ' bytes) : 0x' + refCipher.encipher(i1,i2)
+                print ' ==> Encrypted text (' + str(refCipher.getCiphertextLength()) + ' bytes) : 0x' + refCipher.encipher(i1,i2)
                 return True
             
             elif refCipher.decipher(i1,i2) in possibleOutputs:
 
                 print "\n\n!! Identification successful: " + refCipher._name + " decryption with:"
-                print ' ==> Encrypted text (' + str(refCipher.getOutputTextLength()) + ' bytes) : 0x' + i1
+                print ' ==> Encrypted text (' + str(refCipher.getCiphertextLength()) + ' bytes) : 0x' + i1
                 print ' ==> Key ('+ str(refCipher.getKeyLength()) +' bytes) : 0x' + i2
-                print ' ==> Decrypted text (' + str(refCipher.getInputLength()) + ' bytes) : 0x' + refCipher.decipher(i1,i2)
+                print ' ==> Decrypted text (' + str(refCipher.getPlaintextLength()) + ' bytes) : 0x' + refCipher.decipher(i1,i2)
                 return True
 
 

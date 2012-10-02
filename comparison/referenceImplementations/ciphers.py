@@ -44,17 +44,17 @@ class cipherTemplate():
 
 		raise NotImplementedError("Missing getName method")
 
-	def getInputTextLength(self):
+	def getPlaintextLength(self):
 
-		raise NotImplementedError("Missing getInputTextLength method")
+		raise NotImplementedError("Missing getPlaintextLength method")
 
 	def getKeyLength(self):
 
 		raise NotImplementedError("Missing getKeyLength method")
 
-	def getOutputTextLength(self):
+	def getCiphertextLength(self):
 
-		raise NotImplementedError("Missing getOutputTextLength method")
+		raise NotImplementedError("Missing getCiphertextLength method")
 
 
 

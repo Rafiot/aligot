@@ -1,0 +1,5 @@
+To add a new cipher to the database:
+
+	- create a python file named with the cipher, and containing a class "cipher" that heritates from "ciphers.cipherTemplate"
+	- this class has to implement all methods defined in "ciphers.cipherTemplate"
+	- add the name of the cipher in the list "implementedCipher" in the file ciphers.py

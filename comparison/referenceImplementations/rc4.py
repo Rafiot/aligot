@@ -7,9 +7,9 @@ class cipher(ciphers.cipherTemplate):
 	def __init__(self):
 
 		self._name = 'RC4'
-		self._inputTextLength = -1
+		self._plaintextLength = -1
 		self._keyLength = -1
-		self._outputTextLength = -1
+		self._ciphertextLength = -1
 
 	def encipher(self, inputText, key):
 		
@@ -44,14 +44,14 @@ class cipher(ciphers.cipherTemplate):
 
 		return self._name
 
-	def getInputTextLength(self):
+	def getPlaintextLength(self):
 
-		return self._inputTextLength
+		return self._plaintextLength
 
 	def getKeyLength(self):
 
 		return self._keyLength
 
-	def getOutputTextLength(self):
+	def getCiphertextLength(self):
 
-		return self._outputTextLength
+		return self._ciphertextLength
