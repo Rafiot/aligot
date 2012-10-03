@@ -1,4 +1,12 @@
-# TODO: test that ciphers implement all the needed methods
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# ----------------------------------------------
+# Aligot project
+#
+# Comparison module
+#
+# Copyright, licence: who cares?
+# ----------------------------------------------
 
 __doc__ = \
     """
@@ -16,6 +24,7 @@ It takes as input the result file produced by the extraction module.
 # - Add "heuristics": 
 #        + memory adjacency, i.e. prefer values containing original adjacent parameters 
 #        + removal of fixed value inputs, e.g. AES SBOX, TEA delta,...
+# - test that ciphers implement all the needed methods
 
 __version__ = '1'
 __versionTime__ = '10/12'
