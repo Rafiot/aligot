@@ -60,20 +60,25 @@ class LDF():
         for op in self.outputParameters.values():    
             op.display()
 
-
-
-
 def main():
 
     parser = argparse.ArgumentParser(description='Identification of crypto \
                                                 algorithms based on their input-output values.')
+    
     parser.add_argument('resultsFile', action='store')
+
     parser.add_argument('--ciphers',
                             nargs='*',
                             choices=ciphers.implementedCiphers)
+    
     parser.add_argument('--no-mem-heuristic', 
                         dest='no_mem_heuristic',
                         action='store_true')
+    
+    parser.add_argument('--no-bl-heuristic', 
+                        dest='no_bl_heuristic',
+                        action='store_true')
+    
     args = parser.parse_args()
 
     print ''
@@ -81,7 +86,7 @@ def main():
 
     print '> Start:',
     print datetime.now()
-    print '-----------------------------------\n'
+    print '-----------------------------------'
 
     dbLDF = connectResultFile(args.resultsFile)
 
@@ -96,22 +101,37 @@ def main():
     count = 1
     for ldf in dbLDF:
         
-        print "> Testing LDF " + str(count) + " ..."
+        print "\n> Testing LDF " + str(count) + " ..."
         
         if (len(ldf.inputParameters.keys()) > 10) and not args.no_mem_heuristic:
-            print '> Applying memH...'
-            heuristics.memoryAdjacency(ldf)
+            print '  > Heuristic : Memory adjacency, more than 10 input parameters (disable it with --no-mem-heuristic)'
+            heuristics.inputMemoryAdjacency(ldf)
 
-        # faire heuristic black list, puis regenerer des resultats pour differents binaires
+        if (len(ldf.outputParameters.keys()) > 10) and not args.no_mem_heuristic:
+            print '  > Heuristic : Memory adjacency, more than 10 output parameters (disable it with --no-mem-heuristic)'
+            heuristics.outputMemoryAdjacency(ldf)
 
-        # for c in listOfCiphers:
+        for c in listOfCiphers:
             
-            # Heuristic black list values 
-            # (ajout dans cipher class, indiquer clairement au user, 
-            # ca peut donner des clues sur l'identification)
+            if not args.no_bl_heuristic:
+                print '  > Heuristic : Blacklisting classic values for ' + c.getName() + ' (disable it with --no-bl-heuristic)'
+            
+                bl = heuristics.blacklistedValues(ldf, c)
 
-            # if compare(ldf,c):
-            #     break
+                if len(bl[0]) != 0:
+                    print '    > Blacklisted input values : ',
+                    for blp in bl[0]:
+                        print str(blp) + ' ',
+                    print ''
+                if len(bl[1]) != 0:
+                    print '    > Blacklisted output values : ',
+                    for blp in bl[1]:
+                        print str(blp) + ' ',
+                    print ''
+
+            # Here is the magic
+            if compare(ldf,c):
+                break
 
         count+=1
 

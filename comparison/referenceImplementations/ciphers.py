@@ -41,6 +41,15 @@ class cipherTemplate():
 
 		raise NotImplementedError("Missing decoding method")
 
+	def getBlacklistedValues(self):
+
+		'''
+			Returns a list of values that should not be considered as parameters,
+			because they are classic values of the cipher (S-BOXs...)
+		'''
+
+		raise NotImplementedError("Missing getBlacklistedValues method")
+
 	def getName(self):
 
 		raise NotImplementedError("Missing getName method")

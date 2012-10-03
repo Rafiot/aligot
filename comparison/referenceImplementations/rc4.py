@@ -40,6 +40,10 @@ class cipher(ciphers.cipherTemplate):
 
 		return inputText.encode('hex')
 
+	def getBlacklistedValues(self):
+
+		return {}
+
 	def getName(self):
 
 		return self._name

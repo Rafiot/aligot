@@ -11,6 +11,9 @@ class cipher(ciphers.cipherTemplate):
 		self._keyLength = 16
 		self._ciphertextLength = 8
 
+		self._blacklistedValues = {'9e3779b9','c6ef3720','00000020'}
+
+
 	def encipher(self, inputText, key):
 		
 		assert len(inputText) == 2*self._plaintextLength, "Bad parameter size for enciphering " + self._name
@@ -74,6 +77,10 @@ class cipher(ciphers.cipherTemplate):
 	def _decode(self, inputText):
 		
 		return hex((inputText[0] << 32) + inputText[1])[2:-1]
+
+	def getBlacklistedValues(self):
+
+		return self._blacklistedValues
 
 	def getName(self):
 

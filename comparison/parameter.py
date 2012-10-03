@@ -6,6 +6,10 @@ class parameter():
         self.length = length # int, in bytes
         self.value = value # hexa string
 
+    def __str__(self):
+
+    	return self.startAddress + '|' + hex(self.length)[2:] + '|' + self.value
+
     def incrementSize(self,value):
 
         self.length +=1

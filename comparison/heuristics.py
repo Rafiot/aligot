@@ -1,13 +1,11 @@
 
 import parameter
 
-def memoryAdjacency(ldf):
+def inputMemoryAdjacency(ldf):
 
 	'''
-		We group together input/output parameters that are adjacent in memory.
+		We group together input parameters that are adjacent in memory.
 	'''
-
-	# Inputs
 
 	newInputParameters = dict() # id -> parameter
 	memoryMap = dict() # addr (int) -> value (string)
@@ -38,9 +36,13 @@ def memoryAdjacency(ldf):
 				newInputParameters[len(newInputParameters.keys())] = curP
 				curP = parameter.parameter(hex(k)[2:],1,memoryMap[k])
 
-	
+	ldf.inputParameters = newInputParameters
 
-	# outputs
+def outputMemoryAdjacency(ldf):
+
+	'''
+		We group together output parameters that are adjacent in memory.
+	'''
 
 	newOutputParameters = dict() # id -> parameter
 	memoryMap = dict() # addr (int) -> value (string)
@@ -71,6 +73,48 @@ def memoryAdjacency(ldf):
 				newOutputParameters[len(newOutputParameters.keys())] = curP
 				curP = parameter.parameter(hex(k)[2:],1,memoryMap[k])
 
+	ldf.outputParameters = newOutputParameters
+
+
+def blacklistedValues(ldf, c):
+
+	'''
+		Each cipher can have some blacklisted values, we test this here.
+	'''
+
+	inputBl = list()
+	newInputParameters = dict() # id -> parameter
+
+	for k in ldf.inputParameters.keys():
+
+		ip = ldf.inputParameters[k]
+
+		if ip.value in c.getBlacklistedValues():
+
+			inputBl.append(ip)
+			ldf.inputParameters.pop(k)
+
+		else:
+			newInputParameters[len(newInputParameters.keys())] = ip
+
+	outputBl = list()
+	newOutputParameters = dict()
+
+	for k in ldf.outputParameters.keys():
+
+		op = ldf.outputParameters[k]
+
+		if op.value in c.getBlacklistedValues():
+
+			outputBl.append(op)
+			ldf.inputParameters.pop(k)
+
+		else:
+			newOutputParameters[len(newOutputParameters.keys())] = op
+
+	# sinon, test pour chaque param de chacun de ses bytes
 
 	ldf.inputParameters = newInputParameters
 	ldf.outputParameters = newOutputParameters
+
+	return [inputBl,outputBl]
