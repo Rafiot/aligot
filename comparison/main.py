@@ -36,14 +36,16 @@ from collections import defaultdict
 import itertools
 
 import referenceImplementations.ciphers as ciphers
+import heuristics
+import parameter
 
 
 class LDF():
 
     def __init__(self):
 
-        self.inputValues = dict()  # id -> parameter
-        self.outputValues = dict()
+        self.inputParameters = dict()  # id -> parameter
+        self.outputParameters = dict()
         self.minLengthInput = 0x10000 # for combinations generation
         self.minLengthOutput = 0x10000
         self.maxLengthInput = 0x0
@@ -51,15 +53,14 @@ class LDF():
 
     def display(self):
 
-        print self.inputValues
-        print self.outputValues
+        print '> inputs:'
+        for ip in self.inputParameters.values():
+            ip.display()
+        print '> outputs:'
+        for op in self.outputParameters.values():    
+            op.display()
 
-class parameter():
 
-    def __init__(self, length, value):
-
-        self.length = length # int, in bytes
-        self.value = value # hexa string
 
 
 def main():
@@ -70,6 +71,9 @@ def main():
     parser.add_argument('--ciphers',
                             nargs='*',
                             choices=ciphers.implementedCiphers)
+    parser.add_argument('--no-mem-heuristic', 
+                        dest='no_mem_heuristic',
+                        action='store_true')
     args = parser.parse_args()
 
     print ''
@@ -80,6 +84,7 @@ def main():
     print '-----------------------------------\n'
 
     dbLDF = connectResultFile(args.resultsFile)
+
 
     if args.ciphers is None:
         print "> No particular ciphers selected, test with all of them :",
@@ -92,10 +97,21 @@ def main():
     for ldf in dbLDF:
         
         print "> Testing LDF " + str(count) + " ..."
+        
+        if (len(ldf.inputParameters.keys()) > 10) and not args.no_mem_heuristic:
+            print '> Applying memH...'
+            heuristics.memoryAdjacency(ldf)
 
-        for c in listOfCiphers:
-            if compare(ldf,c):
-                break
+        # faire heuristic black list, puis regenerer des resultats pour differents binaires
+
+        # for c in listOfCiphers:
+            
+            # Heuristic black list values 
+            # (ajout dans cipher class, indiquer clairement au user, 
+            # ca peut donner des clues sur l'identification)
+
+            # if compare(ldf,c):
+            #     break
 
         count+=1
 
@@ -160,7 +176,7 @@ def buildOutputValues(ldf,organizations):
     for o in organizations:
         val = ''
         for index in o:
-            val += ldf.outputValues[index].value
+            val += ldf.outputParameters[index].value
         r.add(val)
 
     return r
@@ -172,7 +188,7 @@ def buildInputValues(ldf,organizations):
     for o in organizations:
         val = ''
         for index in o:
-            val += ldf.inputValues[index].value
+            val += ldf.inputParameters[index].value
         r.add(val)
 
     return r
@@ -188,7 +204,7 @@ def generateParameterOrganization(ldf, input1Length = -1, input2Length = -1, out
     # ** Inputs
 
     # Generate a reference string with parameter IDs appended
-    referenceList = [i for i in range(len(ldf.inputValues.keys()))]
+    referenceList = [i for i in range(len(ldf.inputParameters.keys()))]
 
     if len(referenceList) > 10:
 
@@ -233,7 +249,7 @@ def generateParameterOrganization(ldf, input1Length = -1, input2Length = -1, out
 
     # ** Output
 
-    referenceList = [i for i in range(len(ldf.outputValues.keys()))]
+    referenceList = [i for i in range(len(ldf.outputParameters.keys()))]
 
     if len(referenceList) > 10:
 
@@ -303,8 +319,11 @@ def connectResultFile(filename):
 
         curLDF = LDF()
 
-        for inputVal in inputs.split(","):
-            
+        for inputParam in inputs.split(','):
+
+            inputAddr = inputParam.split('|')[0]
+            inputVal = inputParam.split('|')[1]
+
             byteLength = len(inputVal)/2
             if byteLength < curLDF.minLengthInput:
                 curLDF.minLengthInput = byteLength
@@ -312,11 +331,15 @@ def connectResultFile(filename):
             if byteLength > curLDF.maxLengthInput:
                 curLDF.maxLengthInput = byteLength
 
-            p = parameter(byteLength, inputVal)  
-            newId = len(curLDF.inputValues.keys())          
-            curLDF.inputValues[newId] = p
+            p = parameter.parameter(inputAddr,byteLength, inputVal)  
 
-        for outputVal in outputs.split(","):
+            newId = len(curLDF.inputParameters.keys())          
+            curLDF.inputParameters[newId] = p
+
+        for outputParam in outputs.split(','):
+
+            outputAddr = outputParam.split('|')[0]
+            outputVal = outputParam.split('|')[1]
  
             byteLength = len(outputVal)/2 
             if byteLength < curLDF.minLengthOutput:
@@ -325,9 +348,10 @@ def connectResultFile(filename):
             if byteLength > curLDF.maxLengthOutput:
                 curLDF.maxLengthOutput = byteLength
 
-            p = parameter(byteLength,outputVal)
-            newId = len(curLDF.outputValues.keys())
-            curLDF.outputValues[newId] = p
+            p = parameter.parameter(outputAddr,byteLength,outputVal)
+
+            newId = len(curLDF.outputParameters.keys())
+            curLDF.outputParameters[newId] = p
 
         dbLDF.append(curLDF)
 

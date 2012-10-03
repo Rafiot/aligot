@@ -115,13 +115,23 @@ def dumpResults(graphStorage, fileName='results.txt', inTrace=''):
     out.write('Aligot - Parameters extracted for each LDF')
     if len(inTrace) != 0:
         out.write(' from ' + inTrace + '\n')
-    out.write('Format: \"input parameter 1,input parameter 2:output parameter1,output parameter2\"\n\n')
+    out.write('All values are in hexadecimal. Format: {address|R for registers|C for static constants}|value.')
+    out.write('Input/output parameters are separated by \':\'.')
+    out.write('The values are padded with zero to have the correct length.\n\n')
 
     for k in graphStorage.keys():
         currentLDF = graphStorage[k]
         line = ''
         for iv in currentLDF.inputParameters:
             val = ''
+
+            if iv.registerName != '':
+                val += 'R|'
+            elif iv.constant == 1:
+                val += 'C|'
+            else:
+                val += hex(iv.startAddress)[2:] + '|'
+            
             for byte in range(0, iv.size):
                 val += iv.value[byte]
             line += val + ','
@@ -130,6 +140,14 @@ def dumpResults(graphStorage, fileName='results.txt', inTrace=''):
 
         for ov in currentLDF.outputParameters:
             val = ''
+
+            if ov.registerName != '':
+                val += 'R|'
+            elif ov.constant == 1:
+                val += 'C|'
+            else:
+                val += hex(ov.startAddress)[2:] + '|'
+
             for byte in range(0, ov.size):
                 val += ov.value[byte]
             line += val + ','

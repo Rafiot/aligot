@@ -12,6 +12,27 @@
 
 class variable:
 
+
+    def __init__(self,startAddress,size,registerName=''):
+
+        '''             
+            Either startAddress is null and registerName not null,
+            or the contrary (xD)
+        '''
+
+        # ints!
+
+        self.startAddress = startAddress
+        self.registerName = registerName
+        self.size = size
+        self.loopInstanceID = 0
+        self.pydotNodeID = 0
+        self.constant = 0  # Indicates if the variable is constant (u fucking nub)
+
+        self.value = dict()
+        for i in range(0, self.size):
+            self.value[i] = '00'
+
     def display(self, mode=0):
 
         if self.registerName != '':
@@ -69,22 +90,4 @@ class variable:
                    <= self.startAddress + self.size)
 
     
-    def __init__(self,startAddress,size,registerName=''):
-
-        '''             
-            Either startAddress is null and registerName not null,
-            or the contrary (xD)
-        '''
-
-        # ints!
-
-        self.startAddress = startAddress
-        self.registerName = registerName
-        self.size = size
-        self.loopInstanceID = 0
-        self.pydotNodeID = 0
-        self.constant = 0  # Indicates if the variable is constant (u fucking nub)
-
-        self.value = dict()
-        for i in range(0, self.size):
-            self.value[i] = '00'
+    
