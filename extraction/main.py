@@ -31,8 +31,6 @@ import argparse
 import sys
 from datetime import datetime
 
-# These are my shit!
-
 import loops
 import loopDataFlowGraph as LDFG
 

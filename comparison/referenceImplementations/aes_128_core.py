@@ -1,3 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# ----------------------------------------------
+# Aligot project
+#
+# Copyright, licence: who cares?
+# ----------------------------------------------
+
 import ciphers
 
 
@@ -5,7 +13,10 @@ class cipher(ciphers.cipherTemplate):
 
 	'''
 		AES_128_CORE represents the inner rounds of the AES-128 algorithm, 
-		that is the main loop of AES, without the first and the last round.	 
+		that is the main loop of AES, without the first and the last round.<
+
+		This implementation has been borrowed (and modified) from the slowAES project:
+		http://slowaes.googlecode.com/	 
 	'''
 
 	def __init__(self):

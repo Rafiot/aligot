@@ -1,3 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# ----------------------------------------------
+# Aligot project
+#
+# Copyright, licence: who cares?
+# ----------------------------------------------
+
 class parameter():
 
     def __init__(self, startAddress, length, value):

@@ -1,3 +1,11 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# ----------------------------------------------
+# Aligot project
+#
+# Copyright, licence: who cares?
+# ----------------------------------------------
+
 import ciphers
 
 from Crypto.Cipher import ARC4
