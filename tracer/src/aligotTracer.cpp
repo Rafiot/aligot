@@ -1,4 +1,7 @@
-// Aligot tracer. Collect all possible informations.
+// Aligot projet
+// Pintool to collect full execution traces (with data accesses)
+// 
+// Author: j04n
 
 #include "pin.H"
 extern "C" {
@@ -49,15 +52,13 @@ int w8ForReturnAddr = 0;
 //  2 : write memory : @ of the write + size + the actual value
 //  3 : read register : register name + actual value
 //  4 : write register : register name + actual value
-
 VOID Analysis(int type, 
 			  ADDRINT pc,
 			  int disasIndex,
 			  ADDRINT memAddress, 
 			  int memSize, 
 			  int registersUsed,
-			  CONTEXT * ctx
-			  )
+			  CONTEXT * ctx)
 {
 
 	if(thisIsTheEnd && (pc != endAddress))
@@ -181,9 +182,6 @@ static VOID RecordMemWrite(ADDRINT ip)
 		NULL);
 }
 
-
-
-
 /*! dumpRegister
  * @param[in]   registerDef   Registers flags
  */
@@ -303,13 +301,7 @@ void dumpRegister(int registerDef, CONTEXT * ctx)
 		value = PIN_GetContextReg(ctx, REG_EDI);
 		*traceFile << "_edi_" << hex << value;
 	}
-	//if(registerDef & 0x00100000)
-	//{
-	//	value = PIN_GetContextReg(ctx, REG_EFLAGS);
-		// Here we deal with flags
-		// We print values to be consistent
-		
-	//}
+
 }
 
 /*! addRegister
