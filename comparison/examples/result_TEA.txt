@@ -1,0 +1,5 @@
+Aligot - Parameters extracted for each LDF from trace_TEA.out
+All values are in hexadecimal. Format: {address|R for registers|C for static constants}|value.Input/output parameters are separated by ':'.The values are padded with zero to have the correct length.
+
+12ff4c|deadbee4,12ff48|deadbee3,12ff44|deadbee2,12ff40|deadbee1,12ff50|00000020,R|89abcdef,R|0012ff54,R|c6ef3720,R|01234567,C|61c88647:12ff50|00000000,R|0c400e4d,R|6e089494,R|00000000,R|516905ea,R|df5ec153,R|c6ef3720
+12ff4c|deadbee4,12ff48|deadbee3,12ff44|deadbee2,12ff40|deadbee1,12ff50|00000020,R|89abcdef,R|0012ff54,R|c6ef3720,R|01234567,C|61c88647:12ff50|00000000,R|0c400e4d,R|6e089494,R|00000000,R|516905ea,R|df5ec153,R|c6ef3720
