@@ -1,4 +1,3 @@
-
 import parameter
 
 def inputMemoryAdjacency(ldf):
@@ -15,12 +14,13 @@ def inputMemoryAdjacency(ldf):
 		# don't apply to registers|constants, we keep them as it
 		if ip.startAddress == 'R' or ip.startAddress == 'C':
 			newInputParameters[len(newInputParameters.keys())] = ip
+
 		else:
 			# feed the memory map
 			for count in range(ip.length):
 				byteAddr = int(ip.startAddress,16) + count
 				if byteAddr in memoryMap.keys():
-					print 'ERROR: Already seen address (heuristics.memoryAdjacency())'
+					print 'ERROR: Already seen address (heuristics.outputMemoryAdjacency())'
 					quit()
 				memoryMap[byteAddr] = ip.value[count*2:(count*2)+2]
 
@@ -35,6 +35,15 @@ def inputMemoryAdjacency(ldf):
 			else:
 				newInputParameters[len(newInputParameters.keys())] = curP
 				curP = parameter.parameter(hex(k)[2:],1,memoryMap[k])
+
+	newInputParameters[len(newInputParameters.keys())] = curP
+
+	l = list()
+	for v in newInputParameters.values():
+		l.append(v.length)
+
+	ldf.maxLengthInput = max(l)
+	ldf.minLengthInput = min(l)
 
 	ldf.inputParameters = newInputParameters
 
@@ -57,7 +66,7 @@ def outputMemoryAdjacency(ldf):
 			for count in range(op.length):
 				byteAddr = int(op.startAddress,16) + count
 				if byteAddr in memoryMap.keys():
-					print 'ERROR: Already seen address (heuristics.memoryAdjacency())'
+					print 'ERROR: Already seen address (heuristics.outputMemoryAdjacency())'
 					quit()
 				memoryMap[byteAddr] = op.value[count*2:(count*2)+2]
 
@@ -73,13 +82,23 @@ def outputMemoryAdjacency(ldf):
 				newOutputParameters[len(newOutputParameters.keys())] = curP
 				curP = parameter.parameter(hex(k)[2:],1,memoryMap[k])
 
+	newOutputParameters[len(newOutputParameters.keys())] = curP
+
+	l = list()
+	for v in newOutputParameters.values():
+		l.append(v.length)
+
+	ldf.maxLengthOutput = max(l)
+	ldf.minLengthOutput = min(l)
+
 	ldf.outputParameters = newOutputParameters
 
 
 def blacklistedValues(ldf, c):
 
 	'''
-		Each cipher can have some blacklisted values, we test this here.
+		Each cipher can have some blacklisted byte values. We test if
+		some parameters have all theirs bytes in theses blacklists.     
 	'''
 
 	inputBl = list()
@@ -88,12 +107,10 @@ def blacklistedValues(ldf, c):
 	for k in ldf.inputParameters.keys():
 
 		ip = ldf.inputParameters[k]
-
-		if ip.value in c.getBlacklistedValues():
-
+		
+		if c.isBlacklistedValue(ip.value):
 			inputBl.append(ip)
 			ldf.inputParameters.pop(k)
-
 		else:
 			newInputParameters[len(newInputParameters.keys())] = ip
 
@@ -104,17 +121,42 @@ def blacklistedValues(ldf, c):
 
 		op = ldf.outputParameters[k]
 
-		if op.value in c.getBlacklistedValues():
-
+		if c.isBlacklistedValue(op.value):
 			outputBl.append(op)
-			ldf.inputParameters.pop(k)
-
+			ldf.outputParameters.pop(k)
 		else:
 			newOutputParameters[len(newOutputParameters.keys())] = op
-
-	# sinon, test pour chaque param de chacun de ses bytes
 
 	ldf.inputParameters = newInputParameters
 	ldf.outputParameters = newOutputParameters
 
 	return [inputBl,outputBl]
+
+
+def filterInputRegisters(ldf):
+
+	'''
+		Remove registers from the input parameters.
+	'''
+
+	newInputParameters = dict() # id -> parameter
+
+	for ip in ldf.inputParameters.values():
+		if ip.startAddress != 'R':
+			newInputParameters[len(newInputParameters.keys())] = ip
+
+	ldf.inputParameters = newInputParameters
+
+def filterOutputRegisters(ldf):
+
+	'''
+		Remove registers from the output parameters.
+	'''
+
+	newOutputParameters = dict() # id -> parameter
+
+	for op in ldf.outputParameters.values():
+		if op.startAddress != 'R':
+			newOutputParameters[len(newOutputParameters.keys())] = op
+
+	ldf.outputParameters = newOutputParameters

@@ -1,6 +1,6 @@
 # When no cipher specified, all of them will be test in the list order 
 # (so let's put the ones with variable-length parameters at the end...)
-implementedCiphers = ['tea','xtea','russian_tea','rc4']
+implementedCiphers = ['tea','xtea','russian_tea','rc4','aes_128_core']
 
 
 class cipherTemplate():
@@ -41,14 +41,14 @@ class cipherTemplate():
 
 		raise NotImplementedError("Missing decoding method")
 
-	def getBlacklistedValues(self):
+	def isBlacklistedValue(self, val):
 
 		'''
-			Returns a list of values that should not be considered as parameters,
-			because they are classic values of the cipher (S-BOXs...)
+			Test if a value should not be considered as a parameter,
+			because it is a classic values of the cipher (S-BOXs...)
 		'''
 
-		raise NotImplementedError("Missing getBlacklistedValues method")
+		raise NotImplementedError("Missing isBlacklistedValue method")
 
 	def getName(self):
 

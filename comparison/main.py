@@ -16,15 +16,13 @@ It takes as input the result file produced by the extraction module.
 
 # TODO: 
 #
-# - allows more than 2-input parameters functions:
+# - Allows more than 2-input parameters functions:
 #       + hash functions
 #       + parametrized implementations (tea)
-# - one thread for each cipher ?
-# - Add decoding procedures for endiannes, big number libraries... 
-# - Add "heuristics": 
-#        + memory adjacency, i.e. prefer values containing original adjacent parameters 
-#        + removal of fixed value inputs, e.g. AES SBOX, TEA delta,...
-# - test that ciphers implement all the needed methods
+# - Allows different input/output lengths
+# - One thread for each cipher ?
+# - Integrate decoding procedures for endiannes, big number libraries... 
+# - Test that ciphers implement all the needed methods
 
 __version__ = '1'
 __versionTime__ = '10/12'
@@ -67,16 +65,34 @@ def main():
     
     parser.add_argument('resultsFile', action='store')
 
+    parser.add_argument('--debug',
+                            help='debug display',
+                            action='store_true')
+
     parser.add_argument('--ciphers',
                             nargs='*',
                             choices=ciphers.implementedCiphers)
     
-    parser.add_argument('--no-mem-heuristic', 
-                        dest='no_mem_heuristic',
+    parser.add_argument('--no-mem-heuristic-input', # by default we apply it
+                        dest='no_mem_heuristic_input',
+                        action='store_true')
+
+    parser.add_argument('--no-mem-heuristic-output', # by default we apply it
+                        dest='no_mem_heuristic_output',
                         action='store_true')
     
-    parser.add_argument('--no-bl-heuristic', 
+    parser.add_argument('--no-bl-heuristic', # by default we apply it
                         dest='no_bl_heuristic',
+                        action='store_true')
+
+    parser.add_argument('--bl-input-registers', # by default we *dont* apply it
+                        help='Registers are not considered as input parameters',
+                        dest='bl_input_registers',
+                        action='store_true')
+
+    parser.add_argument('--bl-output-registers', # by default we *dont* apply it
+                        help='Registers are not considered as output parameters',
+                        dest='bl_output_registers',
                         action='store_true')
     
     args = parser.parse_args()
@@ -103,13 +119,21 @@ def main():
         
         print "\n> Testing LDF " + str(count) + " ..."
         
-        if (len(ldf.inputParameters.keys()) > 10) and not args.no_mem_heuristic:
-            print '  > Heuristic : Memory adjacency, more than 10 input parameters (disable it with --no-mem-heuristic)'
+        if (len(ldf.inputParameters.keys()) > 10) and not args.no_mem_heuristic_input:
+            print '  > Heuristic : Memory adjacency, more than 10 input parameters (disable it with --no-mem-heuristic-input)'
             heuristics.inputMemoryAdjacency(ldf)
 
-        if (len(ldf.outputParameters.keys()) > 10) and not args.no_mem_heuristic:
-            print '  > Heuristic : Memory adjacency, more than 10 output parameters (disable it with --no-mem-heuristic)'
+        if (len(ldf.outputParameters.keys()) > 10) and not args.no_mem_heuristic_output:
+            print '  > Heuristic : Memory adjacency, more than 10 output parameters (disable it with --no-mem-heuristic-output)'
             heuristics.outputMemoryAdjacency(ldf)
+
+        if args.bl_input_registers:
+            print '  > Heuristic : Remove input registers from parameters'
+            heuristics.filterInputRegisters(ldf)
+
+        if args.bl_output_registers:
+            print '  > Heuristic : Remove output registers from parameters'
+            heuristics.filterOutputRegisters(ldf)
 
         for c in listOfCiphers:
             
@@ -118,16 +142,20 @@ def main():
             
                 bl = heuristics.blacklistedValues(ldf, c)
 
-                if len(bl[0]) != 0:
-                    print '    > Blacklisted input values : ',
+                if args.debug and (len(bl[0]) != 0):
+                    print '    > Blacklisted input values : '
                     for blp in bl[0]:
-                        print str(blp) + ' ',
-                    print ''
-                if len(bl[1]) != 0:
-                    print '    > Blacklisted output values : ',
+                        print '\t\t' + str(blp)
+                
+                if args.debug and len(bl[1]) != 0:
+                    print '    > Blacklisted output values : '
                     for blp in bl[1]:
-                        print str(blp) + ' ',
-                    print ''
+                        print '\t\t' + str(blp)
+
+
+            if args.debug:
+                print '  > Tested LDF:'
+                ldf.display()
 
             # Here is the magic
             if compare(ldf,c):
@@ -154,7 +182,6 @@ def compare(ldf, refCipher):
 
     for i1 in possibleInput1s:
 
-
         if (refCipher.getPlaintextLength() != -1) and (len(i1)/2 != refCipher.getPlaintextLength()):
             continue
 
@@ -167,9 +194,7 @@ def compare(ldf, refCipher):
 
                 ciphertext = refCipher.encipher(i1,i2)
 
-                print "\n\n!! Identification successful: " + refCipher.getName() + " encryption with:"
-                print "> " + refCipher.getName() + " encryption"
-    
+                print "\n\n!! Identification successful: " + refCipher.getName() + " encryption with:" 
                 print ' ==> Plain text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
                 print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
                 print ' ==> Encrypted text (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext

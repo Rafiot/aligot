@@ -78,9 +78,9 @@ class cipher(ciphers.cipherTemplate):
 		
 		return hex((inputText[0] << 32) + inputText[1])[2:-1]
 
-	def getBlacklistedValues(self):
+	def isBlacklistedValue(self, val):
 
-		return self._blacklistedValues
+		return (val in self._blacklistedValues)
 
 	def getName(self):
 

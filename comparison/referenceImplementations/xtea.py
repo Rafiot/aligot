@@ -70,9 +70,9 @@ class cipher(ciphers.cipherTemplate):
 
 		return inputText.encode('hex')
 
-	def getBlacklistedValues(self):
+	def isBlacklistedValue(self, val):
 
-		return self._blacklistedValues
+		return (val in self._blacklistedValues)
 
 	def getName(self):
 
