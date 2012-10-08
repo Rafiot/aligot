@@ -1,7 +1,73 @@
-import md5py
-import string, unittest
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+# ----------------------------------------------
+# Aligot project
+#
+# Copyright, licence: who cares?
+# ----------------------------------------------
+
+import string
 import struct
 import os
+
+import ciphers
+
+class cipher(ciphers.cipherTemplate):
+
+    '''         
+        MD5_core represents the inner loops of the MD5 algorithm, that
+        is the loop applicating MD5_Transform().
+
+        In particular, the inputs used by this core loop are not the ones of
+        the whole algorithm. It is an inputText of length multiple of 128.
+    '''
+
+    def __init__(self):
+
+        self._name = 'MD5_CORE'
+        self._plaintextLength = -1 # input text, the ones that is used in the algorithm core
+        self._keyLength = 0 
+        self._ciphertextLength = 16 # output state
+        self.hashFunction = True # No decipher operation
+
+    def encipher(self, inputText, key):
+
+        encInputText = self._encode(inputText)
+        r = marker(encInputText)
+        return self._decode(r)
+        
+
+    def decipher(self, inputText, key):
+
+        raise NotImplementedError("Missing decipher medthod")
+
+    def _encode(self, inputText):
+        
+        return inputText.decode('hex')
+
+    def _decode(self, inputText):
+        
+        return hex(inputText[0])[2:-1] + hex(inputText[1])[2:-1] + hex(inputText[2])[2:-1] + hex(inputText[3])[2:-1]
+
+    def isBlacklistedValue(self, val):
+
+        return False
+
+    def getName(self):
+
+        return self._name
+
+    def getPlaintextLength(self):
+
+        return self._plaintextLength
+
+    def getKeyLength(self):
+
+        return self._keyLength
+
+    def getCiphertextLength(self):
+
+        return self._ciphertextLength
 
 
 #/* Constants for MD5Transform routine.
@@ -22,10 +88,6 @@ S41 = 6
 S42 = 10
 S43 = 15
 S44 = 21
-
-PADDING = "\x80" + 63*"\0"   # do not overlook first byte again :-)
-
-
 
 #-SINGLE-#
 def F(x, y, z): return (((x) & (y)) | ((~x) & (z)))
@@ -84,9 +146,7 @@ def Decode(input, len):
     return list(res)
 
 
-def transform(block):
-
-        global state
+def transform(block,state):
 
         a, b, c, d = state
 
@@ -170,44 +230,34 @@ def transform(block):
 
 #-BODY-#
 
-	state = (0xffffffffL & (state[0] + a),
-        	0xffffffffL & (state[1] + b),
-			0xffffffffL & (state[2] + c),
-			0xffffffffL & (state[3] + d),)
+        state = (0xffffffffL & (state[0] + a),
+            0xffffffffL & (state[1] + b),
+            0xffffffffL & (state[2] + c),
+            0xffffffffL & (state[3] + d),)
 
 ##  /* Zeroize sensitive information.
 
         del x
 
-# HERE IS THE MAGIC MARKER
-
-state = (0x67452301L,0xefcdab89L,0x98badcfeL,0x10325476L,) # not a real input
+        return state
 
 def marker(input):
-	
-	inputLen = len(input)
-	i = 0 # TODO: Comprendre d'ou ca sort
 
-	while i + 63 < inputLen:
+    state = (0x67452301L,0xefcdab89L,0x98badcfeL,0x10325476L,) # not a real input
+    inputLen = len(input)
 
-		print "LOOP"
-		transform(input[i:i+64])
-		i = i + 64
+    i = 0 
+    while i + 63 < inputLen:
 
-	# pour 128:
-	#transform(input[0:64])
-	#transform(input[64:128])
+        state = transform(input[i:i+64],state)
+        i = i + 64
 
-	print "ICI"
-	print hex(state[0])
-	print hex(state[1])
-	print hex(state[2])
-	print hex(state[3])
+    return state
 
 if __name__=="__main__":
 
-	if len(os.sys.argv) != 2:
-		print "Miss the input bro"
-		quit()
+    if len(os.sys.argv) != 2:
+        print "Miss the input bro"
+        quit()
 
-	marker(os.sys.argv[1])
+    marker(os.sys.argv[1])

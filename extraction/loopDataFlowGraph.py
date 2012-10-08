@@ -186,6 +186,7 @@ def pydotGraph(graphStorage,name, limit=10):
         nodeId = 0
         label = 'LDF ' + str(k)
         label += '\n' + str(len(currentLDF.loopInstanceList)) + ' LI'
+        label += ' - SA:' + currentLDF.loopInstanceList[0].startAddress
 
         # The LDF node
 

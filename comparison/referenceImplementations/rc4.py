@@ -18,6 +18,8 @@ class cipher(ciphers.cipherTemplate):
 		self._plaintextLength = -1
 		self._keyLength = -1
 		self._ciphertextLength = -1
+		self.hashFunction = False
+		self._blacklistedValues = {}
 
 	def encipher(self, inputText, key):
 		
@@ -48,9 +50,9 @@ class cipher(ciphers.cipherTemplate):
 
 		return inputText.encode('hex')
 
-	def getBlacklistedValues(self):
+	def isBlacklistedValue(self, val):
 
-		return {}
+		return (val in self._blacklistedValues)
 
 	def getName(self):
 

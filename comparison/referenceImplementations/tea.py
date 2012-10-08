@@ -18,7 +18,7 @@ class cipher(ciphers.cipherTemplate):
 		self._plaintextLength = 8
 		self._keyLength = 16
 		self._ciphertextLength = 8
-
+		self.hashFunction = False
 		self._blacklistedValues = {'9e3779b9','c6ef3720','00000020'}
 
 

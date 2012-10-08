@@ -8,7 +8,7 @@
 
 # When no cipher specified, all of them will be test in the list order 
 # (so let's put the ones with variable-length parameters at the end...)
-implementedCiphers = ['tea','xtea','russian_tea','rc4','aes_128_core']
+implementedCiphers = ['tea','xtea','russian_tea','rc4','aes_128_core','md5_core']
 
 class cipherTemplate():
 

@@ -8,7 +8,6 @@
 
 import ciphers
 
-
 class cipher(ciphers.cipherTemplate):
 
 	'''
@@ -25,6 +24,7 @@ class cipher(ciphers.cipherTemplate):
 		self._plaintextLength = 16 # input state
 		self._keyLength = 0x90 # derived key, without the first and the last 16 bytes
 		self._ciphertextLength = 16 # outout state
+		self.hashFunction = False 
 
 		self._TE0={0xc66363a5, 0xf87c7c84, 0xee777799, 0xf67b7b8d,
 				0xfff2f20d, 0xd66b6bbd, 0xde6f6fb1, 0x91c5c554,

@@ -196,19 +196,24 @@ def compare(ldf, refCipher):
 
                 print "\n\n!! Identification successful: " + refCipher.getName() + " encryption with:" 
                 print ' ==> Plain text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
-                print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
-                print ' ==> Encrypted text (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
+                if not refCipher.hashFunction:
+                    print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
+                if not refCipher.hashFunction:
+                    print ' ==> Encrypted text (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
+                else:
+                    print ' ==> Hash (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
                 return True
             
-            elif refCipher.decipher(i1,i2) in possibleOutputs:
+            if not refCipher.hashFunction:
+                if refCipher.decipher(i1,i2) in possibleOutputs:
 
-                plaintext = refCipher.decipher(i1,i2)
+                    plaintext = refCipher.decipher(i1,i2)
 
-                print "\n\n!! Identification successful: " + refCipher.getName() + " decryption with:"
-                print ' ==> Encrypted text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
-                print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
-                print ' ==> Decrypted text (' + str(len(plaintext)/2) + ' bytes) : 0x' + plaintext
-                return True
+                    print "\n\n!! Identification successful: " + refCipher.getName() + " decryption with:"
+                    print ' ==> Encrypted text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
+                    print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
+                    print ' ==> Decrypted text (' + str(len(plaintext)/2) + ' bytes) : 0x' + plaintext
+                    return True
 
 
     print "Fail!"
