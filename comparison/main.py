@@ -16,13 +16,11 @@ It takes as input the result file produced by the extraction module.
 
 # TODO: 
 #
-# - Allows more than 2-input parameters functions:
-#       + hash functions
-#       + parametrized implementations (tea)
-# - Allows different input/output lengths
+# - Allow more than 2-input parameters functions (e.g. parametrized implementations (tea))
+# - Allow different input/output lengths
 # - One thread for each cipher ?
 # - Integrate decoding procedures for endiannes, big number libraries... 
-# - Test that ciphers implement all the needed methods
+# - Automatic check that ciphers implement all the needed methods
 
 __version__ = '1'
 __versionTime__ = '10/12'
@@ -205,6 +203,8 @@ def compare(ldf, refCipher):
                     return True
                 else:
                     print ' ==> Hash (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
+                    # We continue to test hash functions, because there could be several good inputs
+                    # (cf. md5_core.py for an example)
                     hashFunctionFound = 1
             
             if not refCipher.hashFunction:
