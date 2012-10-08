@@ -180,6 +180,8 @@ def compare(ldf, refCipher):
     possibleInput2s = buildInputValues(ldf,i2)
     possibleOutputs = buildOutputValues(ldf,o)
 
+    hashFunctionFound = 0
+
     for i1 in possibleInput1s:
 
         if (refCipher.getPlaintextLength() != -1) and (len(i1)/2 != refCipher.getPlaintextLength()):
@@ -200,9 +202,10 @@ def compare(ldf, refCipher):
                     print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
                 if not refCipher.hashFunction:
                     print ' ==> Encrypted text (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
+                    return True
                 else:
                     print ' ==> Hash (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
-                return True
+                    hashFunctionFound = 1
             
             if not refCipher.hashFunction:
                 if refCipher.decipher(i1,i2) in possibleOutputs:
@@ -215,9 +218,11 @@ def compare(ldf, refCipher):
                     print ' ==> Decrypted text (' + str(len(plaintext)/2) + ' bytes) : 0x' + plaintext
                     return True
 
-
-    print "Fail!"
-    return False
+    if hashFunctionFound:
+        return True
+    else:
+        print "Fail!"
+        return False
 
 def buildOutputValues(ldf,organizations):
 

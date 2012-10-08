@@ -14,12 +14,26 @@ import ciphers
 
 class cipher(ciphers.cipherTemplate):
 
-    '''         
-        MD5_core represents the inner loops of the MD5 algorithm, that
-        is the loop applicating MD5_Transform().
+    '''                  
+        MD5_core represents the core loop of the MD5 algorithm, 
+        that is the loop contained in MD5_Update() (calling MD5_Transform()
+        for each 64-byte input block).
 
-        In particular, the inputs used by this core loop are not the ones of
-        the whole algorithm. It is an inputText of length multiple of 128.
+        Remarks:
+
+            - The input text used by this core loop is *not* the one
+            of the whole MD5 algorithm, because the last bytes (mod 64)             
+            are managed only during MD5_Final(), and therefore are not seen             
+            during the core loop execution.
+            Consequently, there will be several input texts that give the same
+            hash, because these last bytes are not taken into consideration.
+
+            - In case of an input text whose length is less than 128 bytes, 
+            there will be no iterative behavior at runtime, and hence 
+            Aligot will not extract any loops.
+
+        This implementation has been borrowed (and modified) from
+        http://equi4.com/md5/pymd5.py     
     '''
 
     def __init__(self):
@@ -33,10 +47,9 @@ class cipher(ciphers.cipherTemplate):
     def encipher(self, inputText, key):
 
         encInputText = self._encode(inputText)
-        r = marker(encInputText)
+        r = md5_core(encInputText)
         return self._decode(r)
         
-
     def decipher(self, inputText, key):
 
         raise NotImplementedError("Missing decipher medthod")
@@ -241,14 +254,13 @@ def transform(block,state):
 
         return state
 
-def marker(input):
+def md5_core(input):
 
-    state = (0x67452301L,0xefcdab89L,0x98badcfeL,0x10325476L,) # not a real input
+    state = (0x67452301L,0xefcdab89L,0x98badcfeL,0x10325476L,) 
     inputLen = len(input)
 
     i = 0 
     while i + 63 < inputLen:
-
         state = transform(input[i:i+64],state)
         i = i + 64
 
@@ -260,4 +272,5 @@ if __name__=="__main__":
         print "Miss the input bro"
         quit()
 
-    marker(os.sys.argv[1])
+    r = md5_core(os.sys.argv[1])
+    print hex(r[0])[2:-1] + hex(r[1])[2:-1] + hex(r[2])[2:-1] + hex(r[3])[2:-1]
