@@ -84,15 +84,20 @@ def main():
                         action='store_true')
 
     parser.add_argument('--bl-input-registers', # by default we *dont* apply it
-                        help='Registers are not considered as input parameters',
+                        help='Registers will not be considered as input parameters',
                         dest='bl_input_registers',
                         action='store_true')
 
     parser.add_argument('--bl-output-registers', # by default we *dont* apply it
-                        help='Registers are not considered as output parameters',
+                        help='Registers will not be considered as output parameters',
                         dest='bl_output_registers',
                         action='store_true')
-    
+
+    parser.add_argument('--no-bl-constants', # by default we apply it
+                        help='Constants will be considered as parameters',
+                        dest='no_bl_constants',
+                        action='store_true')
+
     args = parser.parse_args()
 
     print ''
@@ -116,6 +121,10 @@ def main():
     for ldf in dbLDF:
         
         print "\n> Testing LDF " + str(count) + " ..."
+
+        if not args.no_bl_constants:
+            print '  > Heuristic : Remove constants from parameters'
+            heuristics.filterConstants(ldf)
         
         if (len(ldf.inputParameters.keys()) > 10) and not args.no_mem_heuristic_input:
             print '  > Heuristic : Memory adjacency, more than 10 input parameters (disable it with --no-mem-heuristic-input)'
@@ -195,14 +204,15 @@ def compare(ldf, refCipher):
                 ciphertext = refCipher.encipher(i1,i2)
 
                 print "\n\n!! Identification successful: " + refCipher.getName() + " encryption with:" 
-                print ' ==> Plain text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
+                print ' ==> Plain text (' + str(len(i1)/2) + ' bytes) : 0x' + i1[0:512] + '...'
+
                 if not refCipher.hashFunction:
-                    print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
+                    print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2[0:512] + '...'
                 if not refCipher.hashFunction:
-                    print ' ==> Encrypted text (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
+                    print ' ==> Encrypted text (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext[0:512] + '...'
                     return True
                 else:
-                    print ' ==> Hash (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext
+                    print ' ==> Hash (' + str(len(ciphertext)/2) + ' bytes) : 0x' + ciphertext[0:512] + '...'
                     # We continue to test hash functions, because there could be several good inputs
                     # (cf. md5_core.py for an example)
                     hashFunctionFound = 1
@@ -213,9 +223,9 @@ def compare(ldf, refCipher):
                     plaintext = refCipher.decipher(i1,i2)
 
                     print "\n\n!! Identification successful: " + refCipher.getName() + " decryption with:"
-                    print ' ==> Encrypted text (' + str(len(i1)/2) + ' bytes) : 0x' + i1
-                    print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2
-                    print ' ==> Decrypted text (' + str(len(plaintext)/2) + ' bytes) : 0x' + plaintext
+                    print ' ==> Encrypted text (' + str(len(i1)/2) + ' bytes) : 0x' + i1[0:512] + '...'
+                    print ' ==> Key ('+ str(len(i2)/2) +' bytes) : 0x' + i2[0:512] + '...'
+                    print ' ==> Decrypted text (' + str(len(plaintext)/2) + ' bytes) : 0x' + plaintext[0:512] + '...'
                     return True
 
     if hashFunctionFound:

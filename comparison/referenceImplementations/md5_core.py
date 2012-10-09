@@ -25,6 +25,7 @@ class cipher(ciphers.cipherTemplate):
             of the whole MD5 algorithm, because the last bytes (mod 64)             
             are managed only during MD5_Final(), and therefore are not seen             
             during the core loop execution.
+            
             Consequently, there will be several input texts that give the same
             hash, because these last bytes are not taken into consideration.
 

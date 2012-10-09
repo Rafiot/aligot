@@ -168,3 +168,25 @@ def filterOutputRegisters(ldf):
 			newOutputParameters[len(newOutputParameters.keys())] = op
 
 	ldf.outputParameters = newOutputParameters
+
+def filterConstants(ldf):
+
+	'''
+		Remove constants from parameters.
+	'''
+
+	newInputParameters = dict() # id -> parameter
+
+	for ip in ldf.inputParameters.values():
+		if ip.startAddress != 'C':
+			newInputParameters[len(newInputParameters.keys())] = ip
+
+	ldf.inputParameters = newInputParameters
+
+	newOutputParameters = dict() # id -> parameter
+
+	for op in ldf.outputParameters.values():
+		if op.startAddress != 'C':
+			newOutputParameters[len(newOutputParameters.keys())] = op
+
+	ldf.outputParameters = newOutputParameters
